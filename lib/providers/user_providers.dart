@@ -57,14 +57,9 @@ class UserProvider with ChangeNotifier {
 
   Future<String?> updateUser(int id) async {
     final response = await http
-        .post(Uri.parse("http://172.16.22.20:8000/api/user/$id"), body: {
-      "email": controllerEmail.text,
-      "department": controllerDepartment.text,
-      "city": controllerCity.text,
-      "address": controllerAddress.text,
-      "phone1": controllerPhone1.text
-    });
-    final User decodata = User.fromJson(json.decode(response.body));
+        .post(Uri.parse("http://172.16.22.20:8000/api/user/$id"), body: );
+    final UserClass decodata = 
+    fromJson(json.decode(response.body));
     if (response.statusCode < 400) {
       userInfo = decodata.user!;
       userInfoController(decodata.user!);
@@ -74,4 +69,7 @@ class UserProvider with ChangeNotifier {
     }
     notifyListeners();
   }
+
+
+
 }

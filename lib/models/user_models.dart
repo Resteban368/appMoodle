@@ -239,4 +239,13 @@ class UserClass {
         "alternatename": alternatename,
         "moodlenetprofile": moodlenetprofile,
       };
+
+  Map<String, dynamic> updateToJson() => {
+        "email": email,
+        "phone1": phone1,
+        "phone2": phone2,
+        "department": department,
+        "address": address,
+        "city": city,
+      };
 }
