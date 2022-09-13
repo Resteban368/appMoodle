@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:campus_virtual/models/user_update.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -30,7 +31,8 @@ class _AccountScreenState extends State<AccountScreen> {
 
     final size = MediaQuery.of(context).size;
     final authService = Provider.of<AuthService>(context, listen: false);
-    String imgeDefault = 'images/userDefault.png';
+    String imgeDefault =
+        'https://st1.uvnimg.com/d4/4a/006304a74db4902c0b4d8d8026c8/chevrolet-corvette-c8-stingray-2020-1280-08.jpg';
 
     late bool habilitarForm = userInfoProvider.habilitarForm;
     return Scaffold(
@@ -89,12 +91,14 @@ class _AccountScreenState extends State<AccountScreen> {
                                     fit: BoxFit.fill,
                                   )
                                 : Image.network(
-                                    userInfoProvider2
-                                                .userInfo.profileimageurl !=
-                                            null
-                                        ? userInfoProvider2
-                                            .userInfo.profileimageurl!
-                                        : imgeDefault,
+                                    // userInfoProvider2
+                                    //             .userInfo.profileimageurl !=
+                                    //         null
+                                    //     ? userInfoProvider2
+                                    //         .userInfo.profileimageurl!
+                                    //     : imgeDefault,
+                                    imgeDefault,
+
                                     fit: BoxFit.fill,
                                   ),
                           ),
@@ -267,16 +271,16 @@ class _AccountScreenState extends State<AccountScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-
-
-
-
                   OutlinedButton(
                       onPressed: () async {
                         final siteInfo =
                             Provider.of<SiteProvider>(context, listen: false);
-                        await userInfoProvider
-                            .updateUser(siteInfo.infoSite.userid!);
+                        await userInfoProvider.updateUser(
+                          siteInfo.infoSite.userid!,
+                          UserUpdate(
+                              email: userInfoProvider.controllerEmail.text,
+                              phone1: userInfoProvider.controllerPhone1.text),
+                        );
                       },
                       // ignore: sort_child_properties_last
                       child: const Text(
@@ -291,7 +295,6 @@ class _AccountScreenState extends State<AccountScreen> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)),
                       )),
-
                   const SizedBox(width: 10),
                   ElevatedButton(
                       onPressed: () {

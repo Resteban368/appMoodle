@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:campus_virtual/models/user_update.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -23,7 +24,7 @@ class UserProvider with ChangeNotifier {
   late bool habilitarForm = false;
 
   Future<String?> getData(int id) async {
-    final url = 'http://172.16.22.20:8000/api/user/$id';
+    final url = 'http://192.168.1.6:8000/api/user/$id';
     print(url);
     final response = await http.get(Uri.parse(url));
     final User decodata = User.fromJson(json.decode(response.body));
@@ -55,21 +56,41 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String?> updateUser(int id) async {
-    final response = await http
-        .post(Uri.parse("http://172.16.22.20:8000/api/user/$id"), body: );
-    final UserClass decodata = 
-    fromJson(json.decode(response.body));
+  Future<String?> updateUser(int id, UserUpdate userUpdate) async {
+    // Map data = {
+    //   'json': '{"email":"$email","phone1":"$phone1"}',
+    // };
+
+    var headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    };
+    final response = await http.put(
+        Uri.parse("http://192.168.1.6:8000/api/user/$id"),
+        body: userUpdate.toJson(),
+        headers: headers);
     if (response.statusCode < 400) {
-      userInfo = decodata.user!;
-      userInfoController(decodata.user!);
+      // userInfo = decodata.user!;]
+      // userInfoController(decodata.us]er!);
       print("Usuario actualizado");
     } else {
       print("Error al actualizar usuario");
+      print(response.statusCode);
     }
+    // var request =
+    //     http.Request('PUT', Uri.parse('http://192.168.1.6:8000/api/user/$id'));
+    // request.bodyFields = {
+    //   'json': '{"email":"$email","phone1":"$phone1"}',
+    // };
+    // request.headers.addAll(headers);
+
+    // http.StreamedResponse response = await request.send();
+
+    // if (response.statusCode == 200) {
+    //   print(await response.stream.bytesToString());
+    // } else {
+    //   print(response.reasonPhrase);
+    // }
     notifyListeners();
+    return '';
   }
-
-
-
 }
