@@ -1,0 +1,15 @@
+1.validar las credenciales de windows
+
+2. Cambiar el username y email de Git
+git config --global user.name "new name"
+git config --global user.email "newcorreo@example.com" 
+
+3. Cambiar el usuario de Credenciales
+git config credential.username "new name"
+
+Para validar la configuración actual
+git config --global -e 
+
+git remote add origin https://github.com/Resteban368/app_moodle.git
+git branch -M main
+git push -u origin main

@@ -1,0 +1,12 @@
+
+
+obetener el token
+https://moodlepruebas.xeted.com/login/token.php?username=erm&password=Admin2022*&service=moodle_mobile_app
+
+
+obtener informacion del usuario (por campo de nombre)
+https://moodlepruebas.xeted.com/webservice/rest/server.php?wstoken=2d41bc78e7d8c16333dd31fb1ef59a1a&wsfunction=core_user_get_users_by_field&field=username&values[0]=erm
+
+
+obtener los cursos matriculados por el usuario (id)
+https://moodlepruebas.xeted.com/webservice/rest/server.php?wsfunction=core_enrol_get_users_courses&moodlewsrestformat=json&wstoken=2d41bc78e7d8c16333dd31fb1ef59a1a&userid=3
