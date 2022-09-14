@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:campus_virtual/models/user_update.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -20,6 +19,9 @@ class UserProvider with ChangeNotifier {
   final TextEditingController controllerAddress = TextEditingController();
 
   final TextEditingController controllerPhone1 = TextEditingController();
+  final TextEditingController controllerPhone2 = TextEditingController();
+  final TextEditingController controllerYahoo = TextEditingController();
+  final TextEditingController controllerMsm = TextEditingController();
 
   late bool habilitarForm = false;
 
@@ -43,6 +45,9 @@ class UserProvider with ChangeNotifier {
     controllerCity.text = userInfoController.city!.toString();
     controllerAddress.text = userInfoController.address!.toString();
     controllerPhone1.text = userInfoController.phone1!;
+    controllerPhone2.text = userInfoController.phone2!;
+    controllerYahoo.text = userInfoController.yahoo!;
+    controllerMsm.text = userInfoController.msn!;
   }
 
   habilitarFormulario() {
@@ -56,40 +61,28 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String?> updateUser(int id, UserUpdate userUpdate) async {
-    // Map data = {
-    //   'json': '{"email":"$email","phone1":"$phone1"}',
-    // };
-
+  Future<String?> updateUser(int id, String email, String phone1) async {
+    Map data = {
+      'json': '{"email":"$email","phone1":"$phone1"}',
+    };
     var headers = {
       'Content-Type': 'application/x-www-form-urlencoded',
     };
-    final response = await http.put(
-        Uri.parse("http://192.168.1.6:8000/api/user/$id"),
-        body: userUpdate.toJson(),
-        headers: headers);
-    if (response.statusCode < 400) {
-      // userInfo = decodata.user!;]
-      // userInfoController(decodata.us]er!);
-      print("Usuario actualizado");
+
+    var request =
+        http.Request('PUT', Uri.parse('http://192.168.1.6:8000/api/user/$id'));
+    request.bodyFields = {
+      'json': '{"email":"$email","phone1":"$phone1"}',
+    };
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
     } else {
-      print("Error al actualizar usuario");
-      print(response.statusCode);
+      print(response.reasonPhrase);
     }
-    // var request =
-    //     http.Request('PUT', Uri.parse('http://192.168.1.6:8000/api/user/$id'));
-    // request.bodyFields = {
-    //   'json': '{"email":"$email","phone1":"$phone1"}',
-    // };
-    // request.headers.addAll(headers);
-
-    // http.StreamedResponse response = await request.send();
-
-    // if (response.statusCode == 200) {
-    //   print(await response.stream.bytesToString());
-    // } else {
-    //   print(response.reasonPhrase);
-    // }
     notifyListeners();
     return '';
   }

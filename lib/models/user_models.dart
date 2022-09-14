@@ -82,6 +82,11 @@ class UserClass {
     this.middlename,
     this.alternatename,
     this.moodlenetprofile,
+    this.icq,
+    this.skype,
+    this.yahoo,
+    this.aim,
+    this.msn,
   });
 
   int? id;
@@ -132,6 +137,11 @@ class UserClass {
   String? middlename;
   String? alternatename;
   dynamic moodlenetprofile;
+  dynamic icq;
+  String? skype;
+  String? yahoo;
+  String? aim;
+  String? msn;
 
   factory UserClass.fromRawJson(String str) =>
       UserClass.fromJson(json.decode(str));
@@ -187,6 +197,11 @@ class UserClass {
         middlename: json["middlename"],
         alternatename: json["alternatename"],
         moodlenetprofile: json["moodlenetprofile"],
+        icq: json["icq"],
+        skype: json["skype"],
+        yahoo: json["yahoo"],
+        aim: json["aim"],
+        msn: json["msn"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -238,14 +253,10 @@ class UserClass {
         "middlename": middlename,
         "alternatename": alternatename,
         "moodlenetprofile": moodlenetprofile,
-      };
-
-  Map<String, dynamic> updateToJson() => {
-        "email": email,
-        "phone1": phone1,
-        "phone2": phone2,
-        "department": department,
-        "address": address,
-        "city": city,
+        "icq": icq,
+        "skype": skype,
+        "yahoo": yahoo,
+        "aim": aim,
+        "msn": msn,
       };
 }

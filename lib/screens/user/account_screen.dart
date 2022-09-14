@@ -2,7 +2,6 @@
 
 import 'dart:io';
 
-import 'package:campus_virtual/models/user_update.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -182,25 +181,25 @@ class _AccountScreenState extends State<AccountScreen> {
               ),
               BuildTextFiled(
                 labelText: "Cuenta de Facebook",
-                placeholder: "https://facebook.com/",
+                placeholder: '',
                 controller: userInfoProvider.controllerEmail,
                 isRead: habilitarForm,
               ),
               BuildTextFiled(
                 labelText: "Cuenta de Twitter",
-                placeholder: "https://twitter.com/",
+                placeholder: '',
                 controller: userInfoProvider.controllerEmail,
                 isRead: habilitarForm,
               ),
               BuildTextFiled(
                 labelText: "Cuenta de Youtube",
-                placeholder: "https://youtube.com/",
-                controller: userInfoProvider.controllerEmail,
+                placeholder: '',
+                controller: userInfoProvider.controllerYahoo,
                 isRead: habilitarForm,
               ),
               BuildTextFiled(
                 labelText: "Cuenta de Instagram",
-                placeholder: "https://instagram.com/",
+                placeholder: '',
                 controller: userInfoProvider.controllerEmail,
                 isRead: habilitarForm,
               ),
@@ -228,7 +227,7 @@ class _AccountScreenState extends State<AccountScreen> {
               BuildTextFiled(
                 labelText: "Telfono Celular",
                 placeholder: '',
-                controller: userInfoProvider.controllerPhone1,
+                controller: userInfoProvider.controllerPhone2,
                 isRead: habilitarForm,
               ),
               const SizedBox(height: 5),
@@ -276,11 +275,9 @@ class _AccountScreenState extends State<AccountScreen> {
                         final siteInfo =
                             Provider.of<SiteProvider>(context, listen: false);
                         await userInfoProvider.updateUser(
-                          siteInfo.infoSite.userid!,
-                          UserUpdate(
-                              email: userInfoProvider.controllerEmail.text,
-                              phone1: userInfoProvider.controllerPhone1.text),
-                        );
+                            siteInfo.infoSite.userid!,
+                            userInfoProvider.controllerEmail.text,
+                            userInfoProvider.controllerPhone1.text);
                       },
                       // ignore: sort_child_properties_last
                       child: const Text(
