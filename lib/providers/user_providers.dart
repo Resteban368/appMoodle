@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -57,14 +59,11 @@ class UserProvider with ChangeNotifier {
   }
 
   void updateSelectedImage(String path) {
-    this.newImage = File.fromUri(Uri(path: path));
+    newImage = File.fromUri(Uri(path: path));
     notifyListeners();
   }
 
   Future<String?> updateUser(int id, String email, String phone1) async {
-    Map data = {
-      'json': '{"email":"$email","phone1":"$phone1"}',
-    };
     var headers = {
       'Content-Type': 'application/x-www-form-urlencoded',
     };
@@ -78,7 +77,7 @@ class UserProvider with ChangeNotifier {
 
     http.StreamedResponse response = await request.send();
 
-    if (response.statusCode == 200) {
+    if (response.statusCode < 400) {
       print(await response.stream.bytesToString());
     } else {
       print(response.reasonPhrase);

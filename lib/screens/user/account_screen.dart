@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types, non_constant_identifier_names, deprecated_member_use
+// ignore_for_file: camel_case_types, non_constant_identifier_names, deprecated_member_use, use_build_context_synchronously
 
 import 'dart:io';
 
@@ -90,13 +90,13 @@ class _AccountScreenState extends State<AccountScreen> {
                                     fit: BoxFit.fill,
                                   )
                                 : Image.network(
-                                    // userInfoProvider2
-                                    //             .userInfo.profileimageurl !=
-                                    //         null
-                                    //     ? userInfoProvider2
-                                    //         .userInfo.profileimageurl!
-                                    //     : imgeDefault,
-                                    imgeDefault,
+                                    userInfoProvider2
+                                                .userInfo.profileimageurl !=
+                                            null
+                                        ? userInfoProvider2
+                                            .userInfo.profileimageurl!
+                                        : imgeDefault,
+                                    // imgeDefault,
 
                                     fit: BoxFit.fill,
                                   ),
@@ -254,6 +254,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     onChanged: (bool? value) {
                       setState(() {
                         isChecked = value!;
+                        print(isChecked);
                       });
                     },
                   ),
@@ -271,14 +272,46 @@ class _AccountScreenState extends State<AccountScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   OutlinedButton(
-                      onPressed: () async {
-                        final siteInfo =
-                            Provider.of<SiteProvider>(context, listen: false);
-                        await userInfoProvider.updateUser(
-                            siteInfo.infoSite.userid!,
-                            userInfoProvider.controllerEmail.text,
-                            userInfoProvider.controllerPhone1.text);
-                      },
+                      onPressed: isChecked == false
+                          ? () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 235, 99, 90),
+                                  content: Text(
+                                      'Debe aceptar los terminos y condiciones'),
+                                ),
+                              );
+                            }
+                          : () async {
+                              final siteInfo = Provider.of<SiteProvider>(
+                                  context,
+                                  listen: false);
+                              final peticion =
+                                  await userInfoProvider.updateUser(
+                                      siteInfo.infoSite.userid!,
+                                      userInfoProvider.controllerEmail.text,
+                                      userInfoProvider.controllerPhone1.text);
+                              if (peticion == '') {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    backgroundColor:
+                                        Color.fromARGB(255, 32, 99, 35),
+                                    content: Text(
+                                        'Se actualizo la información correctamente'),
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    backgroundColor:
+                                        Color.fromARGB(255, 235, 99, 90),
+                                    content: Text(
+                                        'No se pudo actualizar la información'),
+                                  ),
+                                );
+                              }
+                            },
                       // ignore: sort_child_properties_last
                       child: const Text(
                         "Guardar",

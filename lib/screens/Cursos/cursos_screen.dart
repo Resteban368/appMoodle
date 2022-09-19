@@ -20,7 +20,7 @@ class CursosScreen extends StatelessWidget {
         Provider.of<GeneralProvider>(context, listen: false);
     final token = providerGeneral.tokencillo.toString();
     //mandamos a llamar el token para usarlo en esta clase
-
+    String imageDefault = 'images/course-default.png';
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -90,7 +90,7 @@ class CursosScreen extends StatelessWidget {
                                     subtitle: const Text('Semestre 1'),
                                   ),
                                   CachedNetworkImage(
-                                    imageUrl: urlImg,
+                                    imageUrl: urlImg ?? imageDefault,
                                     fit: BoxFit.fill,
                                   ),
                                   // Image.network(

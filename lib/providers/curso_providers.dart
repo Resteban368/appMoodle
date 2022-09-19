@@ -18,20 +18,23 @@ class CursoProvider extends ChangeNotifier {
 
     final url =
         '$_baseUrl${_url}wsfunction=$_wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&userid=$userid';
-    final resp = await http.get(Uri.parse(url));
-    // print('url curso provider: $url');
+    try {
+      final resp = await http.get(Uri.parse(url));
 
-    if (resp.statusCode < 400) {
-      // print('status code: ${resp.statusCode}');
+      if (resp.statusCode < 400) {
+        // print('status code: ${resp.statusCode}');
 
-      List<ResponseCursos> responseCursosData = [];
-      List<dynamic> mapaRespBody = json.decode(resp.body);
-      for (var element in mapaRespBody) {
-        responseCursosData.add(ResponseCursos.fromJson(element));
+        List<ResponseCursos> responseCursosData = [];
+        List<dynamic> mapaRespBody = json.decode(resp.body);
+        for (var element in mapaRespBody) {
+          responseCursosData.add(ResponseCursos.fromJson(element));
+        }
+        // print(responseCursosData[0].overviewfiles![0].filename);
+        notifyListeners();
+        return responseCursosData;
       }
-      // print(responseCursosData[0].overviewfiles![0].filename);
-      notifyListeners();
-      return responseCursosData;
+    } catch (e) {
+      print('error en el provider de cursos: $e');
     }
     return null;
   }

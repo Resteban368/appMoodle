@@ -18,14 +18,18 @@ class SiteProvider extends ChangeNotifier {
     final token = await storage.read(key: 'token');
     final url =
         '$_baseUrl${_url}wsfunction=$_wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token';
-    final response = await http.get(Uri.parse(url));
-    // print('url site info provider: $url');
-    if (response.statusCode < 400) {
-      // print('status code info site: ${response.statusCode}');
-      // print(response.body);
-      final InfoSiteUser decodeData = InfoSiteUser.fromJson(response.body);
-      infoSite = decodeData;
-      notifyListeners();
+    try {
+      final response = await http.get(Uri.parse(url));
+      // print('url site info provider: $url');
+      if (response.statusCode < 400) {
+        // print('status code info site: ${response.statusCode}');
+        // print(response.body);
+        final InfoSiteUser decodeData = InfoSiteUser.fromJson(response.body);
+        infoSite = decodeData;
+        notifyListeners();
+      }
+    } catch (e) {
+      print('error en el provider de info site: $e');
     }
     return '';
   }

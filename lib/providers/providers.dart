@@ -1,3 +1,5 @@
+export 'package:campus_virtual/providers/user_providers.dart';
+
 export 'package:campus_virtual/providers/general_providers.dart';
 
 export 'package:campus_virtual/providers/curso_id_providers.dart';

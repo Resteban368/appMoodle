@@ -19,6 +19,7 @@ class AuthService extends ChangeNotifier {
           'username': username,
           'password': password,
           'service': 'moodle_mobile_app'
+          // 'service': 'moodle_mobile_app'
         }));
     final jsonData = json.decode(response.body);
     // ignore: avoid_print
@@ -51,5 +52,20 @@ class AuthService extends ChangeNotifier {
 
   Future<String?> getToken(String token) async {
     return await storage.read(key: 'token');
+  }
+
+  // Future<String> readToken() async {
+  //   return await storage.read(key: 'token') ?? '';
+  // }
+  Future<String> readToken() async {
+    Map<String, dynamic> tokens;
+    // final access = await storage.read(key: 'access') ?? '';
+    final token = await storage.read(key: 'token') ?? '';
+    if (token == '') {
+      return '';
+    }
+    tokens = {'token': token};
+
+    return json.encode(tokens);
   }
 }

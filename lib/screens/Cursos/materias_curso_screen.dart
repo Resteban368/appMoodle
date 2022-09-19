@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, deprecated_member_use, must_be_immutable, curly_braces_in_flow_control_structures, prefer_interpolation_to_compose_strings
 
 import 'package:animate_do/animate_do.dart';
+import 'package:campus_virtual/screens/actividades/url_screen.dart';
 import 'package:campus_virtual/widgets/icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 //importar paquete de flutter_html
 import '../../models/models.dart';
 import '../../providers/providers.dart';
@@ -97,16 +97,39 @@ class _Temas extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //lista de images de assets
-    final List<String> imagenes = [
-      'images/grabaciones.png',
-      'images/colaborativo.png',
-      'images/autonomo.png',
-      'images/colaborativo.png',
-      'images/autonomo.png',
-      'images/curso.png',
-      'images/docente.png',
-      'images/general.png',
+    final List<Icon> iconos = [
+      Icon(
+        Icons.slow_motion_video_sharp,
+        color: Colors.red[600],
+      ),
+      Icon(
+        Icons.recent_actors,
+        color: Colors.orange[900],
+      ),
+      Icon(
+        Icons.assignment_ind_rounded,
+        color: Colors.green[400],
+      ),
+      Icon(
+        Icons.recent_actors,
+        color: Colors.orange[900],
+      ),
+      Icon(
+        Icons.assignment_ind_rounded,
+        color: Colors.green[400],
+      ),
+      Icon(
+        Icons.groups,
+        color: Colors.blue[400],
+      ),
+      const Icon(
+        Icons.person,
+        color: AppTheme.primary,
+      ),
+      Icon(
+        Icons.folder_sharp,
+        color: Colors.amber[400],
+      ),
     ];
 
     int indice;
@@ -144,15 +167,10 @@ class _Temas extends StatelessWidget {
                         Card(
                       elevation: 5,
                       child: ListTile(
-                        leading: Column(
-                          children: [
-                            const SizedBox(height: 5),
-                            Image.asset(
-                              imagenes[indice - 1],
-                              fit: BoxFit.contain,
-                              height: 40,
-                            ),
-                          ],
+                        leading: Icon(
+                          iconos[indice - 1].icon,
+                          color: iconos[indice - 1].color,
+                          size: 30,
                         ),
                         title: Text(snapshot.data[i].name!,
                             style: const TextStyle(fontSize: 18)),
@@ -322,9 +340,7 @@ class _ContenidoTemas extends StatelessWidget {
                                 'Actividades Interactivas' &&
                             contenido.modules![i].name !=
                                 'Envío Evidencia de Aprendizaje' &&
-                            contenido.modules![i].name != 'Envió de Producto' &&
-                            contenido.modules![i].name !=
-                                'Envió de Producto TIF')
+                            contenido.modules![i].name != 'Envió de Producto')
                           Card(
                             // color: Colors.grey[200],
                             elevation: 2,
@@ -537,16 +553,24 @@ class _ContenidoTemas extends StatelessWidget {
                                   await launch(contenido
                                           .modules![i].contents![0].fileurl! +
                                       '&token=$token');
+                                  // Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //         builder: (context) => PaginaScreen(
+                                  //             contenido.modules![i])));
+
                                 } else if (contenido.modules![i].modplural ==
                                     'Páginas') {
-                                  // await launch(contenido
-                                  //         .modules![i].contents![0].fileurl! +
-                                  //     '&token=$token');
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => PaginaScreen(
                                               contenido.modules![i])));
+
+                                  // Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //         builder: (context) => HelpScreen()));
                                 } else if (contenido.modules![i].modplural ==
                                     'Carpetas') {
                                   Navigator.push(
@@ -556,8 +580,11 @@ class _ContenidoTemas extends StatelessWidget {
                                               contenido.modules![i])));
                                 } else if (contenido.modules![i].modplural ==
                                     'URLs') {
-                                  await launch(contenido
-                                      .modules![i].contents![0].fileurl!);
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => UrlScreen(
+                                              contenido.modules![i])));
                                 } else if (contenido.modules![i].modplural ==
                                     'Foros') {
                                   Navigator.push(

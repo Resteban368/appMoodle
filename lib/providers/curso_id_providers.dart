@@ -20,22 +20,26 @@ class CursoContenidoProvider extends ChangeNotifier {
 
     final url =
         '$_baseUrl${_url}wsfunction=$_wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&courseid=$courseID';
-    final resp = await http.get(Uri.parse(url));
-    // print('url curso contenido: $url');
-
-    if (resp.statusCode < 400) {
-      // print('status code: ${resp.statusCode}');
-      List<ResponseDataCursoForId> contenidoCurso = [];
-      List<ResponseDataCursoForId> contenidoModules = [];
-      List<dynamic> mapaRespBody = json.decode(resp.body);
-      for (var element in mapaRespBody) {
-        contenidoCurso.add(ResponseDataCursoForId.fromJson(element));
-        contenidoModules.add(ResponseDataCursoForId.fromJson(element));
+    try {
+      final resp = await http.get(Uri.parse(url));
+      // print('url curso contenido: $url');
+      if (resp.statusCode < 400) {
+        // print('status code: ${resp.statusCode}');
+        List<ResponseDataCursoForId> contenidoCurso = [];
+        List<ResponseDataCursoForId> contenidoModules = [];
+        List<dynamic> mapaRespBody = json.decode(resp.body);
+        for (var element in mapaRespBody) {
+          contenidoCurso.add(ResponseDataCursoForId.fromJson(element));
+          contenidoModules.add(ResponseDataCursoForId.fromJson(element));
+        }
+        // print(contenidoCurso[0].modules![0].name);
+        notifyListeners();
+        return contenidoCurso;
       }
-      // print(contenidoCurso[0].modules![0].name);
-      notifyListeners();
-      return contenidoCurso;
+    } catch (e) {
+      print('error en el provider de contenido curso: $e');
     }
+
     return null;
   }
 }

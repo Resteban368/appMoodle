@@ -2,6 +2,9 @@ import 'package:campus_virtual/screens/screens.dart';
 import 'package:campus_virtual/theme/app_bar_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/providers.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({Key? key}) : super(key: key);
@@ -12,6 +15,33 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
+  @override
+  void initState() {
+    iniciarFucniones();
+    super.initState();
+  }
+
+  void iniciarFucniones() async {
+    final siteInfo = Provider.of<SiteProvider>(context, listen: false);
+    await siteInfo.getInfoSite();
+    // await prefs.setString('username', siteInfo.infoSite.username!);
+    // await prefs.setInt('userid', siteInfo.infoSite.userid!);
+
+    print(siteInfo.infoSite.username);
+
+    final userInfo = Provider.of<UserInfoProvider>(context, listen: false);
+    await userInfo.geInfoUser(siteInfo.infoSite.username!);
+
+    final cursoInfo = Provider.of<CursoProvider>(context, listen: false);
+    await cursoInfo.getInfoCurso(siteInfo.infoSite.userid!);
+
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    await userProvider.getData(siteInfo.infoSite.userid!);
+
+    final token = Provider.of<GeneralProvider>(context, listen: false);
+    await token.ObtenerToken();
+  }
+
   final int _pageIndex = 0;
   // ignore: prefer_final_fields
   GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();

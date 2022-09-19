@@ -11,13 +11,42 @@ class ChekeoAuthScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context, listen: false);
 
+    // return Scaffold(
+    //   body: Center(
+    //     child: FutureBuilder(
+    //       future: authService.isLoggedIn(),
+    //       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+    //         if (!snapshot.hasData) return const Text('');
+
+    //         if (snapshot.data == '') {
+    //           Future.microtask(() {
+    //             Navigator.pushReplacement(
+    //                 context,
+    //                 PageRouteBuilder(
+    //                     pageBuilder: (_, __, ___) => const ScrollScreen(),
+    //                     transitionDuration: const Duration(seconds: 0)));
+    //           });
+    //         } else {
+    //           Future.microtask(() {
+    //             Navigator.pushReplacement(
+    //                 context,
+    //                 PageRouteBuilder(
+    //                     pageBuilder: (_, __, ___) => const BottomNavBar(),
+    //                     transitionDuration: const Duration(seconds: 0)));
+    //           });
+    //         }
+
+    //         return Container();
+    //       },
+    //     ),
+    //   ),
+    // );
     return Scaffold(
       body: Center(
         child: FutureBuilder(
-          future: authService.isLoggedIn(),
-          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-            if (!snapshot.hasData) return const Text('');
-
+          future: authService.readToken(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (!snapshot.hasData) return const CircularProgressIndicator();
             if (snapshot.data == '') {
               Future.microtask(() {
                 Navigator.pushReplacement(
@@ -35,7 +64,6 @@ class ChekeoAuthScreen extends StatelessWidget {
                         transitionDuration: const Duration(seconds: 0)));
               });
             }
-
             return Container();
           },
         ),

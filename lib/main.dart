@@ -1,7 +1,6 @@
 import 'package:campus_virtual/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'providers/user_providers.dart';
 import 'screens/screens.dart';
 import 'services/sevices.dart';
 
