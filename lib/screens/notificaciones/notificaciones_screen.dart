@@ -3,10 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 
 import '../../models/category.dart';
-import '../../providers/user_providers.dart';
 
 class NotificacionesScreen extends StatefulWidget {
   const NotificacionesScreen({Key? key}) : super(key: key);
@@ -43,7 +41,7 @@ class _NotificacionesScreenState extends State<NotificacionesScreen> {
             child: CircularProgressIndicator(),
           );
         } else {
-          return Container(
+          return SizedBox(
             height: MediaQuery.of(context).size.height * 0.5,
             child: ListView.builder(
                 itemCount: snapshot.data!.length,

@@ -18,7 +18,7 @@ class AuthService extends ChangeNotifier {
         body: ({
           'username': username,
           'password': password,
-          'service': 'moodle_mobile_app'
+          'service': 'appMobile'
           // 'service': 'moodle_mobile_app'
         }));
     final jsonData = json.decode(response.body);

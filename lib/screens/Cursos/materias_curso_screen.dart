@@ -590,8 +590,8 @@ class _ContenidoTemas extends StatelessWidget {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              const ForoScreen()));
+                                          builder: (context) => ForoScreen(
+                                              contenido.modules![i])));
                                 }
                               },
                             ),

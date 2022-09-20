@@ -1,4 +1,5 @@
 import 'package:campus_virtual/providers/providers.dart';
+import 'package:campus_virtual/services/foroDiscussion_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'screens/screens.dart';
@@ -36,6 +37,9 @@ class AppState extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => CursoContenidoProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ForoDiscussionService(),
         ),
       ],
       child: const MyApp(),

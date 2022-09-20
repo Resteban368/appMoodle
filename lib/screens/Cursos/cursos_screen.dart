@@ -49,7 +49,7 @@ class CursosScreen extends StatelessWidget {
                 child: ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int i) {
-                    final urlImg = snapshot.data![i].overviewfiles![i].fileurl +
+                    final urlImg = snapshot.data![i].overviewfiles![0].fileurl +
                         '?token=$token';
                     return ElasticInDown(
                       child:

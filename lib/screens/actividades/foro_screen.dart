@@ -1,28 +1,38 @@
+import 'package:campus_virtual/models/cursoId.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../../theme/theme.dart';
+import '../../services/foroDiscussion_service.dart';
 
-class ForoScreen extends StatelessWidget {
-  const ForoScreen({Key? key}) : super(key: key);
+class ForoScreen extends StatefulWidget {
+  Module contenido;
+  ForoScreen(this.contenido, {Key? key}) : super(key: key);
+
+  @override
+  State<ForoScreen> createState() => _ForoScreenState();
+}
+
+class _ForoScreenState extends State<ForoScreen> {
+  void iniciarFucniones() async {
+    final foroDiscussion =
+        Provider.of<ForoDiscussionService>(context, listen: false);
+    await foroDiscussion.getForo(widget.contenido.instance!);
+  }
+
+  @override
+  void initState() {
+    iniciarFucniones();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Foros'),
-        backgroundColor: AppTheme.primary,
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.notifications,
-              size: 30,
-            ),
-            onPressed: () {},
-          ),
-        ],
+        title: Text('foro'),
       ),
-      body: const Center(
-        child: Text('Foros'),
+      body: Center(
+        child: Text('ForoScreen'),
       ),
     );
   }
