@@ -5,6 +5,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/providers.dart';
+import '../services/notificaciones_service.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({Key? key}) : super(key: key);
@@ -37,6 +38,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     await userProvider.getData(siteInfo.infoSite.userid!);
+
+    final notificacionesProvider =
+        Provider.of<NotificacionesService>(context, listen: false);
+    await notificacionesProvider.getNotificaciones(siteInfo.infoSite.userid!);
 
     final token = Provider.of<GeneralProvider>(context, listen: false);
     await token.ObtenerToken();

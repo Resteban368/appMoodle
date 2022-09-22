@@ -27,12 +27,32 @@ class _ForoScreenState extends State<ForoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final foroDiscussion =
+        Provider.of<ForoDiscussionService>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        title: Text('foro'),
+        title: const Text('foro'),
       ),
-      body: Center(
-        child: Text('ForoScreen'),
+      body: FutureBuilder(
+        future: foroDiscussion.getForo(widget.contenido.instance!),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            final posts = snapshot.data;
+            return ListView.builder(
+              itemCount: posts.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(
+                  title: Text(posts[index].subject),
+                  subtitle: Text(posts[index].message),
+                );
+              },
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:campus_virtual/services/foroDiscussion_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'screens/screens.dart';
+import 'services/notificaciones_service.dart';
 import 'services/sevices.dart';
 
 import 'package:intl/date_symbol_data_local.dart';
@@ -40,6 +41,9 @@ class AppState extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => ForoDiscussionService(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => NotificacionesService(),
         ),
       ],
       child: const MyApp(),
