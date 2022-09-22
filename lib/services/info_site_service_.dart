@@ -4,7 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import '../models/InfoSite.dart';
 
-class SiteProvider extends ChangeNotifier {
+class InfoSiteService extends ChangeNotifier {
   //varaibles para la peticion de la informacion del usuario
   final String _baseUrl =
       'https://plataformavirtual.uniamazonia.edu.co/DistanciaVirtual';

@@ -1,9 +1,7 @@
+import 'package:campus_virtual/theme/app_bar_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../providers/info_site_providers.dart';
-import '../../services/foroDiscussion_service.dart';
-import '../../services/notificaciones_service.dart';
+import '../../services/sevices.dart';
 
 class NotificacionesScreen extends StatefulWidget {
   const NotificacionesScreen({Key? key}) : super(key: key);
@@ -13,11 +11,29 @@ class NotificacionesScreen extends StatefulWidget {
 }
 
 class _NotificacionesScreenState extends State<NotificacionesScreen> {
+  @override
   Widget build(BuildContext context) {
-    final siteInfo = Provider.of<SiteProvider>(context, listen: false);
+    final siteInfo = Provider.of<InfoSiteService>(context, listen: false);
     final notificacion =
         Provider.of<NotificacionesService>(context, listen: false);
     return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text('Notificaciones'),
+        backgroundColor: AppTheme.primary,
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await notificacion
+                  .marcarNotificaciones(siteInfo.infoSite.userid!);
+            },
+            icon: const Icon(
+              Icons.check_circle_outline,
+              size: 27,
+            ),
+          )
+        ],
+      ),
       body: FutureBuilder(
         future: notificacion.getNotificaciones(siteInfo.infoSite.userid!),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -26,14 +42,74 @@ class _NotificacionesScreenState extends State<NotificacionesScreen> {
             return ListView.builder(
               itemCount: notificaciones.length,
               itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  title: Text(notificaciones[index].subject),
-                  subtitle: Text(notificaciones[index].id.toString()),
+                return Card(
+                  elevation: 2,
+                  color: notificaciones[index].read == true
+                      ? Colors.white
+                      : AppTheme.notificacionesLeidas,
+                  child: ListTile(
+                    leading: Column(children: [
+                      if (notificaciones[index].eventtype ==
+                          'messagecontactrequests')
+                        Column(
+                          children: [
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Column(
+                              children: [
+                                if (notificaciones[index].read == false)
+                                  const Icon(Icons.lightbulb,
+                                      size: 30, color: Colors.white)
+                                else if (notificaciones[index].read == true)
+                                  const Icon(Icons.lightbulb,
+                                      size: 30, color: AppTheme.primary)
+                              ],
+                            ),
+                          ],
+                        )
+                      else if (notificaciones[index].eventtype ==
+                          'assign_notification')
+                        Column(
+                          children: [
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Column(
+                              children: [
+                                if (notificaciones[index].read == false)
+                                  const Icon(Icons.task,
+                                      size: 30, color: Colors.white)
+                                else if (notificaciones[index].read == true)
+                                  const Icon(Icons.task,
+                                      size: 30, color: AppTheme.primary)
+                              ],
+                            ),
+                          ],
+                        )
+                    ]),
+                    title: Text(
+                      notificaciones[index].subject,
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                    subtitle: Text(notificaciones[index].timecreatedpretty),
+                    trailing: const Icon(
+                      Icons.arrow_forward_ios,
+                      color: AppTheme.primary,
+                      size: 25,
+                    ),
+                    onTap: () async {
+                      // Navigator.pushNamed(context, 'notificacion',
+                      //     arguments: notificaciones[index]);
+                      await notificacion
+                          .getCountNotificaciones(siteInfo.infoSite.userid!);
+                    },
+                  ),
                 );
               },
             );
           } else {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }

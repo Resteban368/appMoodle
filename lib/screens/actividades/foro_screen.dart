@@ -2,7 +2,9 @@ import 'package:campus_virtual/models/cursoId.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../services/debate_service.dart';
 import '../../services/foroDiscussion_service.dart';
+import '../../theme/app_bar_theme.dart';
 
 class ForoScreen extends StatefulWidget {
   Module contenido;
@@ -14,9 +16,11 @@ class ForoScreen extends StatefulWidget {
 
 class _ForoScreenState extends State<ForoScreen> {
   void iniciarFucniones() async {
-    final foroDiscussion =
-        Provider.of<ForoDiscussionService>(context, listen: false);
-    await foroDiscussion.getForo(widget.contenido.instance!);
+    // final foroDiscussion =
+    //     Provider.of<ForoDiscussionService>(context, listen: false);
+    // await foroDiscussion.getForo(widget.contenido.instance!);
+    final debate = Provider.of<DebateService>(context, listen: false);
+    await debate.getDebates(widget.contenido.instance!);
   }
 
   @override
@@ -30,20 +34,22 @@ class _ForoScreenState extends State<ForoScreen> {
     final foroDiscussion =
         Provider.of<ForoDiscussionService>(context, listen: false);
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('foro'),
+        backgroundColor: AppTheme.primary,
+        title: const Text('Foro'),
       ),
       body: FutureBuilder(
         future: foroDiscussion.getForo(widget.contenido.instance!),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
-            final posts = snapshot.data;
+            final debates = snapshot.data;
             return ListView.builder(
-              itemCount: posts.length,
+              itemCount: debates.length,
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
-                  title: Text(posts[index].subject),
-                  subtitle: Text(posts[index].message),
+                  title: Text(debates[index].name),
+                  subtitle: Text(debates[index].numreplies.toString()),
                 );
               },
             );

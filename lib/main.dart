@@ -1,5 +1,7 @@
 import 'package:campus_virtual/providers/providers.dart';
+import 'package:campus_virtual/services/debate_service.dart';
 import 'package:campus_virtual/services/foroDiscussion_service.dart';
+import 'package:campus_virtual/services/info_site_service_.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'screens/screens.dart';
@@ -24,26 +26,29 @@ class AppState extends StatelessWidget {
           create: (_) => UserProvider(),
         ),
         ChangeNotifierProvider(
-          create: (_) => GeneralProvider(),
+          create: (_) => GeneralService(),
         ),
         ChangeNotifierProvider(create: (_) => AuthService()),
         ChangeNotifierProvider(
-          create: (_) => SiteProvider(),
+          create: (_) => InfoSiteService(),
         ),
         ChangeNotifierProvider(
-          create: (_) => CursoProvider(),
+          create: (_) => CursoService(),
         ),
         ChangeNotifierProvider(
           create: (_) => UserInfoProvider(),
         ),
         ChangeNotifierProvider(
-          create: (_) => CursoContenidoProvider(),
+          create: (_) => CursoContenidoService(),
         ),
         ChangeNotifierProvider(
           create: (_) => ForoDiscussionService(),
         ),
         ChangeNotifierProvider(
           create: (_) => NotificacionesService(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => DebateService(),
         ),
       ],
       child: const MyApp(),

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../theme/app_bar_theme.dart';
+import '../screens.dart';
 
 class NoticiasScreen extends StatelessWidget {
   const NoticiasScreen({Key? key}) : super(key: key);
@@ -19,8 +20,13 @@ class NoticiasScreen extends StatelessWidget {
         actions: [
           NamedIcon(
             iconData: Icons.notifications,
-            notificationCount: 11,
-            onTap: () {},
+            onTap: () {
+              //enviar al screen de notificaciones
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const NotificacionesScreen()));
+            },
           ),
         ],
       ),

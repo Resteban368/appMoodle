@@ -1,21 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class NamedIcon extends StatelessWidget {
+import '../services/sevices.dart';
+
+class NamedIcon extends StatefulWidget {
   final IconData iconData;
   final VoidCallback? onTap;
-  final int notificationCount;
 
   const NamedIcon({
     Key? key,
     this.onTap,
     required this.iconData,
-    this.notificationCount = 0,
   }) : super(key: key);
 
   @override
+  State<NamedIcon> createState() => _NamedIconState();
+}
+
+class _NamedIconState extends State<NamedIcon> {
+  void funciones() async {
+    final siteInfo = Provider.of<InfoSiteService>(context, listen: false);
+    final notificacionesProvider =
+        Provider.of<NotificacionesService>(context, listen: false);
+    await notificacionesProvider
+        .getCountNotificaciones(siteInfo.infoSite.userid!);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final notificacion =
+        Provider.of<NotificacionesService>(context, listen: false);
+    final count = notificacion.count;
     return InkWell(
-      onTap: onTap,
+      onTap: widget.onTap,
       child: Container(
         width: 72,
         padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -25,7 +47,7 @@ class NamedIcon extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(iconData, size: 30, color: Colors.white),
+                Icon(widget.iconData, size: 30, color: Colors.white),
               ],
             ),
             Positioned(
@@ -36,7 +58,7 @@ class NamedIcon extends StatelessWidget {
                 decoration: const BoxDecoration(
                     shape: BoxShape.circle, color: Colors.red),
                 alignment: Alignment.center,
-                child: Text('$notificationCount'),
+                child: Text('$count'),
               ),
             )
           ],

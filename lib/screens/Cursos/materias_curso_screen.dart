@@ -2,14 +2,13 @@
 
 import 'package:animate_do/animate_do.dart';
 import 'package:campus_virtual/screens/actividades/url_screen.dart';
+import 'package:campus_virtual/services/sevices.dart';
 import 'package:campus_virtual/widgets/icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-//importar paquete de flutter_html
 import '../../models/models.dart';
-import '../../providers/providers.dart';
 import '../../theme/app_bar_theme.dart';
 import '../screens.dart';
 import 'package:campus_virtual/utils/utils.dart';
@@ -24,9 +23,8 @@ class MateriasScreen extends StatelessWidget {
     // final siteInfo = Provider.of<SiteProvider>(context, listen: false);
     // final cursoInfo = Provider.of<CursoProvider>(context, listen: false);
     final cursoIContenido =
-        Provider.of<CursoContenidoProvider>(context, listen: false);
-    final providerGeneral =
-        Provider.of<GeneralProvider>(context, listen: false);
+        Provider.of<CursoContenidoService>(context, listen: false);
+    final providerGeneral = Provider.of<GeneralService>(context, listen: false);
     final token = providerGeneral.tokencillo.toString();
     final urlImg = contenido.overviewfiles![0].fileurl! + '?token=$token';
     final htmlData = contenido.summary;
@@ -35,7 +33,17 @@ class MateriasScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(contenido.fullname!),
         backgroundColor: AppTheme.primary,
-        actions: [const NamedIcon(iconData: Icons.notifications)],
+        actions: [
+          NamedIcon(
+            iconData: Icons.notifications,
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const NotificacionesScreen()));
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -90,7 +98,7 @@ class _Temas extends StatelessWidget {
     required this.contenido,
   }) : super(key: key);
 
-  final CursoContenidoProvider cursoIContenido;
+  final CursoContenidoService cursoIContenido;
   final ResponseCursos contenido;
 
 // arrglo de  7 iconos
@@ -209,10 +217,7 @@ class _ContenidoTemas extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cursoIContenido =
-        Provider.of<CursoContenidoProvider>(context, listen: false);
-    final providerGeneral =
-        Provider.of<GeneralProvider>(context, listen: false);
+    final providerGeneral = Provider.of<GeneralService>(context, listen: false);
     final token = providerGeneral.tokencillo.toString();
     return Scaffold(
       appBar: AppBar(
@@ -606,11 +611,3 @@ class _ContenidoTemas extends StatelessWidget {
     );
   }
 }
-
-// String _getData(int timestamp1) {
-//   final DateTime date = DateTime.fromMillisecondsSinceEpoch(timestamp1 * 1000);
-//   final date1 = DateFormat(
-//     'dd-MM-yyyy hh:mm a',
-//   ).format(date);
-//   return date1.toString();
-// }

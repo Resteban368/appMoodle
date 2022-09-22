@@ -1,11 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:campus_virtual/screens/screens.dart';
+import 'package:campus_virtual/services/sevices.dart';
 import 'package:campus_virtual/theme/app_bar_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:provider/provider.dart';
-
 import '../providers/providers.dart';
-import '../services/notificaciones_service.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({Key? key}) : super(key: key);
@@ -23,27 +24,20 @@ class _BottomNavBarState extends State<BottomNavBar> {
   }
 
   void iniciarFucniones() async {
-    final siteInfo = Provider.of<SiteProvider>(context, listen: false);
+    final siteInfo = Provider.of<InfoSiteService>(context, listen: false);
     await siteInfo.getInfoSite();
-    // await prefs.setString('username', siteInfo.infoSite.username!);
-    // await prefs.setInt('userid', siteInfo.infoSite.userid!);
-
-    print(siteInfo.infoSite.username);
-
     final userInfo = Provider.of<UserInfoProvider>(context, listen: false);
     await userInfo.geInfoUser(siteInfo.infoSite.username!);
-
-    final cursoInfo = Provider.of<CursoProvider>(context, listen: false);
+    final cursoInfo = Provider.of<CursoService>(context, listen: false);
     await cursoInfo.getInfoCurso(siteInfo.infoSite.userid!);
-
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     await userProvider.getData(siteInfo.infoSite.userid!);
-
     final notificacionesProvider =
         Provider.of<NotificacionesService>(context, listen: false);
     await notificacionesProvider.getNotificaciones(siteInfo.infoSite.userid!);
-
-    final token = Provider.of<GeneralProvider>(context, listen: false);
+    await notificacionesProvider
+        .getCountNotificaciones(siteInfo.infoSite.userid!);
+    final token = Provider.of<GeneralService>(context, listen: false);
     await token.ObtenerToken();
   }
 
@@ -54,7 +48,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   final NoticiasScreen _noticias = const NoticiasScreen();
   final ChatScreen _chat = const ChatScreen();
   final CursosScreen _cursos = const CursosScreen();
-  final NotificacionesScreen _notificaciones = const NotificacionesScreen();
+  // final NotificacionesScreen _notificaciones = const NotificacionesScreen();
   final AccountScreen _perfil = const AccountScreen();
 
   Widget _showPage = const NoticiasScreen();
@@ -68,9 +62,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
       case 2:
         return _cursos;
       case 3:
-        return _notificaciones;
-      case 4:
         return _perfil;
+      // case 4:
+      //   return _notificaciones;
     }
     return null;
   }
@@ -86,7 +80,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           Icon(Icons.home, size: 30, color: Colors.white),
           Icon(Icons.chat, size: 30, color: Colors.white),
           Icon(Icons.folder, size: 30, color: Colors.white),
-          Icon(Icons.notifications, size: 30, color: Colors.white),
+          // Icon(Icons.notifications, size: 30, color: Colors.white),
           Icon(Icons.person, size: 30, color: Colors.white),
         ],
         color: AppTheme.primary,

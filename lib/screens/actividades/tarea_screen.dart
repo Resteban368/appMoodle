@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../../models/models.dart';
 import '../../theme/theme.dart';
+import '../../widgets/widgets.dart';
+import '../screens.dart';
 
 class TareaScreen extends StatelessWidget {
   Module contenido;
@@ -14,12 +16,14 @@ class TareaScreen extends StatelessWidget {
           title: const Text('Tarea'),
           backgroundColor: AppTheme.primary,
           actions: [
-            IconButton(
-              icon: const Icon(
-                Icons.notifications,
-                size: 30,
-              ),
-              onPressed: () {},
+            NamedIcon(
+              iconData: Icons.notifications,
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const NotificacionesScreen()));
+              },
             ),
           ],
         ),

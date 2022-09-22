@@ -1,18 +1,20 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:campus_virtual/screens/chat/chat_user_screen.dart';
 import 'package:campus_virtual/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 import '../../seacrh/search_contactos.dart';
+import '../screens.dart';
 import '/theme/app_bar_theme.dart';
 
 class ChatScreen extends StatelessWidget {
+  void fucniones() async {}
   const ChatScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     //para ver el tamaño de la pantalla
     // final size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Chat'),
@@ -20,8 +22,12 @@ class ChatScreen extends StatelessWidget {
         actions: [
           NamedIcon(
             iconData: Icons.notifications,
-            notificationCount: 5,
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const NotificacionesScreen()));
+            },
           ),
         ],
       ),
@@ -45,15 +51,6 @@ class ChatScreen extends StatelessWidget {
   }
 }
 
-// //consulta a la bd para obtener las categorias de los cursos
-// void getCtaegories(MySqlConnection conn) async {
-//   var results = await conn.query('SELECT * FROM mdl_course_categories');
-//   for (var row in results) {
-//     print(row);
-//   }
-// }
-
-//todo widget de card
 class CardContainer extends StatelessWidget {
   final Widget child;
 

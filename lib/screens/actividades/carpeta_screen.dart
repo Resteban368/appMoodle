@@ -1,11 +1,11 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:campus_virtual/services/sevices.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/models.dart';
-import '../../providers/providers.dart';
 import '../../theme/theme.dart';
 
 class CarpetaScreen extends StatelessWidget {
@@ -14,8 +14,7 @@ class CarpetaScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final providerGeneral =
-        Provider.of<GeneralProvider>(context, listen: false);
+    final providerGeneral = Provider.of<GeneralService>(context, listen: false);
     final token = providerGeneral.tokencillo.toString();
 
     return Scaffold(

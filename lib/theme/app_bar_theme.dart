@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   static const Color primary = Color.fromARGB(255, 37, 188, 183);
+  static const Color notificacionesLeidas = Color.fromARGB(214, 131, 245, 241);
   static const Color secondary = Color.fromARGB(195, 227, 225, 225);
 
   static final ThemeData lightTheme = ThemeData.light().copyWith(

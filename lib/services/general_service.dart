@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class GeneralProvider extends ChangeNotifier {
+class GeneralService extends ChangeNotifier {
   final storage = FlutterSecureStorage();
   late String tokencillo = '';
 

@@ -12,11 +12,11 @@ class NotificacionesService extends ChangeNotifier {
   final String _baseUrl =
       'https://plataformavirtual.uniamazonia.edu.co/DistanciaVirtual';
   final String _url = '/webservice/rest/server.php?';
-  final String _wsfunction = 'message_popup_get_popup_notifications';
   final String _moodlewsrestformat = 'json';
+  int count = 0;
 
   Future<List<PostNotificaciones>?> getNotificaciones(useridto) async {
-    print('service nortificaciones');
+    String _wsfunction = 'message_popup_get_popup_notifications';
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: 'token');
     final url =
@@ -31,7 +31,6 @@ class NotificacionesService extends ChangeNotifier {
           notificaciones.add(PostNotificaciones.fromMap(element));
         }
         notifyListeners();
-        print(notificaciones);
         return notificaciones;
       }
     } catch (e, s) {
@@ -39,5 +38,47 @@ class NotificacionesService extends ChangeNotifier {
       print(s);
     }
     return null;
+  }
+
+  //marcar como leido todas las notificaciones
+  Future<bool> marcarNotificaciones(useridto) async {
+    String _wsfunction = 'core_message_mark_all_notifications_as_read';
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: 'token');
+    final url =
+        '$_baseUrl${_url}wsfunction=$_wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&useridto=$useridto';
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode < 400) {
+        notifyListeners();
+        return true;
+      }
+    } catch (e, s) {
+      print('error en el provider de info site: $e');
+      print(s);
+    }
+    return false;
+  }
+
+//para saber el count de las notificaciones
+  Future<int> getCountNotificaciones(useridto) async {
+    String _wsfunction = 'message_popup_get_unread_popup_notification_count';
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: 'token');
+    final url =
+        '$_baseUrl${_url}wsfunction=$_wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&useridto=$useridto';
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode < 400) {
+        count = int.parse(response.body);
+        notifyListeners();
+        print('contador notificaciones');
+        return count;
+      }
+    } catch (e, s) {
+      print('error en el provider de info site: $e');
+      print(s);
+    }
+    return 0;
   }
 }

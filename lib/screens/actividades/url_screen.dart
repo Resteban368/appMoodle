@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'dart:async';
 import 'dart:io';
 
@@ -6,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../models/models.dart';
-import '../../providers/providers.dart';
+import '../../services/sevices.dart';
 import '../../theme/app_bar_theme.dart';
 
 class UrlScreen extends StatefulWidget {
@@ -31,8 +33,7 @@ class _UrlScreenState extends State<UrlScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final providerGeneral =
-        Provider.of<GeneralProvider>(context, listen: false);
+    final providerGeneral = Provider.of<GeneralService>(context, listen: false);
     final token = providerGeneral.tokencillo.toString();
     final url = widget.contenido.contents![0].fileurl!;
     return Scaffold(

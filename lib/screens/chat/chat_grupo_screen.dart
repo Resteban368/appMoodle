@@ -16,7 +16,6 @@ class ChatGrupo extends StatelessWidget {
         actions: [
           NamedIcon(
             iconData: Icons.notifications,
-            notificationCount: 2,
             onTap: () {},
           ),
         ],

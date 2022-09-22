@@ -4,20 +4,19 @@ import 'package:animate_do/animate_do.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../providers/providers.dart';
+import '../../services/sevices.dart';
 import '../../theme/app_bar_theme.dart';
-import 'materias_curso_screen.dart';
+import '../../widgets/widgets.dart';
+import '../screens.dart';
 
 class CursosScreen extends StatelessWidget {
   const CursosScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final siteInfo = Provider.of<SiteProvider>(context, listen: false);
-    final cursoInfo = Provider.of<CursoProvider>(context, listen: false);
-    final providerGeneral =
-        Provider.of<GeneralProvider>(context, listen: false);
+    final siteInfo = Provider.of<InfoSiteService>(context, listen: false);
+    final cursoInfo = Provider.of<CursoService>(context, listen: false);
+    final providerGeneral = Provider.of<GeneralService>(context, listen: false);
     final token = providerGeneral.tokencillo.toString();
     //mandamos a llamar el token para usarlo en esta clase
     String imageDefault = 'images/course-default.png';
@@ -27,12 +26,14 @@ class CursosScreen extends StatelessWidget {
           title: const Text('Cursos'),
           backgroundColor: AppTheme.primary,
           actions: [
-            IconButton(
-              icon: const Icon(
-                Icons.notifications,
-                size: 30,
-              ),
-              onPressed: () {},
+            NamedIcon(
+              iconData: Icons.notifications,
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const NotificacionesScreen()));
+              },
             ),
           ],
         ),

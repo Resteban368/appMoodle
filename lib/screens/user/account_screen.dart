@@ -5,9 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-
 import '../../providers/providers.dart';
-import '../../providers/user_providers.dart';
 import '../../services/sevices.dart';
 import '../../theme/app_bar_theme.dart';
 
@@ -254,7 +252,6 @@ class _AccountScreenState extends State<AccountScreen> {
                     onChanged: (bool? value) {
                       setState(() {
                         isChecked = value!;
-                        print(isChecked);
                       });
                     },
                   ),
@@ -284,7 +281,7 @@ class _AccountScreenState extends State<AccountScreen> {
                               );
                             }
                           : () async {
-                              final siteInfo = Provider.of<SiteProvider>(
+                              final siteInfo = Provider.of<InfoSiteService>(
                                   context,
                                   listen: false);
                               final peticion =
