@@ -2,6 +2,7 @@
 
 import 'package:animate_do/animate_do.dart';
 import 'package:campus_virtual/models/cursoId.dart';
+import 'package:campus_virtual/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -197,106 +198,106 @@ class _ForoScreenState extends State<ForoScreen> {
                   ),
                   SizedBox(
                     width: double.infinity,
-                    height: MediaQuery.of(context).size.height * 0.5,
+                    height: MediaQuery.of(context).size.height * 0.6,
                     child: FutureBuilder(
                       future: debate.getDebates(widget.contenido.instance!),
                       builder: (BuildContext context, AsyncSnapshot snapshot) {
                         if (snapshot.hasData) {
                           final debates = snapshot.data;
                           return ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: debates.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Card(
-                                color: Colors.grey[200],
-                                elevation: 2,
-                                child: ListTile(
-                                  title: Text(
-                                    debates[index].name,
-                                    style: const TextStyle(
-                                        color: AppTheme.primary, fontSize: 20),
+                              shrinkWrap: true,
+                              itemCount: debates.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Card(
+                                  color: Colors.grey[200],
+                                  elevation: 2,
+                                  child: ListTile(
+                                    title: Text(
+                                      debates[index].name,
+                                      style: const TextStyle(
+                                          color: AppTheme.primary,
+                                          fontSize: 20),
+                                    ),
+                                    subtitle: Column(
+                                      children: [
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            const Text('Comenzado por:'),
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.1,
+                                            ),
+                                            Image.network(
+                                              debates[index].userpictureurl,
+                                              width: 30,
+                                            ),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(debates[index].userfullname),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 3,
+                                        ),
+                                        Row(
+                                          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            const Text('Último mensaje:'),
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.1,
+                                            ),
+                                            Image.network(
+                                              debates[index]
+                                                  .usermodifiedpictureurl,
+                                              width: 30,
+                                            ),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(debates[index]
+                                                .usermodifiedfullname),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 3,
+                                        ),
+                                        Row(
+                                          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            const Text('Réplicas:'),
+                                            const SizedBox(
+                                              width: 5,
+                                            ),
+                                            Text(debates[index]
+                                                .numreplies
+                                                .toString()),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  _ContenidoDebates(
+                                                      debates[index].discussion,
+                                                      debates[index].name)));
+                                      // print(debates[index].discussion);
+                                    },
                                   ),
-                                  subtitle: Column(
-                                    children: [
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
-                                        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          const Text('Comenzado por:'),
-                                          SizedBox(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.1,
-                                          ),
-                                          Image.network(
-                                            debates[index].userpictureurl,
-                                            width: 30,
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(debates[index].userfullname),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 3,
-                                      ),
-                                      Row(
-                                        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          const Text('Último mensaje:'),
-                                          SizedBox(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.1,
-                                          ),
-                                          Image.network(
-                                            debates[index]
-                                                .usermodifiedpictureurl,
-                                            width: 30,
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(debates[index]
-                                              .usermodifiedfullname),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 3,
-                                      ),
-                                      Row(
-                                        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          const Text('Réplicas:'),
-                                          const SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(debates[index]
-                                              .numreplies
-                                              .toString()),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                _ContenidoDebates(
-                                                    debates[index].discussion,
-                                                    debates[index].name)));
-                                    // print(debates[index].discussion);
-                                  },
-                                ),
-                              );
-                            },
-                          );
+                                );
+                              });
                         } else {
                           return Center(
                             child: CircularProgressIndicator(),
@@ -326,6 +327,7 @@ class _ContenidoDebates extends StatelessWidget {
     final foroDiscussion =
         Provider.of<ForoDiscussionService>(context, listen: false);
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: AppTheme.primary,
         title: Text(name),
@@ -348,69 +350,177 @@ class _ContenidoDebates extends StatelessWidget {
                 itemBuilder: (BuildContext context, int i) {
                   final htmlData = post[i].message;
                   final htmlDataFecha = post[i].html.authorsubheading;
-                  return ElasticInDown(
-                    child:
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElasticInDown(
+                      child:
 
-                        //creamos una card para poner los debates
-                        Card(
-                      elevation: 5,
-                      child: Column(
-                        children: [
-                          Container(
-                            width: double.infinity,
-                            height: 80,
-                            color: Colors.grey[200],
-                            child: ListTile(
-                              leading: Image.network(
-                                post[i].author.urls.profileimage!,
-                                width: 50,
+                          //creamos una card para poner los debates
+                          Card(
+                        elevation: 5,
+                        child: Column(
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              height: 80,
+                              color: Colors.grey[200],
+                              child: ListTile(
+                                leading: Image.network(
+                                  post[i].author.urls.profileimage!,
+                                  width: 50,
+                                ),
+                                title: Text(post[i].subject!,
+                                    style: const TextStyle(fontSize: 18)),
+                                subtitle: Html(
+                                  data: htmlDataFecha,
+                                  style: {
+                                    'body': Style(
+                                        fontSize: const FontSize(14),
+                                        color: const Color(0xFF000000),
+                                        //justificar todo el texto
+                                        textAlign: TextAlign.justify),
+                                  },
+                                ),
                               ),
-                              title: Text(post[i].subject!,
-                                  style: const TextStyle(fontSize: 18)),
-                              subtitle: Html(
-                                data: htmlDataFecha,
-                                style: {
-                                  'body': Style(
-                                      fontSize: const FontSize(14),
-                                      color: const Color(0xFF000000),
-                                      //justificar todo el texto
-                                      textAlign: TextAlign.justify),
+                            ),
+                            Container(
+                              width: double.infinity,
+                              color: Colors.white,
+                              height: 100,
+                              child: SingleChildScrollView(
+                                child: Html(
+                                  data: htmlData,
+                                  style: {
+                                    'body': Style(
+                                        fontSize: const FontSize(15),
+                                        color: const Color(0xFF000000),
+                                        //justificar todo el texto
+                                        textAlign: TextAlign.justify),
+                                  },
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: double.infinity,
+                              height: 50,
+                              child: ElevatedButton(
+                                //color
+                                style: ElevatedButton.styleFrom(
+                                  primary: AppTheme.primary,
+                                ),
+                                onPressed: () {
+                                  //ventana emergente
+                                  showDialog(
+                                      context: context,
+                                      //no cerrar la ventana emergente al dar click afuera
+                                      barrierDismissible: false,
+                                      builder: (BuildContext context) {
+                                        return Center(
+                                          child: SingleChildScrollView(
+                                            child: AlertDialog(
+                                              title: Column(
+                                                children: [
+                                                  const Padding(
+                                                    padding: EdgeInsets.only(
+                                                        bottom: 10),
+                                                    child: Text(
+                                                      'Responder a:',
+                                                      style: TextStyle(
+                                                          color:
+                                                              AppTheme.primary),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: double.infinity,
+                                                    //ponerle borde al container
+                                                    decoration: BoxDecoration(
+                                                      // color: Colors.grey[200],
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                      border: Border.all(
+                                                          color:
+                                                              Colors.grey[200]!)
+                                                      // border radius
+
+                                                      ,
+                                                    ),
+                                                    height: 110,
+                                                    child:
+                                                        SingleChildScrollView(
+                                                      child: Html(
+                                                        data: htmlData,
+                                                        style: {
+                                                          'body': Style(
+                                                              fontSize:
+                                                                  const FontSize(
+                                                                      15),
+                                                              color: const Color(
+                                                                  0xFF000000),
+                                                              //justificar todo el texto
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .justify),
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              content: SizedBox(
+                                                width: double.infinity,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.15,
+                                                child: const TextField(
+                                                  maxLines: 5,
+                                                  decoration: InputDecoration(
+                                                    border:
+                                                        OutlineInputBorder(),
+                                                    labelText:
+                                                        'Escriba su respuesta...',
+                                                    //color a los bordes
+                                                    enabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color: AppTheme.primary,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              actions: [
+                                                ElevatedButton(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      primary: AppTheme.primary,
+                                                    ),
+                                                    onPressed: () {},
+                                                    child: const Text(
+                                                        'Enviar al foro')),
+                                                ElevatedButton(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      primary: Colors.grey,
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    child:
+                                                        const Text('Cancelar')),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      });
                                 },
+                                child: const Text('Responder'),
                               ),
-                            ),
-                          ),
-                          Container(
-                            width: double.infinity,
-                            color: Colors.white,
-                            height: 100,
-                            child: SingleChildScrollView(
-                              child: Html(
-                                data: htmlData,
-                                style: {
-                                  'body': Style(
-                                      fontSize: const FontSize(15),
-                                      color: const Color(0xFF000000),
-                                      //justificar todo el texto
-                                      textAlign: TextAlign.justify),
-                                },
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: double.infinity,
-                            height: 50,
-                            child: ElevatedButton(
-                              //color
-                              style: ElevatedButton.styleFrom(
-                                primary: AppTheme.primary,
-                              ),
-                              onPressed: () {
-                                print('respondiendo');
-                              },
-                              child: const Text('Responder'),
-                            ),
-                          )
-                        ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   );
