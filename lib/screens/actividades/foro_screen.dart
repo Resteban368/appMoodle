@@ -159,6 +159,8 @@ class _ForoScreenState extends State<ForoScreen> {
                                               ),
                                             );
                                           }
+                                          await debate.getDebates(
+                                              widget.contenido.instance!);
                                         },
                                   style: ElevatedButton.styleFrom(
                                     primary: AppTheme.primary,

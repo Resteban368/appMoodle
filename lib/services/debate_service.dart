@@ -49,8 +49,9 @@ class DebateService extends ChangeNotifier {
         Uri.parse(
             'https://plataformavirtual.uniamazonia.edu.co/DistanciaVirtual/webservice/rest/server.php?moodlewsrestformat=json&wsfunction=mod_forum_add_discussion&wstoken=97cf93157876231126fbd7d2e11aad3f'));
     request.bodyFields = {
-      'json':
-          '{"forumid":"$forumid","subject":"$subject","message":"$message"}',
+      'forumid': '$forumid',
+      'subject': subject,
+      'message': message
     };
     request.headers.addAll(headers);
 
