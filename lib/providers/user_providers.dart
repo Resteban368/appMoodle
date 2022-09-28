@@ -28,14 +28,19 @@ class UserProvider with ChangeNotifier {
   late bool habilitarForm = false;
 
   Future<String?> getData(int id) async {
-    final url = 'http://192.168.1.3:8000/api/user/$id';
-    print(url);
-    final response = await http.get(Uri.parse(url));
-    final User decodata = User.fromJson(json.decode(response.body));
-    userInfo = decodata.user!;
-    userInfoController(decodata.user!);
-    notifyListeners();
-    return '';
+    try {
+      final url = 'http://10.0.2.2:8000/api/user/$id';
+      print(Uri.parse(url));
+      // print(url);
+      final response = await http.get(Uri.parse(url));
+      final User decodata = User.fromJson(json.decode(response.body));
+      userInfo = decodata.user!;
+      userInfoController(decodata.user!);
+      notifyListeners();
+      return '';
+    } catch (e) {
+      print(e);
+    }
   }
 
   userInfoController(UserClass userInfoController) {
@@ -69,7 +74,7 @@ class UserProvider with ChangeNotifier {
     };
 
     var request =
-        http.Request('PUT', Uri.parse('http://192.168.1.3:8000/api/user/$id'));
+        http.Request('PUT', Uri.parse('http://10.0.2.2:8000/api/user/$id'));
     request.bodyFields = {
       'json': '{"email":"$email","phone1":"$phone1"}',
     };

@@ -1,11 +1,7 @@
 import 'package:campus_virtual/providers/providers.dart';
-import 'package:campus_virtual/services/debate_service.dart';
-import 'package:campus_virtual/services/foroDiscussion_service.dart';
-import 'package:campus_virtual/services/info_site_service_.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'screens/screens.dart';
-import 'services/notificaciones_service.dart';
 import 'services/sevices.dart';
 
 import 'package:intl/date_symbol_data_local.dart';
@@ -22,15 +18,15 @@ class AppState extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => UserProvider(),
-        ),
+        ChangeNotifierProvider(create: (_) => AuthService()),
         ChangeNotifierProvider(
           create: (_) => GeneralService(),
         ),
-        ChangeNotifierProvider(create: (_) => AuthService()),
         ChangeNotifierProvider(
           create: (_) => InfoSiteService(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => UserProvider(),
         ),
         ChangeNotifierProvider(
           create: (_) => CursoService(),

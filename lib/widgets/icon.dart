@@ -33,8 +33,7 @@ class _NamedIconState extends State<NamedIcon> {
 
   @override
   Widget build(BuildContext context) {
-    final notificacion =
-        Provider.of<NotificacionesService>(context, listen: false);
+    final notificacion = Provider.of<NotificacionesService>(context);
     final count = notificacion.count;
     return InkWell(
       onTap: widget.onTap,
@@ -58,7 +57,19 @@ class _NamedIconState extends State<NamedIcon> {
                 decoration: const BoxDecoration(
                     shape: BoxShape.circle, color: Colors.red),
                 alignment: Alignment.center,
-                child: Text('$count'),
+                child: count == 1
+                    ? const SizedBox(
+                        width: 15,
+                        height: 15,
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            //tamaño del circulo
+                            strokeWidth: 2,
+                          ),
+                        ),
+                      )
+                    : Text('$count'),
               ),
             )
           ],

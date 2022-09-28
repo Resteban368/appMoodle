@@ -52,6 +52,7 @@ class CursosScreen extends StatelessWidget {
                   itemBuilder: (BuildContext context, int i) {
                     final urlImg = snapshot.data![i].overviewfiles![0].fileurl +
                         '?token=$token';
+                    print(urlImg);
                     return ElasticInDown(
                       child:
                           //creamos una card para poner los cursos
@@ -90,14 +91,13 @@ class CursosScreen extends StatelessWidget {
                                         style: const TextStyle(fontSize: 20)),
                                     subtitle: const Text('Semestre 1'),
                                   ),
-                                  CachedNetworkImage(
-                                    imageUrl: urlImg ?? imageDefault,
-                                    fit: BoxFit.fill,
+                                  FadeInImage(
+                                    placeholder: const NetworkImage(
+                                        'https://via.placeholder.com/350x150'),
+                                    image: NetworkImage(urlImg),
+                                    // Image.network(
+                                    //   urlImg,
                                   ),
-                                  // Image.network(
-                                  //   urlImg,
-
-                                  // ),
                                   const SizedBox(
                                     height: 5,
                                   ),

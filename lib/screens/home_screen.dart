@@ -24,21 +24,25 @@ class _BottomNavBarState extends State<BottomNavBar> {
   }
 
   void iniciarFucniones() async {
+    final token = Provider.of<GeneralService>(context, listen: false);
+    await token.ObtenerToken();
     final siteInfo = Provider.of<InfoSiteService>(context, listen: false);
     await siteInfo.getInfoSite();
-    final userInfo = Provider.of<UserInfoProvider>(context, listen: false);
-    await userInfo.geInfoUser(siteInfo.infoSite.username!);
-    final cursoInfo = Provider.of<CursoService>(context, listen: false);
-    await cursoInfo.getInfoCurso(siteInfo.infoSite.userid!);
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-    await userProvider.getData(siteInfo.infoSite.userid!);
+
     final notificacionesProvider =
         Provider.of<NotificacionesService>(context, listen: false);
     await notificacionesProvider.getNotificaciones(siteInfo.infoSite.userid!);
+
     await notificacionesProvider
         .getCountNotificaciones(siteInfo.infoSite.userid!);
-    final token = Provider.of<GeneralService>(context, listen: false);
-    await token.ObtenerToken();
+
+    final userInfo = Provider.of<UserInfoProvider>(context, listen: false);
+    await userInfo.geInfoUser(siteInfo.infoSite.username!);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    await userProvider.getData(siteInfo.infoSite.userid!);
+
+    final cursoInfo = Provider.of<CursoService>(context, listen: false);
+    await cursoInfo.getInfoCurso(siteInfo.infoSite.userid!);
   }
 
   final int _pageIndex = 0;
