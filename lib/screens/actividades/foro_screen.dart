@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, no_leading_underscores_for_local_identifiers
+
 import 'package:animate_do/animate_do.dart';
 import 'package:campus_virtual/models/cursoId.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +8,6 @@ import 'package:flutter_html/flutter_html.dart';
 import '../../services/debate_service.dart';
 import '../../services/foroDiscussion_service.dart';
 import '../../theme/app_bar_theme.dart';
-import 'package:expansion_widget/expansion_widget.dart';
 import 'dart:math' as math;
 
 class ForoScreen extends StatefulWidget {
@@ -32,6 +33,8 @@ class _ForoScreenState extends State<ForoScreen> {
   @override
   Widget build(BuildContext context) {
     final debate = Provider.of<DebateService>(context, listen: false);
+    late bool habilitarForm = debate.habilitarForm;
+    bool _isButtonDisabled = !habilitarForm;
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -53,20 +56,26 @@ class _ForoScreenState extends State<ForoScreen> {
                 children: [
                   SizedBox(
                       width: double.infinity,
-                      height: MediaQuery.of(context).size.height * 0.32,
+                      height: MediaQuery.of(context).size.height * 0.35,
                       child: //inputs para agregar un nuevo debate
                           Column(
                         children: [
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const Text(
-                            'Agregar un nuevo debate',
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: AppTheme.primary,
+                          ElevatedButton(
+                            onPressed: () {
+                              debate.habilitarFormulario();
+                              setState(
+                                () {},
+                              );
+                            },
+                            child: const Text('Agregar un nuevo debate'),
+                            //color al boton
+                            style: ElevatedButton.styleFrom(
+                              primary: habilitarForm
+                                  ? AppTheme.primary
+                                  : Colors.grey,
                             ),
                           ),
+
                           const SizedBox(
                             height: 10,
                           ),
@@ -74,8 +83,10 @@ class _ForoScreenState extends State<ForoScreen> {
                             width: double.infinity,
                             height: MediaQuery.of(context).size.height * 0.05,
                             color: Colors.white,
-                            child: const TextField(
-                              decoration: InputDecoration(
+                            child: TextField(
+                              enabled: habilitarForm,
+                              controller: debate.controllerSubject,
+                              decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Asunto',
                                 enabledBorder: OutlineInputBorder(
@@ -93,9 +104,11 @@ class _ForoScreenState extends State<ForoScreen> {
                           SizedBox(
                             width: double.infinity,
                             height: MediaQuery.of(context).size.height * 0.15,
-                            child: const TextField(
+                            child: TextField(
+                              enabled: habilitarForm,
+                              controller: debate.controllerMessage,
                               maxLines: 5,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Mensaje',
                                 //color a los bordes
@@ -112,13 +125,56 @@ class _ForoScreenState extends State<ForoScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: _isButtonDisabled
+                                      ? null
+                                      : () async {
+                                          final foroDiscussion =
+                                              Provider.of<DebateService>(
+                                                  context,
+                                                  listen: false);
+                                          final peticion =
+                                              await foroDiscussion.addDebate(
+                                                  widget.contenido.instance!,
+                                                  debate.controllerSubject.text,
+                                                  debate
+                                                      .controllerMessage.text);
+                                          if (peticion == '') {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                backgroundColor: Color.fromARGB(
+                                                    255, 32, 99, 35),
+                                                content: Text(
+                                                    'Se agrego un debate correctamente'),
+                                              ),
+                                            );
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                backgroundColor: Color.fromARGB(
+                                                    255, 235, 99, 90),
+                                                content: Text(
+                                                    'No se pudo agregar el debate'),
+                                              ),
+                                            );
+                                          }
+                                        },
                                   style: ElevatedButton.styleFrom(
                                     primary: AppTheme.primary,
                                   ),
                                   child: const Text('Enviar al foro')),
                               ElevatedButton(
-                                onPressed: () {},
+                                onPressed: _isButtonDisabled
+                                    ? null
+                                    : () {
+                                        debate.controllerMessage.clear();
+                                        debate.controllerSubject.clear();
+                                        debate.habilitarFormulario();
+                                        setState(
+                                          () {},
+                                        );
+                                      },
                                 child: const Text('Cancelar'),
                                 //color al boton
                                 style: ElevatedButton.styleFrom(
