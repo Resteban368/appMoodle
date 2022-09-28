@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, no_leading_underscores_for_local_identifiers
+// ignore_for_file: use_build_context_synchronously, no_leading_underscores_for_local_identifiers, sort_child_properties_last
 
 import 'package:animate_do/animate_do.dart';
 import 'package:campus_virtual/models/cursoId.dart';
@@ -6,6 +6,7 @@ import 'package:campus_virtual/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_html/flutter_html.dart';
+import '../../providers/providers.dart';
 import '../../services/debate_service.dart';
 import '../../services/foroDiscussion_service.dart';
 import '../../theme/app_bar_theme.dart';
@@ -23,6 +24,7 @@ class _ForoScreenState extends State<ForoScreen> {
   void iniciarFucniones() async {
     final debate = Provider.of<DebateService>(context, listen: false);
     await debate.getDebates(widget.contenido.instance!);
+    late bool habilitarForm = debate.habilitarForm;
   }
 
   @override
@@ -36,6 +38,7 @@ class _ForoScreenState extends State<ForoScreen> {
     final debate = Provider.of<DebateService>(context, listen: false);
     late bool habilitarForm = debate.habilitarForm;
     bool _isButtonDisabled = !habilitarForm;
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -299,7 +302,7 @@ class _ForoScreenState extends State<ForoScreen> {
                                 );
                               });
                         } else {
-                          return Center(
+                          return const Center(
                             child: CircularProgressIndicator(),
                           );
                         }
@@ -321,6 +324,9 @@ class _ContenidoDebates extends StatelessWidget {
   int discussionid;
   String name;
   _ContenidoDebates(this.discussionid, this.name, {Key? key}) : super(key: key);
+
+//global key
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -415,102 +421,175 @@ class _ContenidoDebates extends StatelessWidget {
                                       //no cerrar la ventana emergente al dar click afuera
                                       barrierDismissible: false,
                                       builder: (BuildContext context) {
-                                        return Center(
-                                          child: SingleChildScrollView(
-                                            child: AlertDialog(
-                                              title: Column(
-                                                children: [
-                                                  const Padding(
-                                                    padding: EdgeInsets.only(
-                                                        bottom: 10),
-                                                    child: Text(
-                                                      'Responder a:',
-                                                      style: TextStyle(
-                                                          color:
-                                                              AppTheme.primary),
+                                        return GestureDetector(
+                                          onTap: () {
+                                            FocusScope.of(context).unfocus();
+                                          },
+                                          child: Center(
+                                            child: SingleChildScrollView(
+                                              child: AlertDialog(
+                                                title: Column(
+                                                  children: [
+                                                    const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          bottom: 10),
+                                                      child: Text(
+                                                        'Responder a :',
+                                                        style: TextStyle(
+                                                            color: AppTheme
+                                                                .primary),
+                                                      ),
                                                     ),
-                                                  ),
-                                                  Container(
-                                                    width: double.infinity,
-                                                    //ponerle borde al container
-                                                    decoration: BoxDecoration(
-                                                      // color: Colors.grey[200],
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5),
-                                                      border: Border.all(
-                                                          color:
-                                                              Colors.grey[200]!)
-                                                      // border radius
+                                                    Container(
+                                                      width: double.infinity,
+                                                      //ponerle borde al container
+                                                      decoration: BoxDecoration(
+                                                        // color: Colors.grey[200],
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                        border: Border.all(
+                                                            color: Colors
+                                                                .grey[200]!)
+                                                        // border radius
 
-                                                      ,
-                                                    ),
-                                                    height: 110,
-                                                    child:
-                                                        SingleChildScrollView(
-                                                      child: Html(
-                                                        data: htmlData,
-                                                        style: {
-                                                          'body': Style(
-                                                              fontSize:
-                                                                  const FontSize(
-                                                                      15),
-                                                              color: const Color(
-                                                                  0xFF000000),
-                                                              //justificar todo el texto
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .justify),
-                                                        },
+                                                        ,
+                                                      ),
+                                                      height: 110,
+                                                      child:
+                                                          SingleChildScrollView(
+                                                        child: Html(
+                                                          data: htmlData,
+                                                          style: {
+                                                            'body': Style(
+                                                                fontSize:
+                                                                    const FontSize(
+                                                                        15),
+                                                                color: const Color(
+                                                                    0xFF000000),
+                                                                //justificar todo el texto
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .justify),
+                                                          },
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                              content: SizedBox(
-                                                width: double.infinity,
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.15,
-                                                child: const TextField(
-                                                  maxLines: 5,
-                                                  decoration: InputDecoration(
-                                                    border:
-                                                        OutlineInputBorder(),
-                                                    labelText:
-                                                        'Escriba su respuesta...',
-                                                    //color a los bordes
-                                                    enabledBorder:
-                                                        OutlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color: AppTheme.primary,
-                                                      ),
+                                                  ],
+                                                ),
+                                                content: SizedBox(
+                                                  width: double.infinity,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.18,
+                                                  child: Form(
+                                                    key: _formKey,
+                                                    child: Column(
+                                                      children: [
+                                                        TextFormField(
+                                                          controller: foroDiscussion
+                                                              .controllerMessage,
+                                                          maxLines: 5,
+                                                          validator: (value) {
+                                                            if (value != null &&
+                                                                value.length >=
+                                                                    2) {
+                                                              return null;
+                                                            }
+                                                            return 'Mensaje incorrecto minimo 2 caracteres';
+                                                          },
+                                                          decoration:
+                                                              const InputDecoration(
+                                                            border:
+                                                                OutlineInputBorder(),
+                                                            labelText:
+                                                                'Escriba su respuesta...',
+                                                            //color a los bordes
+                                                            enabledBorder:
+                                                                OutlineInputBorder(
+                                                              borderSide:
+                                                                  BorderSide(
+                                                                color: AppTheme
+                                                                    .primary,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
                                                 ),
+                                                actions: [
+                                                  MaterialButton(
+                                                      //color de texto
+                                                      textColor: Colors.white,
+                                                      color: AppTheme.primary,
+                                                      onPressed: () async {
+                                                        if (_formKey
+                                                            .currentState!
+                                                            .validate()) {
+                                                          final peticion =
+                                                              await foroDiscussion.addPost(
+                                                                  post[i].id!,
+                                                                  post[i]
+                                                                      .subject!,
+                                                                  foroDiscussion
+                                                                      .controllerMessage
+                                                                      .text);
+                                                          if (peticion == '') {
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .showSnackBar(
+                                                              const SnackBar(
+                                                                backgroundColor:
+                                                                    Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            32,
+                                                                            99,
+                                                                            35),
+                                                                content: Text(
+                                                                    'Se agrego la respuesta correctamente'),
+                                                              ),
+                                                            );
+                                                          } else {
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .showSnackBar(
+                                                              const SnackBar(
+                                                                backgroundColor:
+                                                                    Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            235,
+                                                                            99,
+                                                                            90),
+                                                                content: Text(
+                                                                    'No se pudo agregar su respuesta'),
+                                                              ),
+                                                            );
+                                                          }
+                                                        } else {}
+                                                      },
+                                                      child: const Text(
+                                                          'Enviar al foro')),
+                                                  ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        primary: Colors.grey,
+                                                      ),
+                                                      onPressed: () {
+                                                        foroDiscussion
+                                                            .controllerMessage
+                                                            .clear();
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: const Text(
+                                                          'Cancelar')),
+                                                ],
                                               ),
-                                              actions: [
-                                                ElevatedButton(
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      primary: AppTheme.primary,
-                                                    ),
-                                                    onPressed: () {},
-                                                    child: const Text(
-                                                        'Enviar al foro')),
-                                                ElevatedButton(
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      primary: Colors.grey,
-                                                    ),
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    child:
-                                                        const Text('Cancelar')),
-                                              ],
                                             ),
                                           ),
                                         );

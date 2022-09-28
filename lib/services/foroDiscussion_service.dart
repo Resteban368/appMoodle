@@ -11,14 +11,16 @@ class ForoDiscussionService extends ChangeNotifier {
   final String _baseUrl =
       'https://plataformavirtual.uniamazonia.edu.co/DistanciaVirtual';
   final String _url = '/webservice/rest/server.php?';
-  final String _wsfunction = 'mod_forum_get_discussion_posts';
   final String _moodlewsrestformat = 'json';
 
+  final TextEditingController controllerMessage = TextEditingController();
+
   Future<List<PostModel>?> getForo(int discussionid) async {
+    const String wsfunction = 'mod_forum_get_discussion_posts';
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: 'token');
     final url2 =
-        '$_baseUrl${_url}wsfunction=$_wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&discussionid=$discussionid';
+        '$_baseUrl${_url}wsfunction=$wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&discussionid=$discussionid';
     try {
       final response = await http.get(Uri.parse(url2));
       if (response.statusCode < 400) {
@@ -35,5 +37,32 @@ class ForoDiscussionService extends ChangeNotifier {
     }
     notifyListeners();
     return null;
+  }
+
+  Future<String?> addPost(int postid, String subject, String message) async {
+    const String wsfunction = 'mod_forum_add_discussion_post';
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: 'token');
+    var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
+    var request = http.Request(
+        'POST',
+        Uri.parse(
+            '$_baseUrl${_url}wsfunction=$wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token'));
+    request.bodyFields = {
+      'postid': '$postid',
+      'subject': subject,
+      'message': message
+    };
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+    } else {
+      print(response.reasonPhrase);
+    }
+    notifyListeners();
+    return '';
   }
 }

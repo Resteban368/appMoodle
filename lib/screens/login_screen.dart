@@ -122,38 +122,12 @@ class _loginForm extends StatelessWidget {
                         SharedPreferences prefs =
                             await SharedPreferences.getInstance();
 
-                        // final siteInfo =
-                        //     Provider.of<SiteProvider>(context, listen: false);
-                        // await siteInfo.getInfoSite();
-                        // await prefs.setString(
-                        //     'username', siteInfo.infoSite.username!);
-                        // await prefs.setInt('userid', siteInfo.infoSite.userid!);
-
-                        // print(siteInfo.infoSite.username);
-
-                        // final userInfo = Provider.of<UserInfoProvider>(context,
-                        //     listen: false);
-                        // await userInfo.geInfoUser(siteInfo.infoSite.username!);
-
-                        // final cursoInfo =
-                        //     Provider.of<CursoProvider>(context, listen: false);
-                        // await cursoInfo.getInfoCurso(siteInfo.infoSite.userid!);
-
-                        // final userProvider =
-                        //     Provider.of<UserProvider>(context, listen: false);
-                        // await userProvider.getData(siteInfo.infoSite.userid!);
-
-                        // final token = Provider.of<GeneralProvider>(context,
-                        //     listen: false);
-                        // await token.ObtenerToken();
                         Navigator.pushReplacementNamed(context, 'home');
                       } else {
                         //todo MOSTRAR ERROR EN PANTALLA
                         NotificationsService.showSnackbar(error);
                         formProvider.isloading = false;
                       }
-                      //vamos a esperar un tiempo
-                      // Future.delayed(const Duration(seconds: 2), () {a
                     }),
           const SizedBox(height: 30),
         ],

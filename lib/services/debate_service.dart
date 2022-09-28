@@ -11,7 +11,6 @@ class DebateService extends ChangeNotifier {
   final String _baseUrl =
       'https://plataformavirtual.uniamazonia.edu.co/DistanciaVirtual';
   final String _url = '/webservice/rest/server.php?';
-  final String _wsfunction = 'mod_forum_get_forum_discussions';
   final String _moodlewsrestformat = 'json';
 
   final TextEditingController controllerSubject = TextEditingController();
@@ -19,10 +18,11 @@ class DebateService extends ChangeNotifier {
   late bool habilitarForm = false;
 
   Future<List<DiscussionResponse>?> getDebates(int forumid) async {
+    const String wsfunction = 'mod_forum_get_forum_discussions';
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: 'token');
     final url2 =
-        '$_baseUrl${_url}wsfunction=$_wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&forumid=$forumid';
+        '$_baseUrl${_url}wsfunction=$wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&forumid=$forumid';
     try {
       final response = await http.get(Uri.parse(url2));
       if (response.statusCode < 400) {
@@ -42,12 +42,15 @@ class DebateService extends ChangeNotifier {
   }
 
   Future<String?> addDebate(int forumid, String subject, String message) async {
+    const String wsfunction = 'mod_forum_add_discussion';
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: 'token');
     var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
 
     var request = http.Request(
         'POST',
         Uri.parse(
-            'https://plataformavirtual.uniamazonia.edu.co/DistanciaVirtual/webservice/rest/server.php?moodlewsrestformat=json&wsfunction=mod_forum_add_discussion&wstoken=97cf93157876231126fbd7d2e11aad3f'));
+            '$_baseUrl${_url}wsfunction=$wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token'));
     request.bodyFields = {
       'forumid': '$forumid',
       'subject': subject,
