@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:campus_virtual/utils/warning_widget_change_notifier.dart';
 import 'package:campus_virtual/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -35,6 +36,7 @@ class NoticiasScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: const [
+              WarningWidgetChangeNotifier(),
               SizedBox(height: 10),
               CardNoticias(),
               SizedBox(height: 20),

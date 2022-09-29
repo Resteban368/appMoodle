@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../services/sevices.dart';
 import '../theme/theme.dart';
 
 class CardContactos extends StatelessWidget {
@@ -7,6 +9,9 @@ class CardContactos extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final contactosService =
+        Provider.of<ContactosService>(context, listen: false);
+    final siteInfo = Provider.of<InfoSiteService>(context, listen: false);
     // ignore: sized_box_for_whitespace
     return Container(
       width: double.infinity,
@@ -15,15 +20,60 @@ class CardContactos extends StatelessWidget {
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 10),
-          child: Text('Contactos favoritos',
+          child: Text('Mis Contactos',
               style: TextStyle(fontSize: 15, color: AppTheme.primary)),
         ),
         Expanded(
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: 20,
-            itemBuilder: (_, int index) {
-              return const _Contactos();
+          child: FutureBuilder(
+            future: contactosService.getContactos(siteInfo.infoSite.userid!),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              final contacto = snapshot.data;
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else {
+                return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: contacto!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: 100,
+                        height: 150,
+                        margin: const EdgeInsets.only(top: 10),
+                        child: Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {},
+                              child: ClipRRect(
+                                //color del borde de la imagen
+                                borderRadius: BorderRadius.circular(50),
+                                child: FadeInImage(
+                                  placeholder: const AssetImage(
+                                      'images/userDefault.png'),
+                                  image: NetworkImage(
+                                      contacto[index].profileimageurl),
+                                  width: 60,
+                                  height: 60,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              contacto[index].fullname,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }
             },
           ),
         ),
@@ -32,38 +82,38 @@ class CardContactos extends StatelessWidget {
   }
 }
 
-class _Contactos extends StatelessWidget {
-  const _Contactos({Key? key}) : super(key: key);
+// class _Contactos extends StatelessWidget {
+//   const _Contactos({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 100,
-      height: 150,
-      // color: Color.fromARGB(255, 91, 219, 17),
-      margin: const EdgeInsets.only(top: 10),
-      child: Column(
-        children: [
-          GestureDetector(
-            onTap: () {},
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(50),
-              child: const FadeInImage(
-                placeholder: AssetImage('images/acount.png'),
-                image: AssetImage('images/acount.png'),
-                width: 60,
-                height: 60,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          const Text(
-            'esteban rpdriguez marles',
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       width: 100,
+//       height: 150,
+//       // color: Color.fromARGB(255, 91, 219, 17),
+//       margin: const EdgeInsets.only(top: 10),
+//       child: Column(
+//         children: [
+//           GestureDetector(
+//             onTap: () {},
+//             child: ClipRRect(
+//               borderRadius: BorderRadius.circular(50),
+//               child: const FadeInImage(
+//                 placeholder: AssetImage('images/acount.png'),
+//                 image: AssetImage('images/acount.png'),
+//                 width: 60,
+//                 height: 60,
+//                 fit: BoxFit.cover,
+//               ),
+//             ),
+//           ),
+//           const Text(
+//             'esteban rpdriguez marles',
+//             overflow: TextOverflow.ellipsis,
+//             textAlign: TextAlign.center,
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

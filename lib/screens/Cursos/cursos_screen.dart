@@ -65,7 +65,7 @@ class CursosScreen extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 10),
                             child: Container(
-                              height: MediaQuery.of(context).size.height * 0.44,
+                              height: MediaQuery.of(context).size.height * 0.4,
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 border: Border.all(color: AppTheme.primary),
@@ -97,9 +97,6 @@ class CursosScreen extends StatelessWidget {
                                     image: NetworkImage(urlImg),
                                     // Image.network(
                                     //   urlImg,
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
                                   ),
                                   ButtonBar(
                                     children: [

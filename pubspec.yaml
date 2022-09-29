@@ -27,6 +27,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  connectivity_plus: ^2.3.7
   expansion_widget: ^0.0.3
   animate_do: ^2.1.0
   cached_network_image: ^3.2.1

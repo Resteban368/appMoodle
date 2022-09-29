@@ -1,3 +1,7 @@
+export 'package:campus_virtual/models/searchResponse.dart';
+
+export 'package:campus_virtual/models/ContactoResponse.dart';
+
 export 'package:campus_virtual/models/category.dart';
 
 export 'package:campus_virtual/models/cursoId.dart';

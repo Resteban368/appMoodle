@@ -1,4 +1,5 @@
 import 'package:campus_virtual/providers/providers.dart';
+import 'package:campus_virtual/utils/check_internet_connection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'screens/screens.dart';
@@ -6,6 +7,7 @@ import 'services/sevices.dart';
 
 import 'package:intl/date_symbol_data_local.dart';
 
+final internetChecker = CheckInternetConnection();
 void main() {
   initializeDateFormatting('es', null);
   runApp(const AppState());
@@ -45,6 +47,10 @@ class AppState extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => DebateService(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ContactosService(),
+          lazy: false,
         ),
       ],
       child: const MyApp(),

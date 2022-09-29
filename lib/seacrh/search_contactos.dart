@@ -1,4 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../services/sevices.dart';
 
 class ContactosDeBusqueda extends SearchDelegate {
   @override
@@ -38,19 +44,110 @@ class ContactosDeBusqueda extends SearchDelegate {
     return const Text('buildResults');
   }
 
+  Widget _emptyContainer() {
+    return Container(
+      child: Center(
+        child: Column(
+          children: const [
+            SizedBox(
+              height: 100,
+            ),
+            Icon(
+              Icons.search_off,
+              size: 100,
+              color: Colors.grey,
+            ),
+            Text(
+              'No hay resultados',
+              style: TextStyle(fontSize: 15),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget buildSuggestions(BuildContext context) {
-    // ignore: todo
-    // TODO: implement buildSuggestions
     if (query.isEmpty) {
-      return const Center(
-        child: Icon(
-          Icons.person_rounded,
-          color: Colors.black38,
-          size: 130,
-        ),
-      );
+      return _emptyContainer();
     }
-    return Container();
+
+    final contactosService =
+        Provider.of<ContactosService>(context, listen: false);
+    final siteInfo = Provider.of<InfoSiteService>(context, listen: false);
+    const bool color = false;
+    return FutureBuilder(
+        future: contactosService.searchContacto(query),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (!snapshot.hasData) {
+            return _emptyContainer();
+          }
+
+          final contactos = snapshot.data;
+          return GestureDetector(
+            onTap: () {
+              //cerrar el teclado
+              FocusScope.of(context).unfocus();
+            },
+            child: Container(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height * 0.9,
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElasticInDown(
+                  child: ListView.builder(
+                    itemCount: contactos.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Card(
+                        elevation: 5,
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            //color del borde de la imagen
+
+                            backgroundImage:
+                                NetworkImage(contactos[index].profileimageurl),
+                          ),
+                          title: Text(contactos[index].fullname),
+                          trailing: IconButton(
+                            icon: const Icon(
+                              Icons.favorite,
+                              //cambiar color del icono segun el estado
+                            ),
+                            onPressed: () async {
+                              //cerrar el delete
+                              final peticion =
+                                  await contactosService.addSolicitud(
+                                      siteInfo.infoSite.userid!,
+                                      contactos[index].id);
+                              if (peticion == '') {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    backgroundColor: Colors.green,
+                                    content: Text(
+                                        'Solicitud enviada a: ${contactos[index].fullname}'),
+                                  ),
+                                  //cerrar search delegate
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    backgroundColor: Colors.red,
+                                    content: Text('Error al enviar solicitud'),
+                                  ),
+                                );
+                              }
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
   }
 }
