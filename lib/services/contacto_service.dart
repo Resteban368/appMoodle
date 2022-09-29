@@ -97,4 +97,31 @@ class ContactosService extends ChangeNotifier {
     notifyListeners();
     return '';
   }
+
+  Future<List<SolicitudesResponse>?> getSolicitudes(int userid) async {
+    const String _wsfunction = 'core_message_get_contact_requests';
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: 'token');
+
+    final url =
+        '$_baseUrl${_url}wsfunction=$_wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&userid=$userid';
+    try {
+      final resp = await http.get(Uri.parse(url));
+
+      if (resp.statusCode < 400) {
+        // print('status code: ${resp.statusCode}');
+
+        List<SolicitudesResponse> responseContactosData = [];
+        List<dynamic> mapaRespBody = json.decode(resp.body);
+        for (var element in mapaRespBody) {
+          responseContactosData.add(SolicitudesResponse.fromJson(element));
+        }
+        notifyListeners();
+        return responseContactosData;
+      }
+    } catch (e) {
+      print('error en el provider de  search contacto: $e');
+    }
+    return null;
+  }
 }

@@ -45,95 +45,117 @@ class CursosScreen extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             } else {
-              return SizedBox(
-                height: MediaQuery.of(context).size.height * 0.84,
-                child: ListView.builder(
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (BuildContext context, int i) {
-                    final urlImg = snapshot.data![i].overviewfiles![0].fileurl +
-                        '?token=$token';
-                    print(urlImg);
-                    return ElasticInDown(
-                      child:
-                          //creamos una card para poner los cursos
-                          Column(
-                        children: [
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
-                            child: Container(
-                              height: MediaQuery.of(context).size.height * 0.4,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(color: AppTheme.primary),
-                                borderRadius: BorderRadius.circular(10),
-                                //sombra
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 10,
-                                    spreadRadius: 5,
-                                  ),
-                                ],
-                              ),
-                              child: Column(
-                                children: [
-                                  ListTile(
-                                    leading: const Icon(
-                                      Icons.book,
-                                      color: AppTheme.primary,
-                                      size: 40,
+              if (snapshot.data.length == 0) {
+                return Center(
+                  child: Container(
+                    width: double.infinity,
+                    height: 200,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.book, size: 100, color: AppTheme.primary),
+                        Text(
+                          'No hay cursos disponibles',
+                          style: TextStyle(fontSize: 20, color: Colors.black38),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              } else {
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.84,
+                  child: ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int i) {
+                      final urlImg =
+                          snapshot.data![i].overviewfiles![0].fileurl +
+                              '?token=$token';
+                      print(urlImg);
+                      return ElasticInDown(
+                        child:
+                            //creamos una card para poner los cursos
+                            Column(
+                          children: [
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
+                              child: Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.4,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(color: AppTheme.primary),
+                                  borderRadius: BorderRadius.circular(10),
+                                  //sombra
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 10,
+                                      spreadRadius: 5,
                                     ),
-                                    title: Text(snapshot.data[i].fullname,
-                                        style: const TextStyle(fontSize: 20)),
-                                    subtitle: const Text('Semestre 1'),
-                                  ),
-                                  FadeInImage(
-                                    placeholder: const NetworkImage(
-                                        'https://via.placeholder.com/350x150'),
-                                    image: NetworkImage(urlImg),
-                                    // Image.network(
-                                    //   urlImg,
-                                  ),
-                                  ButtonBar(
-                                    children: [
-                                      Center(
-                                        child: FlatButton(
-                                          color: AppTheme.primary,
-                                          //poner el color del texto en blanco
-                                          textColor: Colors.white,
-                                          //poner borderradius
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-
-                                          child: const Text('Ver Temas'),
-                                          onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (BuildContext
-                                                            context) =>
-                                                        MateriasScreen(
-                                                            snapshot.data[i])));
-                                          },
-                                        ),
+                                  ],
+                                ),
+                                child: Column(
+                                  children: [
+                                    ListTile(
+                                      leading: const Icon(
+                                        Icons.book,
+                                        color: AppTheme.primary,
+                                        size: 40,
                                       ),
-                                    ],
-                                  ),
-                                ],
+                                      title: Text(snapshot.data[i].fullname,
+                                          style: const TextStyle(fontSize: 20)),
+                                      subtitle: const Text('Semestre 1'),
+                                    ),
+                                    FadeInImage(
+                                      placeholder: const NetworkImage(
+                                          'https://via.placeholder.com/350x150'),
+                                      image: NetworkImage(urlImg),
+                                      // Image.network(
+                                      //   urlImg,
+                                    ),
+                                    ButtonBar(
+                                      children: [
+                                        Center(
+                                          child: FlatButton(
+                                            color: AppTheme.primary,
+                                            //poner el color del texto en blanco
+                                            textColor: Colors.white,
+                                            //poner borderradius
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+
+                                            child: const Text('Ver Temas'),
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          MateriasScreen(
+                                                              snapshot
+                                                                  .data[i])));
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              );
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                );
+              }
             }
           },
         ));

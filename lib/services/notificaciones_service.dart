@@ -13,7 +13,7 @@ class NotificacionesService extends ChangeNotifier {
       'https://plataformavirtual.uniamazonia.edu.co/DistanciaVirtual';
   final String _url = '/webservice/rest/server.php?';
   final String _moodlewsrestformat = 'json';
-  int count = 1;
+  int count = 0;
 
   Future<List<PostNotificaciones>?> getNotificaciones(useridto) async {
     String _wsfunction = 'message_popup_get_popup_notifications';

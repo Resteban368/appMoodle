@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../seacrh/search_contactos.dart';
 import '../services/sevices.dart';
 import '../theme/theme.dart';
 
@@ -14,12 +15,13 @@ class CardContactos extends StatelessWidget {
     final siteInfo = Provider.of<InfoSiteService>(context, listen: false);
     // ignore: sized_box_for_whitespace
     return Container(
+      color: Colors.grey[200],
       width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.15,
+      height: MediaQuery.of(context).size.height * 0.13,
       // color: Colors.red,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10),
+          padding: EdgeInsets.only(top: 10, left: 10, bottom: 5),
           child: Text('Mis Contactos',
               style: TextStyle(fontSize: 15, color: AppTheme.primary)),
         ),
@@ -33,46 +35,77 @@ class CardContactos extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 );
               } else {
-                return ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: contacto!.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        width: 100,
-                        height: 150,
-                        margin: const EdgeInsets.only(top: 10),
-                        child: Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () {},
-                              child: ClipRRect(
-                                //color del borde de la imagen
-                                borderRadius: BorderRadius.circular(50),
-                                child: FadeInImage(
-                                  placeholder: const AssetImage(
-                                      'images/userDefault.png'),
-                                  image: NetworkImage(
-                                      contacto[index].profileimageurl),
-                                  width: 60,
-                                  height: 60,
-                                  fit: BoxFit.cover,
+                if (snapshot.data.length == 0) {
+                  return Center(
+                    child: Container(
+                        width: double.infinity,
+                        height: 90,
+                        color: Colors.grey[200],
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Card(
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                child: Image.asset('images/userDefault.png'),
+                              ),
+                              title: const Text('No hay contactos'),
+                              subtitle: const Text('Agrega contactos'),
+                              trailing: IconButton(
+                                  onPressed: () {
+                                    //enviar al buscador de contactos
+                                    showSearch(
+                                        context: context,
+                                        delegate: ContactosDeBusqueda());
+                                  },
+                                  icon: const Icon(
+                                    Icons.add,
+                                    size: 30,
+                                    color: AppTheme.primary,
+                                  )),
+                            ),
+                          ),
+                        )),
+                  );
+                } else {
+                  return ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: contacto!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        child: Container(
+                          width: 100,
+                          child: Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () {},
+                                child: ClipRRect(
+                                  //color del borde de la imagen
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: FadeInImage(
+                                    placeholder: const AssetImage(
+                                        'images/userDefault.png'),
+                                    image: NetworkImage(
+                                        contacto[index].profileimageurl),
+                                    width: 60,
+                                    height: 60,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Text(
-                              contacto[index].fullname,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(fontSize: 12),
-                            ),
-                          ],
+                              Text(
+                                contacto[index].fullname,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(fontSize: 12),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                );
+                      );
+                    },
+                  );
+                }
               }
             },
           ),

@@ -1,3 +1,5 @@
+export 'package:campus_virtual/models/solicitudesResponse.dart';
+
 export 'package:campus_virtual/models/searchResponse.dart';
 
 export 'package:campus_virtual/models/ContactoResponse.dart';

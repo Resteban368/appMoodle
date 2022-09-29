@@ -57,19 +57,21 @@ class _NamedIconState extends State<NamedIcon> {
                 decoration: const BoxDecoration(
                     shape: BoxShape.circle, color: Colors.red),
                 alignment: Alignment.center,
-                child: count == 1
-                    ? const SizedBox(
-                        width: 15,
-                        height: 15,
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                            //tamaño del circulo
-                            strokeWidth: 2,
-                          ),
-                        ),
-                      )
-                    : Text('$count'),
+                child:
+                    // count == 0
+                    //     ? const SizedBox(
+                    //         width: 15,
+                    //         height: 15,
+                    //         child: Center(
+                    //           child: CircularProgressIndicator(
+                    //             color: Colors.white,
+                    //             //tamaño del circulo
+                    //             strokeWidth: 2,
+                    //           ),
+                    //         ),
+                    //       )
+                    //     :
+                    Text('$count'),
               ),
             )
           ],

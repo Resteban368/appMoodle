@@ -40,80 +40,101 @@ class _NotificacionesScreenState extends State<NotificacionesScreen> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             final notificaciones = snapshot.data;
-            return RefreshIndicator(
-              onRefresh: () async {
-                await notificacion.getNotificaciones(siteInfo.infoSite.userid!);
-              },
-              child: ListView.builder(
-                itemCount: notificaciones.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    elevation: 2,
-                    color: notificaciones[index].read == true
-                        ? Colors.white
-                        : AppTheme.notificacionesLeidas,
-                    child: ListTile(
-                      leading: Column(children: [
-                        if (notificaciones[index].eventtype ==
-                            'messagecontactrequests')
-                          Column(
-                            children: [
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Column(
-                                children: [
-                                  if (notificaciones[index].read == false)
-                                    const Icon(Icons.lightbulb,
-                                        size: 30, color: Colors.white)
-                                  else if (notificaciones[index].read == true)
-                                    const Icon(Icons.lightbulb,
-                                        size: 30, color: AppTheme.primary)
-                                ],
-                              ),
-                            ],
-                          )
-                        else if (notificaciones[index].eventtype ==
-                            'assign_notification')
-                          Column(
-                            children: [
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Column(
-                                children: [
-                                  if (notificaciones[index].read == false)
-                                    const Icon(Icons.task,
-                                        size: 30, color: Colors.white)
-                                  else if (notificaciones[index].read == true)
-                                    const Icon(Icons.task,
-                                        size: 30, color: AppTheme.primary)
-                                ],
-                              ),
-                            ],
-                          )
-                      ]),
-                      title: Text(
-                        notificaciones[index].subject,
-                        style: const TextStyle(fontSize: 15),
+            if (notificaciones.length == 0) {
+              return Center(
+                child: Container(
+                  width: double.infinity,
+                  height: 200,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.notifications,
+                          size: 100, color: AppTheme.primary),
+                      Text(
+                        'No hay notificaciones',
+                        style: TextStyle(fontSize: 20, color: Colors.black38),
                       ),
-                      subtitle: Text(notificaciones[index].timecreatedpretty),
-                      trailing: const Icon(
-                        Icons.arrow_forward_ios,
-                        color: AppTheme.primary,
-                        size: 25,
-                      ),
-                      onTap: () async {
-                        // Navigator.pushNamed(context, 'notificacion',
-                        //     arguments: notificaciones[index]);
-                        await notificacion
-                            .getCountNotificaciones(siteInfo.infoSite.userid!);
-                      },
-                    ),
-                  );
+                    ],
+                  ),
+                ),
+              );
+            } else {
+              return RefreshIndicator(
+                onRefresh: () async {
+                  await notificacion
+                      .getNotificaciones(siteInfo.infoSite.userid!);
                 },
-              ),
-            );
+                child: ListView.builder(
+                  itemCount: notificaciones.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Card(
+                      elevation: 2,
+                      color: notificaciones[index].read == true
+                          ? Colors.white
+                          : AppTheme.notificacionesLeidas,
+                      child: ListTile(
+                        leading: Column(children: [
+                          if (notificaciones[index].eventtype ==
+                              'messagecontactrequests')
+                            Column(
+                              children: [
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Column(
+                                  children: [
+                                    if (notificaciones[index].read == false)
+                                      const Icon(Icons.lightbulb,
+                                          size: 30, color: Colors.white)
+                                    else if (notificaciones[index].read == true)
+                                      const Icon(Icons.lightbulb,
+                                          size: 30, color: AppTheme.primary)
+                                  ],
+                                ),
+                              ],
+                            )
+                          else if (notificaciones[index].eventtype ==
+                              'assign_notification')
+                            Column(
+                              children: [
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Column(
+                                  children: [
+                                    if (notificaciones[index].read == false)
+                                      const Icon(Icons.task,
+                                          size: 30, color: Colors.white)
+                                    else if (notificaciones[index].read == true)
+                                      const Icon(Icons.task,
+                                          size: 30, color: AppTheme.primary)
+                                  ],
+                                ),
+                              ],
+                            )
+                        ]),
+                        title: Text(
+                          notificaciones[index].subject,
+                          style: const TextStyle(fontSize: 15),
+                        ),
+                        subtitle: Text(notificaciones[index].timecreatedpretty),
+                        trailing: const Icon(
+                          Icons.arrow_forward_ios,
+                          color: AppTheme.primary,
+                          size: 25,
+                        ),
+                        onTap: () async {
+                          // Navigator.pushNamed(context, 'notificacion',
+                          //     arguments: notificaciones[index]);
+                          await notificacion.getCountNotificaciones(
+                              siteInfo.infoSite.userid!);
+                        },
+                      ),
+                    );
+                  },
+                ),
+              );
+            }
           } else {
             return const Center(
               child: CircularProgressIndicator(),
