@@ -24,7 +24,6 @@ class _ForoScreenState extends State<ForoScreen> {
   void iniciarFucniones() async {
     final debate = Provider.of<DebateService>(context, listen: false);
     await debate.getDebates(widget.contenido.instance!);
-    late bool habilitarForm = debate.habilitarForm;
   }
 
   @override
@@ -186,6 +185,11 @@ class _ForoScreenState extends State<ForoScreen> {
                                                   ),
                                                 );
                                               }
+                                              //BORRAR EL CONTROLADOR
+                                              debate.controllerSubject.clear();
+                                              debate.controllerMessage.clear();
+                                              //CERRAR EL TECLADO
+                                              FocusScope.of(context).unfocus();
                                               await debate.getDebates(
                                                   widget.contenido.instance!);
                                             }
@@ -228,115 +232,149 @@ class _ForoScreenState extends State<ForoScreen> {
                     child: FutureBuilder(
                       future: debate.getDebates(widget.contenido.instance!),
                       builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        if (snapshot.hasData) {
-                          final debates = snapshot.data;
-                          return RefreshIndicator(
-                            onRefresh: () async {
-                              await debate
-                                  .getDebates(widget.contenido.instance!);
-                            },
-                            child: ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: debates.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Card(
-                                    color: Colors.grey[200],
-                                    elevation: 2,
-                                    child: ListTile(
-                                      title: Text(
-                                        debates[index].name,
-                                        style: const TextStyle(
-                                            color: AppTheme.primary,
-                                            fontSize: 20),
-                                      ),
-                                      subtitle: Column(
-                                        children: [
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          Row(
-                                            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              const Text('Comenzado por:'),
-                                              SizedBox(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.1,
-                                              ),
-                                              Image.network(
-                                                debates[index].userpictureurl,
-                                                width: 30,
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Text(debates[index].userfullname),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 3,
-                                          ),
-                                          Row(
-                                            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              const Text('Último mensaje:'),
-                                              SizedBox(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.1,
-                                              ),
-                                              Image.network(
-                                                debates[index]
-                                                    .usermodifiedpictureurl,
-                                                width: 30,
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Text(debates[index]
-                                                  .usermodifiedfullname),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 3,
-                                          ),
-                                          Row(
-                                            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              const Text('Réplicas:'),
-                                              const SizedBox(
-                                                width: 5,
-                                              ),
-                                              Text(debates[index]
-                                                  .numreplies
-                                                  .toString()),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder:
-                                                    (BuildContext context) =>
-                                                        _ContenidoDebates(
-                                                            debates[index]
-                                                                .discussion,
-                                                            debates[index]
-                                                                .name)));
-                                        // print(debates[index].discussion);
-                                      },
-                                    ),
-                                  );
-                                }),
-                          );
-                        } else {
+                        final debates = snapshot.data;
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return const Center(
                             child: CircularProgressIndicator(),
                           );
+                        } else {
+                          if (snapshot.data.length == 0) {
+                            return SizedBox(
+                              width: double.infinity,
+                              child: Center(
+                                child: Column(
+                                  children: const [
+                                    SizedBox(
+                                      height: 100,
+                                    ),
+                                    Icon(
+                                      Icons.question_answer,
+                                      color: AppTheme.primary,
+                                      size: 100,
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      'No hay debates',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.black38,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          } else {
+                            return RefreshIndicator(
+                              onRefresh: () async {
+                                await debate
+                                    .getDebates(widget.contenido.instance!);
+                                setState(() {});
+                              },
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: debates.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Card(
+                                      color: Colors.grey[200],
+                                      elevation: 2,
+                                      child: ListTile(
+                                        title: Text(
+                                          debates[index].name,
+                                          style: const TextStyle(
+                                              color: AppTheme.primary,
+                                              fontSize: 20),
+                                        ),
+                                        subtitle: Column(
+                                          children: [
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            Row(
+                                              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                const Text('Comenzado por:'),
+                                                SizedBox(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.1,
+                                                ),
+                                                Image.network(
+                                                  debates[index].userpictureurl,
+                                                  width: 30,
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Text(debates[index]
+                                                    .userfullname),
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: 3,
+                                            ),
+                                            Row(
+                                              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                const Text('Último mensaje:'),
+                                                SizedBox(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.1,
+                                                ),
+                                                Image.network(
+                                                  debates[index]
+                                                      .usermodifiedpictureurl,
+                                                  width: 30,
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Text(debates[index]
+                                                    .usermodifiedfullname),
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: 3,
+                                            ),
+                                            Row(
+                                              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                const Text('Réplicas:'),
+                                                const SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Text(debates[index]
+                                                    .numreplies
+                                                    .toString()),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          _ContenidoDebates(
+                                                              debates[index]
+                                                                  .discussion,
+                                                              debates[index]
+                                                                  .name)));
+                                          // print(debates[index].discussion);
+                                        },
+                                      ),
+                                    );
+                                  }),
+                            );
+                          }
                         }
                       },
                     ),
@@ -351,12 +389,17 @@ class _ForoScreenState extends State<ForoScreen> {
   }
 }
 
-class _ContenidoDebates extends StatelessWidget {
+class _ContenidoDebates extends StatefulWidget {
   // final CursoContenidoProvider cursoIContenido;
   int discussionid;
   String name;
   _ContenidoDebates(this.discussionid, this.name, {Key? key}) : super(key: key);
 
+  @override
+  State<_ContenidoDebates> createState() => _ContenidoDebatesState();
+}
+
+class _ContenidoDebatesState extends State<_ContenidoDebates> {
 //global key
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -368,12 +411,12 @@ class _ContenidoDebates extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: AppTheme.primary,
-        title: Text(name),
+        title: Text(widget.name),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 20),
         child: FutureBuilder(
-          future: foroDiscussion.getForo(discussionid),
+          future: foroDiscussion.getForo(widget.discussionid),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             final post = snapshot.data;
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -383,7 +426,8 @@ class _ContenidoDebates extends StatelessWidget {
             } else {
               return RefreshIndicator(
                 onRefresh: () async {
-                  await foroDiscussion.getForo(discussionid);
+                  await foroDiscussion.getForo(widget.discussionid);
+                  setState(() {});
                 },
                 child: ListView.builder(
                   scrollDirection: Axis.vertical,
@@ -578,6 +622,9 @@ class _ContenidoDebates extends StatelessWidget {
                                                                     foroDiscussion
                                                                         .controllerMessage
                                                                         .text);
+                                                            await foroDiscussion
+                                                                .getForo(widget
+                                                                    .discussionid);
                                                             if (peticion ==
                                                                 '') {
                                                               ScaffoldMessenger
@@ -597,6 +644,10 @@ class _ContenidoDebates extends StatelessWidget {
                                                               Navigator.of(
                                                                       context)
                                                                   .pop();
+                                                              //LIMPIAR LOS CONTROLADORES
+                                                              foroDiscussion
+                                                                  .controllerMessage
+                                                                  .clear();
                                                             } else {
                                                               ScaffoldMessenger
                                                                       .of(context)
@@ -616,6 +667,7 @@ class _ContenidoDebates extends StatelessWidget {
                                                           } else {
                                                             null;
                                                           }
+//LLAMAR NUEVAMENTE LA API
                                                         },
                                                         child: const Text(
                                                             'Enviar al foro')),

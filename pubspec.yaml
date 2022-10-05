@@ -27,6 +27,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  flutter_slidable: ^2.0.0
   connectivity_plus: ^2.3.7
   expansion_widget: ^0.0.3
   animate_do: ^2.1.0

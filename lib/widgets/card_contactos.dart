@@ -17,7 +17,7 @@ class CardContactos extends StatelessWidget {
     return Container(
       color: Colors.grey[200],
       width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.13,
+      height: MediaQuery.of(context).size.height * 0.14,
       // color: Colors.red,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         const Padding(
@@ -39,11 +39,14 @@ class CardContactos extends StatelessWidget {
                   return Center(
                     child: Container(
                         width: double.infinity,
-                        height: 90,
+                        height: 100,
                         color: Colors.grey[200],
                         child: Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Card(
+                            //tamano de la tarjeta
+
+                            elevation: 3,
                             child: ListTile(
                               leading: CircleAvatar(
                                 child: Image.asset('images/userDefault.png'),

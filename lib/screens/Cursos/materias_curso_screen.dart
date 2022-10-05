@@ -31,7 +31,7 @@ class MateriasScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(contenido.fullname!),
+        title: Text(contenido.fullname!, style: const TextStyle(fontSize: 18)),
         backgroundColor: AppTheme.primary,
         actions: [
           NamedIcon(

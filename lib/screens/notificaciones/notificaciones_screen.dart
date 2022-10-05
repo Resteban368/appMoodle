@@ -2,6 +2,7 @@ import 'package:campus_virtual/theme/app_bar_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../services/sevices.dart';
+import '../screens.dart';
 
 class NotificacionesScreen extends StatefulWidget {
   const NotificacionesScreen({Key? key}) : super(key: key);
@@ -42,7 +43,7 @@ class _NotificacionesScreenState extends State<NotificacionesScreen> {
             final notificaciones = snapshot.data;
             if (notificaciones.length == 0) {
               return Center(
-                child: Container(
+                child: SizedBox(
                   width: double.infinity,
                   height: 200,
                   child: Column(
@@ -123,11 +124,22 @@ class _NotificacionesScreenState extends State<NotificacionesScreen> {
                           color: AppTheme.primary,
                           size: 25,
                         ),
-                        onTap: () async {
-                          // Navigator.pushNamed(context, 'notificacion',
-                          //     arguments: notificaciones[index]);
-                          await notificacion.getCountNotificaciones(
-                              siteInfo.infoSite.userid!);
+                        onTap: () {
+                          //enviar a la pagina de solicitud de contacto si es notificacion de messagecontactrequests
+                          if (notificaciones[index].eventtype ==
+                              'messagecontactrequests') {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const SolicitudesScreen()));
+                          } else if (notificaciones[index].eventtype ==
+                              'assign_notification') {
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => const ChatScreen()));
+                          }
                         },
                       ),
                     );

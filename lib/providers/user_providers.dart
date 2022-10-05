@@ -29,7 +29,7 @@ class UserProvider with ChangeNotifier {
 
   Future<String?> getData(int id) async {
     try {
-      final url = 'http://10.0.2.2:8000/api/user/$id';
+      final url = 'http://api-moodle.com.devel/public/api/user/$id';
       print(Uri.parse(url));
       // print(url);
       final response = await http.get(Uri.parse(url));
@@ -73,8 +73,8 @@ class UserProvider with ChangeNotifier {
       'Content-Type': 'application/x-www-form-urlencoded',
     };
 
-    var request =
-        http.Request('PUT', Uri.parse('http://10.0.2.2:8000/api/user/$id'));
+    var request = http.Request(
+        'PUT', Uri.parse('http://api-moodle.com.devel/public/api/user/$id'));
     request.bodyFields = {
       'json': '{"email":"$email","phone1":"$phone1"}',
     };

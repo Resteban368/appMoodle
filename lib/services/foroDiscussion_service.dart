@@ -16,6 +16,7 @@ class ForoDiscussionService extends ChangeNotifier {
   final TextEditingController controllerMessage = TextEditingController();
 
   Future<List<PostModel>?> getForo(int discussionid) async {
+    print('get foro');
     const String wsfunction = 'mod_forum_get_discussion_posts';
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: 'token');
