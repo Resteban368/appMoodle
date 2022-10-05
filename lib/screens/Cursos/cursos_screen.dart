@@ -19,7 +19,6 @@ class CursosScreen extends StatelessWidget {
     final providerGeneral = Provider.of<GeneralService>(context, listen: false);
     final token = providerGeneral.tokencillo.toString();
     //mandamos a llamar el token para usarlo en esta clase
-    String imageDefault = 'images/course-default.png';
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -68,10 +67,11 @@ class CursosScreen extends StatelessWidget {
                   child: ListView.builder(
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int i) {
-                      final urlImg =
-                          snapshot.data![i].overviewfiles![0].fileurl +
-                              '?token=$token';
-                      print(urlImg);
+                      // final urlImg =
+                      //     snapshot.data![i].overviewfiles![0].fileurl +
+                      //         '?token=$token';
+                      // print(urlImg);
+                      // final urlImg = 'https://via.placeholder.com/350x150';
                       return ElasticInDown(
                         child:
                             //creamos una card para poner los cursos
@@ -111,13 +111,14 @@ class CursosScreen extends StatelessWidget {
                                           style: const TextStyle(fontSize: 20)),
                                       subtitle: const Text('Semestre 1'),
                                     ),
-                                    FadeInImage(
-                                      placeholder: const NetworkImage(
-                                          'https://via.placeholder.com/350x150'),
-                                      image: NetworkImage(urlImg),
-                                      // Image.network(
-                                      //   urlImg,
-                                    ),
+                                    Container(
+                                        color: AppTheme.primary,
+                                        width: double.infinity,
+                                        height: 200,
+                                        child: Image.asset(
+                                          'images/course-default.png',
+                                          fit: BoxFit.fill,
+                                        )),
                                     ButtonBar(
                                       children: [
                                         Center(

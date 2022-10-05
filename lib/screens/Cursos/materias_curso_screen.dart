@@ -53,14 +53,15 @@ class MateriasScreen extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(
-                    width: double.infinity,
-                    height: MediaQuery.of(context).size.height * 0.2,
-                    child: Image.network(
-                      urlImg,
-                      fit: BoxFit.fill,
-                    ),
-                  ),
+                  //TODO  IMAGEN
+                  Container(
+                      color: AppTheme.primary,
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height * 0.2,
+                      child: Image.asset(
+                        'images/course-default.png',
+                        fit: BoxFit.fill,
+                      )),
                   const SizedBox(
                     height: 5,
                   ),
@@ -220,18 +221,15 @@ class _ContenidoTemas extends StatelessWidget {
     final providerGeneral = Provider.of<GeneralService>(context, listen: false);
     final token = providerGeneral.tokencillo.toString();
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Archivos'),
+        title: const Text('Contenido'),
         backgroundColor: AppTheme.primary,
       ),
-      body: Container(
+      body: SizedBox(
         width: double.infinity,
-        color: Colors.grey[100],
         child: Column(
           children: [
-            const SizedBox(
-              height: 10,
-            ),
             Padding(
               padding: const EdgeInsets.all(15),
               child: Text(
@@ -240,252 +238,236 @@ class _ContenidoTemas extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-            const SizedBox(
-              height: 30,
-            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: contenido.modules!.length,
-                  itemBuilder: (BuildContext context, int i) {
-                    return ElasticInDown(
-                      child: Column(children: [
-                        if (contenido.modules![i].name ==
-                            'Espacios de Comunicación')
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
+              child: Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * 0.8,
+                child: ListView.builder(
+                    // scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: contenido.modules!.length,
+                    itemBuilder: (BuildContext context, int i) {
+                      return ElasticInDown(
+                        child: Column(children: [
+                          if (contenido.modules![i].modplural == 'Etiquetas')
+                            SizedBox(
                               width: double.infinity,
                               child: Text(
                                 contenido.modules![i].name!,
                                 style: const TextStyle(
                                     color: AppTheme.primary, fontSize: 20),
-                                // textDirection: TextDirection,
                               ),
-                            ),
-                          )
-                        else if (contenido.modules![i].name ==
-                            'Material de Lectura')
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: Text(
-                                contenido.modules![i].name!,
-                                style: const TextStyle(
-                                    color: AppTheme.primary, fontSize: 20),
-                                // textDirection: TextDirection.ltr,
-                              ),
-                            ),
-                          )
-                        else if (contenido.modules![i].name ==
-                            'Actividades Interactivas')
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: Text(
-                                contenido.modules![i].name!,
-                                style: const TextStyle(
-                                    color: AppTheme.primary, fontSize: 20),
-                                // textDirection: TextDirection.ltr,
-                              ),
-                            ),
-                          )
-                        else if (contenido.modules![i].name ==
-                            'Envío Evidencia de Aprendizaje')
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: Text(
-                                contenido.modules![i].name!,
-                                style: const TextStyle(
-                                    color: AppTheme.primary, fontSize: 20),
-                                // textDirection: TextDirection.ltr,
-                              ),
-                            ),
-                          )
-                        else if (contenido.modules![i].name ==
-                            'Envió de Producto')
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: Text(
-                                contenido.modules![i].name!,
-                                style: const TextStyle(
-                                    color: AppTheme.primary, fontSize: 20),
-                                // textDirection: TextDirection.ltr,
-                              ),
-                            ),
-                          )
-                        else if (contenido.modules![i].name ==
-                            'Envió de Producto TIF')
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: Text(
-                                contenido.modules![i].name!,
-                                style: const TextStyle(
-                                    color: AppTheme.primary, fontSize: 20),
-                                // textDirection: TextDirection.ltr,
-                              ),
-                            ),
-                          ),
-                        if (contenido.modules![i].name !=
-                                'Espacios de Comunicación' &&
-                            contenido
-                                    .modules![i].name !=
-                                'Material de Lectura' &&
-                            contenido.modules![i].name !=
-                                'Actividades Interactivas' &&
-                            contenido.modules![i].name !=
-                                'Envío Evidencia de Aprendizaje' &&
-                            contenido.modules![i].name != 'Envió de Producto')
-                          Card(
-                            // color: Colors.grey[200],
-                            elevation: 2,
-                            child: ListTile(
-                              leading: Column(
-                                children: [
-                                  if (contenido.modules![i].modplural! ==
-                                      'Foros')
-                                    Column(
-                                      children: [
-                                        const SizedBox(height: 5),
-                                        Image.asset(
-                                          'images/Foros.png',
-                                          fit: BoxFit.contain,
-                                          height: 40,
-                                        ),
-                                      ],
-                                    )
-                                  else if (contenido.modules![i].modplural! ==
-                                      'Carpetas')
-                                    Column(
-                                      children: [
-                                        const SizedBox(height: 5),
-                                        Image.asset(
-                                          'images/Carpetas.png',
-                                          fit: BoxFit.contain,
-                                          height: 40,
-                                        ),
-                                      ],
-                                    )
-                                  else if (contenido.modules![i].modplural! ==
-                                      'URLs')
-                                    Column(
-                                      children: [
-                                        const SizedBox(height: 5),
-                                        Image.asset(
-                                          'images/URLs.png',
-                                          fit: BoxFit.contain,
-                                          height: 40,
-                                        ),
-                                      ],
-                                    )
-                                  else if (contenido.modules![i].modplural! ==
-                                      'Archivos')
-                                    Column(
-                                      children: [
-                                        const SizedBox(height: 5),
-                                        Image.asset(
-                                          'images/Archivos.png',
-                                          fit: BoxFit.contain,
-                                          height: 40,
-                                        ),
-                                      ],
-                                    )
-                                  else if (contenido.modules![i].modplural! ==
-                                      'Páginas')
-                                    Column(
-                                      children: [
-                                        const SizedBox(height: 5),
-                                        Image.asset(
-                                          'images/Paginas.png',
-                                          fit: BoxFit.contain,
-                                          height: 40,
-                                        ),
-                                      ],
-                                    )
-                                  else if (contenido.modules![i].modplural! ==
-                                      'Tareas')
-                                    Column(
-                                      children: [
-                                        const SizedBox(height: 5),
-                                        Image.asset(
-                                          'images/Tareas.png',
-                                          fit: BoxFit.contain,
-                                          height: 40,
-                                        ),
-                                      ],
-                                    )
-                                ],
-                              ),
-                              title: Text(contenido.modules![i].name!,
-                                  style: const TextStyle(fontSize: 15)),
+                            )
+                          else
+                            Card(
+                              color: Colors.grey[200],
+                              elevation: 2,
+                              child: ListTile(
+                                leading: Column(
+                                  children: [
+                                    if (contenido.modules![i].modplural! ==
+                                        'Foros')
+                                      Column(
+                                        children: [
+                                          const SizedBox(height: 5),
+                                          Image.asset(
+                                            'images/Foros.png',
+                                            fit: BoxFit.contain,
+                                            height: 40,
+                                          ),
+                                        ],
+                                      )
+                                    else if (contenido.modules![i].modplural! ==
+                                        'Carpetas')
+                                      Column(
+                                        children: [
+                                          const SizedBox(height: 5),
+                                          Image.asset(
+                                            'images/Carpetas.png',
+                                            fit: BoxFit.contain,
+                                            height: 40,
+                                          ),
+                                        ],
+                                      )
+                                    else if (contenido.modules![i].modplural! ==
+                                        'URLs')
+                                      Column(
+                                        children: [
+                                          const SizedBox(height: 5),
+                                          Image.asset(
+                                            'images/URLs.png',
+                                            fit: BoxFit.contain,
+                                            height: 40,
+                                          ),
+                                        ],
+                                      )
+                                    else if (contenido.modules![i].modplural! ==
+                                        'Archivos')
+                                      Column(
+                                        children: [
+                                          const SizedBox(height: 5),
+                                          Image.asset(
+                                            'images/Archivos.png',
+                                            fit: BoxFit.contain,
+                                            height: 40,
+                                          ),
+                                        ],
+                                      )
+                                    else if (contenido.modules![i].modplural! ==
+                                        'Páginas')
+                                      Column(
+                                        children: [
+                                          const SizedBox(height: 5),
+                                          Image.asset(
+                                            'images/Paginas.png',
+                                            fit: BoxFit.contain,
+                                            height: 40,
+                                          ),
+                                        ],
+                                      )
+                                    else if (contenido.modules![i].modplural! ==
+                                        'Tareas')
+                                      Column(
+                                        children: [
+                                          const SizedBox(height: 5),
+                                          Image.asset(
+                                            'images/Tareas.png',
+                                            fit: BoxFit.contain,
+                                            height: 40,
+                                          ),
+                                        ],
+                                      )
+                                    else if (contenido.modules![i].modplural! ==
+                                        'Asistencias')
+                                      Column(
+                                        children: [
+                                          const SizedBox(height: 5),
+                                          Image.asset(
+                                            'images/asistencia.png',
+                                            fit: BoxFit.contain,
+                                            height: 40,
+                                          ),
+                                        ],
+                                      )
+                                    else if (contenido.modules![i].modplural! ==
+                                        'Cuestionarios')
+                                      Column(
+                                        children: [
+                                          const SizedBox(height: 5),
+                                          Image.asset(
+                                            'images/auto.png',
+                                            fit: BoxFit.contain,
+                                            height: 40,
+                                          ),
+                                        ],
+                                      )
+                                  ],
+                                ),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(height: 5),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(contenido.modules![i].name!,
+                                          style: const TextStyle(fontSize: 13)),
+                                    ),
+                                  ],
+                                ),
 
-                              // ignore: todo
-                              //TODO: tRAILING
-                              trailing: Column(
-                                children: [
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  if (contenido.modules![i].modplural! ==
-                                          'Tareas' ||
-                                      contenido.modules![i].modplural! ==
-                                          'Foros' ||
-                                      contenido.modules![i].modplural! ==
-                                          'Carpetas')
-                                    const Icon(Icons.keyboard_arrow_right,
-                                        color: AppTheme.primary, size: 30)
-                                  else if (contenido.modules![i].modplural! ==
-                                      'URLs')
-                                    const Icon(Icons.public_rounded,
-                                        color: AppTheme.primary, size: 30)
-                                  else
-                                    const Icon(Icons.download,
-                                        color: AppTheme.primary, size: 30),
-                                ],
-                              ),
-                              subtitle: Column(
-                                children: [
-                                  if (contenido.modules![i].contents?.isEmpty ??
-                                      true)
-                                    const Text('')
-                                  else
-                                    SizedBox(
-                                      width: double.infinity,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          'Tipo de Archivo: ' +
-                                              contenido.modules![i].modplural!,
+                                // ignore: todo
+                                //TODO: tRAILING
+                                trailing: Column(
+                                  children: [
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    if (contenido.modules![i].modplural! ==
+                                            'Tareas' ||
+                                        contenido.modules![i].modplural! ==
+                                            'Foros' ||
+                                        contenido.modules![i].modplural! ==
+                                            'Carpetas' ||
+                                        contenido.modules![i].modplural! ==
+                                            'Asistencias')
+                                      const Icon(Icons.keyboard_arrow_right,
+                                          color: AppTheme.primary, size: 30)
+                                    else if (contenido.modules![i].modplural! ==
+                                        'URLs')
+                                      const Icon(Icons.public_rounded,
+                                          color: AppTheme.primary, size: 30)
+                                    else
+                                      const Icon(Icons.download,
+                                          color: AppTheme.primary, size: 30),
+                                  ],
+                                ),
+                                subtitle: Column(
+                                  children: [
+                                    if (contenido
+                                            .modules![i].contents?.isEmpty ??
+                                        true)
+                                      const Text('')
+                                    else
+                                      SizedBox(
+                                        width: double.infinity,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            'Tipo de Archivo: ' +
+                                                contenido
+                                                    .modules![i].modplural!,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  //Todo: implemtacion de los Date
-                                  if (contenido.modules![i].dates?.isEmpty ??
-                                      true)
-                                    const Text('')
-                                  else
-                                    SizedBox(
-                                      width: double.infinity,
-                                      child: FittedBox(
-                                        child: Row(
-                                          children: [
-                                            Column(
+                                    //Todo: implemtacion de los Date
+                                    if (contenido.modules![i].dates?.isEmpty ??
+                                        true)
+                                      const Text('')
+                                    else
+                                      SizedBox(
+                                        width: double.infinity,
+                                        child: FittedBox(
+                                          child: Row(
+                                            children: [
+                                              Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                        contenido.modules![i]
+                                                            .dates![0].label!,
+                                                        style: const TextStyle(
+                                                            fontSize: 15,
+                                                            color: AppTheme
+                                                                .primary)),
+                                                    SizedBox(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.3,
+                                                      child: Text(
+                                                        getData(contenido
+                                                            .modules![i]
+                                                            .dates![0]
+                                                            .timestamp!),
+                                                        style: const TextStyle(
+                                                            fontSize: 10),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 20),
+                                                  ]),
+                                              const SizedBox(
+                                                width: 20,
+                                              ),
+                                              Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                       contenido.modules![i]
-                                                          .dates![0].label!,
+                                                          .dates![1].label!,
                                                       style: const TextStyle(
                                                           fontSize: 15,
                                                           color: AppTheme
@@ -499,111 +481,82 @@ class _ContenidoTemas extends StatelessWidget {
                                                     child: Text(
                                                       getData(contenido
                                                           .modules![i]
-                                                          .dates![0]
+                                                          .dates![1]
                                                           .timestamp!),
                                                       style: const TextStyle(
                                                           fontSize: 10),
                                                     ),
                                                   ),
                                                   const SizedBox(height: 20),
-                                                ]),
-                                            const SizedBox(
-                                              width: 20,
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                    contenido.modules![i]
-                                                        .dates![1].label!,
-                                                    style: const TextStyle(
-                                                        fontSize: 15,
-                                                        color:
-                                                            AppTheme.primary)),
-                                                SizedBox(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.3,
-                                                  child: Text(
-                                                    getData(contenido
-                                                        .modules![i]
-                                                        .dates![1]
-                                                        .timestamp!),
-                                                    style: const TextStyle(
-                                                        fontSize: 10),
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 20),
-                                              ],
-                                            )
-                                          ],
+                                                ],
+                                              )
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                ],
+                                  ],
+                                ),
+                                onTap: () async {
+                                  if (contenido.modules![i].modplural ==
+                                      'Tareas') {
+                                    //enviar a la pantalla de tareas
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => TareaScreen(
+                                                contenido.modules![i])));
+                                  } else if (contenido.modules![i].modplural ==
+                                      'Archivos') {
+                                    await launch(contenido
+                                            .modules![i].contents![0].fileurl! +
+                                        '&token=$token');
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) => PaginaScreen(
+                                    //             contenido.modules![i])));
+
+                                  } else if (contenido.modules![i].modplural ==
+                                      'Páginas') {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => PaginaScreen(
+                                                contenido.modules![i])));
+
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) => HelpScreen()));
+                                  } else if (contenido.modules![i].modplural ==
+                                      'Carpetas') {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => CarpetaScreen(
+                                                contenido.modules![i])));
+                                  } else if (contenido.modules![i].modplural ==
+                                      'URLs') {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => UrlScreen(
+                                                contenido.modules![i])));
+                                  } else if (contenido.modules![i].modplural ==
+                                      'Foros') {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ForoScreen(
+                                                contenido.modules![i])));
+                                  }
+                                },
                               ),
-                              onTap: () async {
-                                if (contenido.modules![i].modplural ==
-                                    'Tareas') {
-                                  //enviar a la pantalla de tareas
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => TareaScreen(
-                                              contenido.modules![i])));
-                                } else if (contenido.modules![i].modplural ==
-                                    'Archivos') {
-                                  await launch(contenido
-                                          .modules![i].contents![0].fileurl! +
-                                      '&token=$token');
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) => PaginaScreen(
-                                  //             contenido.modules![i])));
-
-                                } else if (contenido.modules![i].modplural ==
-                                    'Páginas') {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => PaginaScreen(
-                                              contenido.modules![i])));
-
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) => HelpScreen()));
-                                } else if (contenido.modules![i].modplural ==
-                                    'Carpetas') {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => CarpetaScreen(
-                                              contenido.modules![i])));
-                                } else if (contenido.modules![i].modplural ==
-                                    'URLs') {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => UrlScreen(
-                                              contenido.modules![i])));
-                                } else if (contenido.modules![i].modplural ==
-                                    'Foros') {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => ForoScreen(
-                                              contenido.modules![i])));
-                                }
-                              },
                             ),
-                          ),
-                      ]),
-                    );
-                  }),
+                        ]),
+                      );
+                    }),
+              ),
             ),
           ],
         ),

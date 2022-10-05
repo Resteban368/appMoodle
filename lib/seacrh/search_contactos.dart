@@ -41,7 +41,26 @@ class ContactosDeBusqueda extends SearchDelegate {
   Widget buildResults(BuildContext context) {
     // ignore: todo
     // TODO: implement buildResults
-    return const Text('buildResults');
+    return Container(
+      child: Center(
+        child: Column(
+          children: const [
+            SizedBox(
+              height: 100,
+            ),
+            Icon(
+              Icons.search_off,
+              size: 100,
+              color: Colors.grey,
+            ),
+            Text(
+              'No hay resultados',
+              style: TextStyle(fontSize: 15),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _emptyContainer() {

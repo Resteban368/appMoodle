@@ -35,7 +35,7 @@ class CardContactos extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 );
               } else {
-                if (snapshot.data.length == 0) {
+                if (contacto.length == null || contacto.length == 0) {
                   return Center(
                     child: Container(
                         width: double.infinity,
