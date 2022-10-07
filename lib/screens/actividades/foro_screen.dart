@@ -258,7 +258,6 @@ class _ForoScreenState extends State<ForoScreen> {
                                       'No hay debates',
                                       style: TextStyle(
                                         fontSize: 20,
-                                        color: Colors.black38,
                                       ),
                                     ),
                                   ],

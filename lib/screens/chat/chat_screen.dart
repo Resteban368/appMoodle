@@ -134,36 +134,39 @@ class SolicitudesScreen extends StatelessWidget {
                     child: ListView.builder(
                       physics: const BouncingScrollPhysics(),
                       itemCount: solicitudes.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          Slidable(
-                        key: const ValueKey(0),
-                        endActionPane: ActionPane(
-                          motion: const ScrollMotion(),
-                          children: [
-                            SlidableAction(
-                              flex: 2,
-                              onPressed: (_)
-                                  // =>showForm(allData[index]['id']),
-                                  {},
-                              foregroundColor: AppTheme.primary,
-                              icon: Icons.check,
-                              label: 'Aceptar',
-                            ),
-                            SlidableAction(
-                              flex: 2,
-                              onPressed: (_)
-                                  // =>deleteItem(allData[index]['id']),
-                                  {},
-                              foregroundColor: AppTheme.primary,
-                              icon: Icons.close,
-                              label: 'Rechazar',
-                            ),
-                          ],
-                        ),
-                        child: Container(
-                          width: double.infinity,
-                          child: Card(
-                            elevation: 5,
+                      itemBuilder: (BuildContext context, int index) => Card(
+                        elevation: 3,
+                        child: Slidable(
+                          key: const ValueKey(0),
+                          endActionPane: ActionPane(
+                            motion: const ScrollMotion(),
+                            children: [
+                              SlidableAction(
+                                backgroundColor:
+                                    Color.fromARGB(255, 65, 63, 63),
+                                flex: 2,
+                                onPressed: (_)
+                                    // =>showForm(allData[index]['id']),
+                                    {},
+                                foregroundColor: AppTheme.primary,
+                                icon: Icons.check,
+                                label: 'Aceptar',
+                              ),
+                              SlidableAction(
+                                backgroundColor:
+                                    Color.fromARGB(255, 65, 63, 63),
+                                flex: 2,
+                                onPressed: (_)
+                                    // =>deleteItem(allData[index]['id']),
+                                    {},
+                                foregroundColor: AppTheme.primary,
+                                icon: Icons.close,
+                                label: 'Rechazar',
+                              ),
+                            ],
+                          ),
+                          child: Container(
+                            width: double.infinity,
                             child: ListTile(
                               leading: CircleAvatar(
                                 backgroundImage: NetworkImage(

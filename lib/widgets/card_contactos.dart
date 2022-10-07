@@ -15,7 +15,6 @@ class CardContactos extends StatelessWidget {
     final siteInfo = Provider.of<InfoSiteService>(context, listen: false);
     // ignore: sized_box_for_whitespace
     return Container(
-      color: Colors.grey[200],
       width: double.infinity,
       height: MediaQuery.of(context).size.height * 0.14,
       // color: Colors.red,
@@ -37,10 +36,9 @@ class CardContactos extends StatelessWidget {
               } else {
                 if (contacto.length == null || contacto.length == 0) {
                   return Center(
-                    child: Container(
+                    child: SizedBox(
                         width: double.infinity,
                         height: 100,
-                        color: Colors.grey[200],
                         child: Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Card(
