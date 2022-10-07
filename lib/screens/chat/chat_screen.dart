@@ -34,42 +34,40 @@ class ChatScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Scaffold(
-        body: ChatBackground(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(height: 15),
-                Padding(
-                  padding: const EdgeInsets.only(left: 12, right: 12),
-                  child: Row(
-                    children: [
-                      const _BarraBuscar(),
-                      const SizedBox(width: 10),
-                      IconButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const SolicitudesScreen()));
-                          },
-                          icon: const Icon(
-                            Icons.inbox_outlined,
-                            size: 40,
-                            color: AppTheme.primary,
-                          )),
-                    ],
-                  ),
+      body: Container(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(height: 15),
+              Padding(
+                padding: const EdgeInsets.only(left: 12, right: 12),
+                child: Row(
+                  children: [
+                    const _BarraBuscar(),
+                    const SizedBox(width: 10),
+                    IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const SolicitudesScreen()));
+                        },
+                        icon: const Icon(
+                          Icons.inbox_outlined,
+                          size: 40,
+                          color: AppTheme.primary,
+                        )),
+                  ],
                 ),
-                const SizedBox(height: 15),
-                const CardContactos(),
-                const SizedBox(height: 10),
-                const _ContenedorBotones(),
-                const SizedBox(height: 10),
-                const _ContenedorListChat(),
-              ],
-            ),
+              ),
+              const SizedBox(height: 15),
+              const CardContactos(),
+              const SizedBox(height: 10),
+              const _ContenedorBotones(),
+              const SizedBox(height: 10),
+              const _ContenedorListChat(),
+            ],
           ),
         ),
       ),
@@ -87,9 +85,8 @@ class SolicitudesScreen extends StatelessWidget {
     final siteInfo = Provider.of<InfoSiteService>(context, listen: false);
 
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Solicitudes'),
+        title: const Text('Solicitudes'),
         backgroundColor: AppTheme.primary,
       ),
       body: FutureBuilder(
@@ -103,7 +100,7 @@ class SolicitudesScreen extends StatelessWidget {
             final solicitudes = snapshot.data;
             if (solicitudes.length == 0) {
               return Center(
-                  child: Container(
+                  child: SizedBox(
                 width: double.infinity,
                 height: 200,
                 // color: Colors.red,
@@ -148,7 +145,6 @@ class SolicitudesScreen extends StatelessWidget {
                               onPressed: (_)
                                   // =>showForm(allData[index]['id']),
                                   {},
-                              backgroundColor: Colors.white,
                               foregroundColor: AppTheme.primary,
                               icon: Icons.check,
                               label: 'Aceptar',
@@ -158,7 +154,6 @@ class SolicitudesScreen extends StatelessWidget {
                               onPressed: (_)
                                   // =>deleteItem(allData[index]['id']),
                                   {},
-                              backgroundColor: Colors.white,
                               foregroundColor: AppTheme.primary,
                               icon: Icons.close,
                               label: 'Rechazar',

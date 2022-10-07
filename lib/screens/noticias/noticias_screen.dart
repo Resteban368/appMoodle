@@ -31,7 +31,6 @@ class NoticiasScreen extends StatelessWidget {
           ),
         ],
       ),
-      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(

@@ -18,7 +18,6 @@ class _NotificacionesScreenState extends State<NotificacionesScreen> {
     final notificacion =
         Provider.of<NotificacionesService>(context, listen: false);
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Notificaciones'),
         backgroundColor: AppTheme.primary,
@@ -71,7 +70,7 @@ class _NotificacionesScreenState extends State<NotificacionesScreen> {
                     return Card(
                       elevation: 2,
                       color: notificaciones[index].read == true
-                          ? Colors.white
+                          ? Colors.grey[400]
                           : AppTheme.notificacionesLeidas,
                       child: ListTile(
                         leading: Column(children: [
@@ -85,7 +84,7 @@ class _NotificacionesScreenState extends State<NotificacionesScreen> {
                                 Column(
                                   children: [
                                     if (notificaciones[index].read == false)
-                                      const Icon(Icons.lightbulb,
+                                      const Icon(Icons.lightbulb_outline,
                                           size: 30, color: Colors.white)
                                     else if (notificaciones[index].read == true)
                                       const Icon(Icons.lightbulb,

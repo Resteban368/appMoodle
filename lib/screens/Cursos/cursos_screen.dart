@@ -20,7 +20,6 @@ class CursosScreen extends StatelessWidget {
     final token = providerGeneral.tokencillo.toString();
     //mandamos a llamar el token para usarlo en esta clase
     return Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
           title: const Text('Cursos'),
           backgroundColor: AppTheme.primary,
@@ -87,7 +86,6 @@ class CursosScreen extends StatelessWidget {
                                 height:
                                     MediaQuery.of(context).size.height * 0.4,
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
                                   border: Border.all(color: AppTheme.primary),
                                   borderRadius: BorderRadius.circular(10),
                                   //sombra

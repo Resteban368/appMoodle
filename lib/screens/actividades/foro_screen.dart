@@ -43,7 +43,6 @@ class _ForoScreenState extends State<ForoScreen> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: AppTheme.primary,
           title: Text(widget.contenido.name!),
@@ -87,7 +86,6 @@ class _ForoScreenState extends State<ForoScreen> {
                             Container(
                               width: double.infinity,
                               height: MediaQuery.of(context).size.height * 0.05,
-                              color: Colors.white,
                               child: TextFormField(
                                 validator: (value) {
                                   if (value != null && value.length >= 2) {
@@ -280,7 +278,6 @@ class _ForoScreenState extends State<ForoScreen> {
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return Card(
-                                      color: Colors.grey[200],
                                       elevation: 2,
                                       child: ListTile(
                                         title: Text(
@@ -408,7 +405,6 @@ class _ContenidoDebatesState extends State<_ContenidoDebates> {
     final foroDiscussion =
         Provider.of<ForoDiscussionService>(context, listen: false);
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: AppTheme.primary,
         title: Text(widget.name),
@@ -446,10 +442,9 @@ class _ContenidoDebatesState extends State<_ContenidoDebates> {
                           elevation: 5,
                           child: Column(
                             children: [
-                              Container(
+                              SizedBox(
                                 width: double.infinity,
                                 height: 80,
-                                color: Colors.grey[200],
                                 child: ListTile(
                                   leading: Image.network(
                                     post[i].author.urls.profileimage!,
@@ -462,16 +457,14 @@ class _ContenidoDebatesState extends State<_ContenidoDebates> {
                                     style: {
                                       'body': Style(
                                           fontSize: const FontSize(14),
-                                          color: const Color(0xFF000000),
                                           //justificar todo el texto
                                           textAlign: TextAlign.justify),
                                     },
                                   ),
                                 ),
                               ),
-                              Container(
+                              SizedBox(
                                 width: double.infinity,
-                                color: Colors.white,
                                 height: 100,
                                 child: SingleChildScrollView(
                                   child: Html(
@@ -479,7 +472,6 @@ class _ContenidoDebatesState extends State<_ContenidoDebates> {
                                     style: {
                                       'body': Style(
                                           fontSize: const FontSize(15),
-                                          color: const Color(0xFF000000),
                                           //justificar todo el texto
                                           textAlign: TextAlign.justify),
                                     },
@@ -547,8 +539,7 @@ class _ContenidoDebatesState extends State<_ContenidoDebates> {
                                                                   fontSize:
                                                                       const FontSize(
                                                                           15),
-                                                                  color: const Color(
-                                                                      0xFF000000),
+
                                                                   //justificar todo el texto
                                                                   textAlign:
                                                                       TextAlign

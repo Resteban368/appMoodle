@@ -29,7 +29,6 @@ class MateriasScreen extends StatelessWidget {
     final urlImg = contenido.overviewfiles![0].fileurl! + '?token=$token';
     final htmlData = contenido.summary;
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(contenido.fullname!, style: const TextStyle(fontSize: 18)),
         backgroundColor: AppTheme.primary,
@@ -73,7 +72,6 @@ class MateriasScreen extends StatelessWidget {
                         style: {
                           'body': Style(
                               fontSize: const FontSize(15),
-                              color: const Color(0xFF000000),
                               //justificar todo el texto
                               textAlign: TextAlign.justify),
                         },
@@ -221,7 +219,6 @@ class _ContenidoTemas extends StatelessWidget {
     final providerGeneral = Provider.of<GeneralService>(context, listen: false);
     final token = providerGeneral.tokencillo.toString();
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Contenido'),
         backgroundColor: AppTheme.primary,
@@ -261,7 +258,7 @@ class _ContenidoTemas extends StatelessWidget {
                             )
                           else
                             Card(
-                              color: Colors.grey[200],
+                              // color: Colors.grey[200],
                               elevation: 2,
                               child: ListTile(
                                 leading: Column(

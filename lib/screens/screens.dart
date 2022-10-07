@@ -1,3 +1,5 @@
+export 'package:campus_virtual/screens/user/configuracion.dart';
+
 export 'package:campus_virtual/utils/html_screen.dart';
 
 export 'package:campus_virtual/screens/actividades/pagina_screen.dart';

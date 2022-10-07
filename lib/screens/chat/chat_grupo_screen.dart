@@ -20,16 +20,13 @@ class ChatGrupo extends StatelessWidget {
           ),
         ],
       ),
-      body: Container(
-        color: Colors.white,
-        child: Column(
-          children: const [
-            SizedBox(height: 15),
-            NuevoGrupo(),
-            SizedBox(height: 15),
-            _ContenedorListChat(),
-          ],
-        ),
+      body: Column(
+        children: const [
+          SizedBox(height: 15),
+          NuevoGrupo(),
+          SizedBox(height: 15),
+          _ContenedorListChat(),
+        ],
       ),
     );
   }
