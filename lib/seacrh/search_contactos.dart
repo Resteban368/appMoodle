@@ -109,10 +109,9 @@ class ContactosDeBusqueda extends SearchDelegate {
               //cerrar el teclado
               FocusScope.of(context).unfocus();
             },
-            child: Container(
+            child: SizedBox(
               width: double.infinity,
               height: MediaQuery.of(context).size.height * 0.9,
-              color: Colors.white,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElasticInDown(

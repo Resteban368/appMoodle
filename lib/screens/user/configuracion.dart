@@ -18,6 +18,7 @@ class _ConfiguracionScreenState extends State<ConfiguracionScreen> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Configuración'),
+          backgroundColor: AppTheme.primary,
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -25,13 +26,10 @@ class _ConfiguracionScreenState extends State<ConfiguracionScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Ajustes',
-                    style:
-                        TextStyle(fontSize: 45, fontWeight: FontWeight.w300)),
                 const Divider(),
                 SwitchListTile.adaptive(
                     value: Preferences.isDarkmode,
-                    title: const Text('Darkmode'),
+                    title: const Text('Modo oscuro'),
                     onChanged: (value) {
                       Preferences.isDarkmode = value;
                       final themeProvider =

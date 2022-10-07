@@ -54,26 +54,29 @@ class _loginForm extends StatelessWidget {
         children: [
           const SizedBox(height: 30),
           TextFormField(
+            style: const TextStyle(color: Colors.black87),
             controller: usernameController,
             autocorrect: false,
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecorations.authInputDecoration(
-                hintText: 'es.rodriguez',
+                hintText: 'nb.apellido',
                 labelText: 'Usuario Chaira',
                 prefixIcon: Icons.email),
             onChanged: (value) => formProvider.username = value,
             //validacon para el campo email
             validator: (value) {
-              String pattern = r'';
+              String pattern = r'.';
               // ignore: unnecessary_new
               RegExp regExp = new RegExp(pattern);
-              return regExp.hasMatch(value ?? '') ? null : 'Invalid email';
+              return regExp.hasMatch(value ?? '') ? null : 'Ususario invalido';
             },
           ),
           const SizedBox(
             height: 10,
           ),
           TextFormField(
+            //color textfield
+            style: const TextStyle(color: Colors.black87),
             controller: passController,
             autocorrect: false,
             keyboardType: TextInputType.emailAddress,
@@ -85,7 +88,7 @@ class _loginForm extends StatelessWidget {
             onChanged: (value) => formProvider.password = value,
             validator: (value) {
               if (value != null && value.length >= 6) return null;
-              return 'Invalida la contraseña minimo 4 caracteres';
+              return 'Contraseña invalida minimo 4 caracteres';
             },
           ),
           const SizedBox(
