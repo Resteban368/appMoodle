@@ -123,7 +123,7 @@ class _NotificacionesScreenState extends State<NotificacionesScreen> {
                           color: AppTheme.primary,
                           size: 25,
                         ),
-                        onTap: () {
+                        onTap: () async {
                           //enviar a la pagina de solicitud de contacto si es notificacion de messagecontactrequests
                           if (notificaciones[index].eventtype ==
                               'messagecontactrequests') {
@@ -132,6 +132,9 @@ class _NotificacionesScreenState extends State<NotificacionesScreen> {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         const SolicitudesScreen()));
+
+                            await notificacion
+                                .leidaId(notificaciones[index].id!);
                           } else if (notificaciones[index].eventtype ==
                               'assign_notification') {
                             // Navigator.push(

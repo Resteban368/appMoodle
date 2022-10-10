@@ -34,6 +34,8 @@ class _AccountScreenState extends State<AccountScreen> {
         'https://st1.uvnimg.com/d4/4a/006304a74db4902c0b4d8d8026c8/chevrolet-corvette-c8-stingray-2020-1280-08.jpg';
 
     late bool habilitarForm = userInfoProvider.habilitarForm;
+
+    print(userInfoProvider2.userInfo.profileimageurl!);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Perfil'),

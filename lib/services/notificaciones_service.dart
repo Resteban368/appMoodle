@@ -81,4 +81,22 @@ class NotificacionesService extends ChangeNotifier {
     }
     return 0;
   }
+
+//marcar una notificacion ledia por id
+  Future<void> leidaId(int notificationid) async {
+    String _wsfunction = 'core_message_mark_notification_read';
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: 'token');
+    final url =
+        '$_baseUrl${_url}wsfunction=$_wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&notificationid=$notificationid';
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode < 400) {
+        notifyListeners();
+      }
+    } catch (e, s) {
+      print('error en el service de info site: $e');
+      print(s);
+    }
+  }
 }
