@@ -1,3 +1,5 @@
+export 'package:campus_virtual/services/chat_solicitudes_service.dart';
+
 export 'package:campus_virtual/services/contacto_service.dart';
 
 export 'package:campus_virtual/services/notificaciones_service.dart';

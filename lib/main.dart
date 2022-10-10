@@ -57,6 +57,10 @@ class AppState extends StatelessWidget {
           create: (_) => ContactosService(),
           lazy: false,
         ),
+        ChangeNotifierProvider(
+          create: (_) => ChatSolicitudService(),
+          lazy: false,
+        ),
       ],
       child: const MyApp(),
     );

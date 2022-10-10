@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:animate_do/animate_do.dart';
 import 'package:campus_virtual/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -75,14 +77,21 @@ class ChatScreen extends StatelessWidget {
   }
 }
 
-class SolicitudesScreen extends StatelessWidget {
+class SolicitudesScreen extends StatefulWidget {
   const SolicitudesScreen({Key? key}) : super(key: key);
 
+  @override
+  State<SolicitudesScreen> createState() => _SolicitudesScreenState();
+}
+
+class _SolicitudesScreenState extends State<SolicitudesScreen> {
   @override
   Widget build(BuildContext context) {
     final contactosService =
         Provider.of<ContactosService>(context, listen: false);
     final siteInfo = Provider.of<InfoSiteService>(context, listen: false);
+    final chatSolicitud =
+        Provider.of<ChatSolicitudService>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -127,6 +136,9 @@ class SolicitudesScreen extends StatelessWidget {
                 onRefresh: () async {
                   await contactosService
                       .getSolicitudes(siteInfo.infoSite.userid!);
+                  setState(
+                    () {},
+                  );
                 },
                 child: ElasticInDown(
                   child: Padding(
@@ -145,9 +157,25 @@ class SolicitudesScreen extends StatelessWidget {
                                 backgroundColor:
                                     Color.fromARGB(255, 65, 63, 63),
                                 flex: 2,
-                                onPressed: (_)
-                                    // =>showForm(allData[index]['id']),
-                                    {},
+                                onPressed: (_) async {
+                                  await chatSolicitud.acepetarSolicitud(
+                                      solicitudes[index].id!,
+                                      siteInfo.infoSite.userid!);
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      backgroundColor:
+                                          Color.fromARGB(255, 32, 99, 35),
+                                      content: Text(
+                                          'Solicitud aceptada correctamente'),
+                                    ),
+                                  );
+                                  await contactosService.getSolicitudes(
+                                      siteInfo.infoSite.userid!);
+                                  setState(
+                                    () {},
+                                  );
+                                },
                                 foregroundColor: AppTheme.primary,
                                 icon: Icons.check,
                                 label: 'Aceptar',
@@ -156,9 +184,24 @@ class SolicitudesScreen extends StatelessWidget {
                                 backgroundColor:
                                     Color.fromARGB(255, 65, 63, 63),
                                 flex: 2,
-                                onPressed: (_)
-                                    // =>deleteItem(allData[index]['id']),
-                                    {},
+                                onPressed: (_) async {
+                                  await chatSolicitud.rechazarSolicitud(
+                                      solicitudes[index].id!,
+                                      siteInfo.infoSite.userid!);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      backgroundColor:
+                                          Color.fromARGB(255, 235, 99, 90),
+                                      content: Text(
+                                          'Solicitud rechazada correctamente'),
+                                    ),
+                                  );
+                                  await contactosService.getSolicitudes(
+                                      siteInfo.infoSite.userid!);
+                                  setState(
+                                    () {},
+                                  );
+                                },
                                 foregroundColor: AppTheme.primary,
                                 icon: Icons.close,
                                 label: 'Rechazar',
