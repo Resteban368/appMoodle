@@ -321,7 +321,6 @@ class _ContenedorListChat extends StatelessWidget {
                                     style: {
                                       "html": Style(
                                         fontSize: const FontSize(14.0),
-                                        color: Colors.black,
                                       ),
                                     },
                                   )
@@ -331,6 +330,9 @@ class _ContenedorListChat extends StatelessWidget {
                             ),
                             trailing: Column(
                               children: [
+                                const SizedBox(
+                                  width: 10,
+                                ),
                                 if (chatList[i].messages.length > 0)
                                   Text(
                                       getHora(
