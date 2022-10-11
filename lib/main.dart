@@ -36,6 +36,9 @@ class AppState extends StatelessWidget {
           create: (_) => UserProvider(),
         ),
         ChangeNotifierProvider(
+          create: (_) => ChatListService(),
+        ),
+        ChangeNotifierProvider(
           create: (_) => CursoService(),
         ),
         ChangeNotifierProvider(
@@ -55,11 +58,12 @@ class AppState extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => ContactosService(),
-          lazy: false,
         ),
         ChangeNotifierProvider(
           create: (_) => ChatSolicitudService(),
-          lazy: false,
+        ),
+        ChangeNotifierProvider(
+          create: (_) => TareaService(),
         ),
       ],
       child: const MyApp(),

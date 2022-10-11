@@ -1,6 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:math';
+
 import 'package:animate_do/animate_do.dart';
+import 'package:campus_virtual/utils/utils.dart';
 import 'package:campus_virtual/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -10,6 +13,7 @@ import '../../seacrh/search_contactos.dart';
 import '../../services/sevices.dart';
 import '../screens.dart';
 import '/theme/app_bar_theme.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class ChatScreen extends StatelessWidget {
   void fucniones() async {}
@@ -36,41 +40,39 @@ class ChatScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Container(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(height: 15),
-              Padding(
-                padding: const EdgeInsets.only(left: 12, right: 12),
-                child: Row(
-                  children: [
-                    const _BarraBuscar(),
-                    const SizedBox(width: 10),
-                    IconButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const SolicitudesScreen()));
-                        },
-                        icon: const Icon(
-                          Icons.inbox_outlined,
-                          size: 40,
-                          color: AppTheme.primary,
-                        )),
-                  ],
-                ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 15),
+            Padding(
+              padding: const EdgeInsets.only(left: 12, right: 12),
+              child: Row(
+                children: [
+                  const _BarraBuscar(),
+                  const SizedBox(width: 10),
+                  IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const SolicitudesScreen()));
+                      },
+                      icon: const Icon(
+                        Icons.inbox_outlined,
+                        size: 40,
+                        color: AppTheme.primary,
+                      )),
+                ],
               ),
-              const SizedBox(height: 15),
-              const CardContactos(),
-              const SizedBox(height: 10),
-              const _ContenedorBotones(),
-              const SizedBox(height: 10),
-              const _ContenedorListChat(),
-            ],
-          ),
+            ),
+            const SizedBox(height: 15),
+            const CardContactos(),
+            const SizedBox(height: 10),
+            const _ContenedorBotones(),
+            const SizedBox(height: 10),
+            const _ContenedorListChat(),
+          ],
         ),
       ),
     );
@@ -271,18 +273,23 @@ class _ContenedorListChat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final siteInfo = Provider.of<InfoSiteService>(context, listen: false);
+    final chatService = Provider.of<ChatListService>(context, listen: false);
+
     return SizedBox(
         width: double.infinity,
         height: MediaQuery.of(context).size.height * 0.62,
         child: FutureBuilder(
+          future: chatService.getChatList(siteInfo.infoSite.userid!),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
             } else {
+              final chatList = snapshot.data;
               return ListView.builder(
-                itemCount: 1,
+                itemCount: chatList.length,
                 itemBuilder: (BuildContext context, int i) {
                   return ElasticInDown(
                     child: Stack(
@@ -290,22 +297,50 @@ class _ContenedorListChat extends StatelessWidget {
                         Card(
                           child: ListTile(
                             leading: Hero(
-                              tag: 'erm',
+                              tag: chatList[i].id,
                               child: ClipRRect(
-                                borderRadius: BorderRadius.circular(50),
-                                child: const FadeInImage(
-                                  placeholder: AssetImage('images/acount.png'),
-                                  image: AssetImage('images/acount.png'),
-                                  width: 60,
-                                  height: 60,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: FadeInImage(
+                                    placeholder: const AssetImage(
+                                        'images/userDefault.png'),
+                                    image: NetworkImage(
+                                        chatList[i].members[0].profileimageurl),
+                                    width: 60,
+                                    height: 60,
+                                    fit: BoxFit.cover,
+                                  )),
                             ),
-                            title: const Text('Esteban Rodriguez',
-                                style: TextStyle(color: AppTheme.primary)),
-                            subtitle: const Text('Hola como estas?'),
-                            trailing: const Text('2:45'),
+                            title: Text(chatList[i].members[0].fullname!,
+                                style:
+                                    const TextStyle(color: AppTheme.primary)),
+                            subtitle: Column(
+                              children: [
+                                if (chatList[i].messages.length > 0)
+                                  Html(
+                                    data: chatList[i].messages[0].text!,
+                                    style: {
+                                      "html": Style(
+                                        fontSize: const FontSize(14.0),
+                                        color: Colors.black,
+                                      ),
+                                    },
+                                  )
+                                else
+                                  const Text(''),
+                              ],
+                            ),
+                            trailing: Column(
+                              children: [
+                                if (chatList[i].messages.length > 0)
+                                  Text(
+                                      getHora(
+                                          chatList[i].messages[0].timecreated),
+                                      style: const TextStyle(
+                                          color: AppTheme.primary))
+                                else
+                                  const Text(''),
+                              ],
+                            ),
                             onTap: () {
                               Navigator.push(
                                   context,
@@ -399,7 +434,7 @@ class _ContenedorBotones extends StatelessWidget {
       child: Padding(
           padding: const EdgeInsets.only(right: 20, left: 20),
           child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 //ruta a la pantalle de crear grupo
                 Navigator.pushNamed(context, 'grupos');
               },

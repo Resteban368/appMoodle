@@ -45,7 +45,7 @@ class CursosScreen extends StatelessWidget {
             } else {
               if (snapshot.data.length == 0) {
                 return Center(
-                  child: Container(
+                  child: SizedBox(
                     width: double.infinity,
                     height: 200,
                     child: Column(

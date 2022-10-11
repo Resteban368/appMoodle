@@ -11,3 +11,9 @@ String getData(int timestamp1) {
   final time = DateFormat('h:mm a').format(date);
   return '$date1 $time'.inCaps;
 }
+
+String getHora(int timestamp1) {
+  final DateTime date = DateTime.fromMillisecondsSinceEpoch(timestamp1 * 1000);
+  final time = DateFormat('h:mm a').format(date);
+  return time.inCaps;
+}

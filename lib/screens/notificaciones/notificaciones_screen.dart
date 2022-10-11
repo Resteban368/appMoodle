@@ -6,7 +6,6 @@ import '../screens.dart';
 
 class NotificacionesScreen extends StatefulWidget {
   const NotificacionesScreen({Key? key}) : super(key: key);
-
   @override
   State<NotificacionesScreen> createState() => _NotificacionesScreenState();
 }
@@ -132,7 +131,6 @@ class _NotificacionesScreenState extends State<NotificacionesScreen> {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         const SolicitudesScreen()));
-
                             await notificacion
                                 .leidaId(notificaciones[index].id!);
                           } else if (notificaciones[index].eventtype ==

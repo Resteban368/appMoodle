@@ -80,7 +80,7 @@ class _loginForm extends StatelessWidget {
             controller: passController,
             autocorrect: false,
             keyboardType: TextInputType.emailAddress,
-            obscureText: false,
+            obscureText: true,
             decoration: InputDecorations.authInputDecoration(
                 hintText: '********',
                 labelText: 'Contraseña',

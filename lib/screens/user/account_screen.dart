@@ -38,7 +38,7 @@ class _AccountScreenState extends State<AccountScreen> {
     print(userInfoProvider2.userInfo.profileimageurl!);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Perfil'),
+        title: Text(userInfoProvider2.userInfo.fullname!),
         backgroundColor: AppTheme.primary,
         //para cerrar sesion
         actions: [
@@ -96,75 +96,72 @@ class _AccountScreenState extends State<AccountScreen> {
           },
           child: ListView(
             children: [
-              Container(
-                child: Center(
-                  child: Stack(
-                    children: [
-                      Container(
-                        width: 130,
-                        height: 130,
-                        decoration: BoxDecoration(
-                          border: Border.all(width: 4, color: Colors.white),
-                          boxShadow: [
-                            BoxShadow(
-                                spreadRadius: 2,
-                                blurRadius: 10,
-                                color: Colors.black.withOpacity(0.1)),
-                          ],
-                          shape: BoxShape.circle,
-                        ),
-                        child: CircleAvatar(
-                          radius: 60,
-                          backgroundColor: Colors.white,
-                          child: ClipOval(
-                            child: SizedBox(
-                              width: 120,
-                              height: 120,
-                              child: (_imageFile != null)
-                                  ? Image.file(
-                                      File(_imageFile!.path),
-                                      fit: BoxFit.fill,
-                                    )
-                                  : Image.network(
-                                      userInfoProvider2
-                                                  .userInfo.profileimageurl !=
-                                              null
-                                          ? userInfoProvider2
-                                              .userInfo.profileimageurl!
-                                          : imgeDefault,
-                                      // imgeDefault,
-
-                                      fit: BoxFit.fill,
-                                    ),
-                            ),
+              Center(
+                child: Stack(
+                  children: [
+                    Container(
+                      width: 130,
+                      height: 130,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 4, color: Colors.white),
+                        boxShadow: [
+                          BoxShadow(
+                              spreadRadius: 2,
+                              blurRadius: 10,
+                              color: Colors.black.withOpacity(0.1)),
+                        ],
+                        shape: BoxShape.circle,
+                      ),
+                      child: CircleAvatar(
+                        radius: 60,
+                        backgroundColor: Colors.white,
+                        child: ClipOval(
+                          child: SizedBox(
+                            width: 120,
+                            height: 120,
+                            child: (_imageFile != null)
+                                ? Image.file(
+                                    File(_imageFile!.path),
+                                    fit: BoxFit.fill,
+                                  )
+                                : Image.network(
+                                    userInfoProvider2
+                                                .userInfo.profileimageurl !=
+                                            null
+                                        ? userInfoProvider2
+                                            .userInfo.profileimageurl!
+                                        : imgeDefault,
+                                    // imgeDefault,
+                                    fit: BoxFit.fill,
+                                  ),
                           ),
                         ),
                       ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: Container(
-                          height: 45,
-                          width: 45,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(width: 4, color: Colors.white),
-                              color: AppTheme.primary),
-                          child: IconButton(
-                              onPressed: () {
-                                showModalBottomSheet(
-                                    context: context,
-                                    builder: (context) => BottomSheetImage());
-                              },
-                              icon: const Icon(
-                                Icons.edit,
-                                color: Colors.white,
-                                size: 20,
-                              )),
-                        ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        height: 45,
+                        width: 45,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(width: 4, color: Colors.white),
+                            color: AppTheme.primary),
+                        child: IconButton(
+                            onPressed: () {
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) => BottomSheetImage());
+                            },
+                            icon: const Icon(
+                              Icons.edit,
+                              color: Colors.white,
+                              size: 20,
+                            )),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 30),
