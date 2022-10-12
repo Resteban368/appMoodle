@@ -292,80 +292,69 @@ class _ContenedorListChat extends StatelessWidget {
                 itemCount: chatList.length,
                 itemBuilder: (BuildContext context, int i) {
                   return ElasticInDown(
-                    child: Stack(
-                      children: [
-                        Card(
-                          child: ListTile(
-                            leading: Hero(
-                              tag: chatList[i].id,
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(50),
-                                  child: FadeInImage(
-                                    placeholder: const AssetImage(
-                                        'images/userDefault.png'),
-                                    image: NetworkImage(
-                                        chatList[i].members[0].profileimageurl),
-                                    width: 60,
-                                    height: 60,
-                                    fit: BoxFit.cover,
-                                  )),
+                    child: Card(
+                      child: ListTile(
+                        leading: Hero(
+                          tag: chatList[i].id,
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: FadeInImage(
+                                placeholder:
+                                    const AssetImage('images/userDefault.png'),
+                                image: NetworkImage(
+                                    chatList[i].members[0].profileimageurl),
+                                width: 60,
+                                height: 60,
+                                fit: BoxFit.cover,
+                              )),
+                        ),
+                        title: Text(chatList[i].members[0].fullname!,
+                            style: const TextStyle(color: AppTheme.primary)),
+                        subtitle: Column(
+                          children: [
+                            if (chatList[i].messages.length > 0)
+                              Html(
+                                data: chatList[i].messages[0].text!,
+                                style: {
+                                  "html": Style(
+                                    fontSize: const FontSize(14.0),
+                                  ),
+                                },
+                              )
+                            else
+                              const Text(''),
+                          ],
+                        ),
+                        trailing: Column(
+                          children: [
+                            const SizedBox(
+                              height: 20,
                             ),
-                            title: Text(chatList[i].members[0].fullname!,
-                                style:
-                                    const TextStyle(color: AppTheme.primary)),
-                            subtitle: Column(
-                              children: [
-                                if (chatList[i].messages.length > 0)
-                                  Html(
-                                    data: chatList[i].messages[0].text!,
-                                    style: {
-                                      "html": Style(
-                                        fontSize: const FontSize(14.0),
-                                      ),
-                                    },
-                                  )
-                                else
-                                  const Text(''),
-                              ],
-                            ),
-                            trailing: Column(
-                              children: [
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                if (chatList[i].messages.length > 0)
+                            if (chatList[i].messages.length > 0)
+                              Column(
+                                children: [
+                                  Text(
+                                      getFecha(
+                                          chatList[i].messages[0].timecreated),
+                                      style: const TextStyle(fontSize: 9)),
                                   Text(
                                       getHora(
                                           chatList[i].messages[0].timecreated),
-                                      style: const TextStyle(
-                                          color: AppTheme.primary))
-                                else
-                                  const Text(''),
-                              ],
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          const ChatUserScreen()));
-                            },
-                          ),
+                                      style: const TextStyle()),
+                                ],
+                              )
+                            else
+                              const Text(''),
+                          ],
                         ),
-                        //onlie
-                        Positioned(
-                          top: 9,
-                          right: MediaQuery.of(context).size.width * 0.8,
-                          child: Container(
-                            width: 17,
-                            height: 17,
-                            decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                          ),
-                        ),
-                      ],
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      ChatUserScreen(chatList[i])));
+                        },
+                      ),
                     ),
                   );
                 },

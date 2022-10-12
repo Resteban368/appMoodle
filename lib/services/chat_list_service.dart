@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/chat.dart';
+
 class ChatListService extends ChangeNotifier {
   final String _baseUrl =
       'https://plataformavirtual.uniamazonia.edu.co/DistanciaVirtual';
@@ -34,6 +36,30 @@ class ChatListService extends ChangeNotifier {
       }
     } catch (e) {
       print('error en el chatList service: $e');
+    }
+    notifyListeners();
+    return null;
+  }
+
+  late ChatResponse messages = ChatResponse();
+  //peticion para obtener los mensajes de un chat
+  Future<ChatResponse?> getMessages(int conversationid, int userid) async {
+    const String wsfunction = 'core_message_get_conversation';
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: 'token');
+    final url2 =
+        '$_baseUrl${_url}wsfunction=$wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&conversationid=$conversationid&userid=$userid&includecontactrequests=1&includeprivacyinfo=1';
+    try {
+      final response = await http.get(Uri.parse(url2));
+      if (response.statusCode < 400) {
+        final ChatResponse decodeData = ChatResponse.fromJson(response.body);
+        messages = decodeData;
+        print(messages);
+        notifyListeners();
+        return messages;
+      }
+    } catch (e) {
+      print('error en el chat-service: $e');
     }
     notifyListeners();
     return null;

@@ -1,22 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:provider/provider.dart';
 
+import '../../models/models.dart';
+import '../../services/sevices.dart';
 import '../../theme/theme.dart';
+import '../../utils/utils.dart';
 
 class ChatUserScreen extends StatelessWidget {
-  const ChatUserScreen({Key? key}) : super(key: key);
+  Conversation chatList;
+  ChatUserScreen(this.chatList, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppTheme.primary,
-      body: Column(children: [
-        Container(
-          width: double.infinity,
-          height: MediaQuery.of(context).size.height * 0.22,
-          color: AppTheme.primary,
-          child: Stack(
-            children: [
-              Padding(
+    final chatService = Provider.of<ChatListService>(context, listen: false);
+    final siteInfo = Provider.of<InfoSiteService>(context, listen: false);
+    return GestureDetector(
+      onTap: () {
+        //cerrar teclado
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Column(children: [
+            Container(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height * 0.18,
+              color: AppTheme.primary,
+              child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -38,80 +49,196 @@ class ChatUserScreen extends StatelessWidget {
                     Column(
                       children: [
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.08,
+                          height: MediaQuery.of(context).size.height * 0.05,
                         ),
                         Hero(
-                          tag: 'erm',
+                          tag: chatList.id!,
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(50),
-                            child: const FadeInImage(
-                              placeholder: AssetImage('images/acount.png'),
-                              image: AssetImage('images/acount.png'),
-                              width: 70,
-                              height: 70,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+                              borderRadius: BorderRadius.circular(50),
+                              child: FadeInImage(
+                                placeholder:
+                                    const AssetImage('images/userDefault.png'),
+                                image: NetworkImage(
+                                    chatList.members![0].profileimageurl!),
+                                width: 60,
+                                height: 60,
+                                fit: BoxFit.cover,
+                              )),
                         ),
                         const SizedBox(height: 5),
-                        const Text('Esteban Rodriguez Marles',
-                            style:
-                                TextStyle(fontSize: 12, color: Colors.white)),
+                        Text(chatList.members![0].fullname!,
+                            style: const TextStyle(
+                                fontSize: 12, color: Colors.white)),
                       ],
                     ),
                   ],
                 ),
               ),
-              Positioned(
-                top: MediaQuery.of(context).size.height * 0.085,
-                right: MediaQuery.of(context).size.width * 0.4,
-                child: Container(
-                  width: 17,
-                  height: 17,
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.circular(50),
-                  ),
+            ),
+            Container(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height * 0.82,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
                 ),
               ),
-            ],
-          ),
-        ),
-        Container(
-          width: double.infinity,
-          height: MediaQuery.of(context).size.height * 0.78,
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-          ),
-          child: Column(
-            children: const [
-              _CajaMensajes(),
-              BotonEnviar(),
-            ],
-          ),
-        )
-      ]),
-    );
-  }
-}
-
-class _CajaMensajes extends StatelessWidget {
-  const _CajaMensajes({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.7,
-      //poner borderRadius al container
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height * 0.7,
+                      //poner borderRadius al container
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
+                      ),
+                      child: FutureBuilder(
+                        future: chatService.getMessages(
+                            chatList.id!, siteInfo.infoSite.userid!),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else {
+                            final mensajes = snapshot.data;
+                            return ListView.builder(
+                                itemCount: mensajes.messages.length,
+                                itemBuilder: (BuildContext context, int i) =>
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        children: [
+                                          if (mensajes.messages[i].useridfrom ==
+                                              mensajes.members![0].id)
+                                            Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.9,
+                                              //colocar borderRadius al container
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: AppTheme.primary),
+                                                borderRadius:
+                                                    const BorderRadius.only(
+                                                  topLeft: Radius.circular(20),
+                                                  topRight: Radius.circular(20),
+                                                  bottomRight:
+                                                      Radius.circular(20),
+                                                ),
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  ListTile(
+                                                    leading: CircleAvatar(
+                                                      backgroundImage:
+                                                          NetworkImage(mensajes
+                                                              .members[0]
+                                                              .profileimageurl!),
+                                                    ),
+                                                    title: Text(
+                                                      mensajes
+                                                          .members[0].fullname!,
+                                                      style: const TextStyle(
+                                                          fontSize: 10,
+                                                          color:
+                                                              AppTheme.primary),
+                                                    ),
+                                                    subtitle: Html(
+                                                      data: mensajes
+                                                          .messages[i].text!,
+                                                      style: {
+                                                        "html": Style(
+                                                          fontSize:
+                                                              const FontSize(
+                                                                  14.0),
+                                                        ),
+                                                      },
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 5, bottom: 5),
+                                                    child: Text(
+                                                        getData(mensajes
+                                                            .messages[i]
+                                                            .timecreated),
+                                                        style: const TextStyle(
+                                                            fontSize: 9)),
+                                                  )
+                                                ],
+                                              ),
+                                            )
+                                          else
+                                            Container(
+                                              //todos los bordes menos el inferior
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.9,
+                                              //colocar borderRadius al container
+                                              decoration: const BoxDecoration(
+                                                color: AppTheme.primary,
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(20),
+                                                  topRight: Radius.circular(20),
+                                                  bottomLeft:
+                                                      Radius.circular(20),
+                                                ),
+                                                // ignore: prefer_const_literals_to_create_immutables
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  ListTile(
+                                                    subtitle: Html(
+                                                      data: mensajes
+                                                          .messages[i].text!,
+                                                      style: {
+                                                        "html": Style(
+                                                          fontSize:
+                                                              const FontSize(
+                                                                  14.0),
+                                                        ),
+                                                      },
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 5, bottom: 5),
+                                                    child: Text(
+                                                        getData(mensajes
+                                                            .messages[i]
+                                                            .timecreated),
+                                                        style: const TextStyle(
+                                                            fontSize: 9)),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                        ],
+                                      ),
+                                    ));
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                  const BotonEnviar(),
+                ],
+              ),
+            )
+          ]),
         ),
       ),
     );
@@ -125,8 +252,8 @@ class BotonEnviar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.08,
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.1,
       width: double.infinity,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -137,7 +264,6 @@ class BotonEnviar extends StatelessWidget {
             child: TextFormField(
               decoration: InputDecoration(
                 labelText: 'Escribir',
-                labelStyle: const TextStyle(color: Colors.black38),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
