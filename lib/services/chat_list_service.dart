@@ -64,4 +64,30 @@ class ChatListService extends ChangeNotifier {
     notifyListeners();
     return null;
   }
+
+//funcion para enviar un mensajes
+  Future<String?> addMessage(int conversationid, String text) async {
+    const String wsfunction = 'core_message_send_messages_to_conversation';
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: 'token');
+    var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
+    var request = http.Request(
+        'POST',
+        Uri.parse(
+            '$_baseUrl${_url}wsfunction=$wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token'));
+    request.bodyFields = {
+      'conversationid': conversationid.toString(),
+      'messages[0][text]': text,
+      'messages[0][textformat]': '1'
+    };
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+    } else {
+      print(response.reasonPhrase);
+    }
+  }
 }

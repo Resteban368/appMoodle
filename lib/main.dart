@@ -1,4 +1,5 @@
 import 'package:campus_virtual/providers/providers.dart';
+import 'package:campus_virtual/services/socket_service.dart';
 import 'package:campus_virtual/share_preferences/share_preferences.dart';
 import 'package:campus_virtual/utils/check_internet_connection.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +35,9 @@ class AppState extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => UserProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => SocketService(),
         ),
         ChangeNotifierProvider(
           create: (_) => ChatListService(),

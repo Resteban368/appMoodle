@@ -1,3 +1,5 @@
+export 'package:campus_virtual/widgets/chat_message.dart';
+
 export 'package:campus_virtual/widgets/icon.dart';
 
 export 'package:campus_virtual/widgets/card_noticias.dart';

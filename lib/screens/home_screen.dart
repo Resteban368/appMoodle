@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:provider/provider.dart';
 import '../providers/providers.dart';
+import '../services/socket_service.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({Key? key}) : super(key: key);
@@ -24,6 +25,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
   }
 
   void iniciarFucniones() async {
+    
+    final sockets = Provider.of<SocketService>(context, listen: false);
+    sockets.connect();
+
     final token = Provider.of<GeneralService>(context, listen: false);
     await token.ObtenerToken();
     final siteInfo = Provider.of<InfoSiteService>(context, listen: false);

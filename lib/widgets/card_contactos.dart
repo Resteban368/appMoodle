@@ -74,7 +74,7 @@ class CardContactos extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index) {
                       return Padding(
                         padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: Container(
+                        child: SizedBox(
                           width: 100,
                           child: Column(
                             children: [

@@ -280,7 +280,7 @@ class _ContenedorListChat extends StatelessWidget {
         width: double.infinity,
         height: MediaQuery.of(context).size.height * 0.62,
         child: FutureBuilder(
-          future: chatService.getChatList(siteInfo.infoSite.userid!),
+          future: chatService.getChatList(3),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
