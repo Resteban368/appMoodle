@@ -1,5 +1,6 @@
 import 'package:campus_virtual/theme/app_bar_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../services/sevices.dart';
@@ -12,9 +13,24 @@ class NotificacionesScreen extends StatefulWidget {
 }
 
 class _NotificacionesScreenState extends State<NotificacionesScreen> {
+  late int userid2 = 0;
+  @override
+  void initState() {
+    super.initState();
+    funcion();
+  }
+
+  Future<int> funcion() async {
+    const storage = FlutterSecureStorage();
+    final id = await storage.read(key: 'id');
+    final userid = int.parse(id!);
+    userid2 = userid;
+    setState(() {});
+    return userid;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final siteInfo = Provider.of<InfoSiteService>(context, listen: false);
     final notificacion =
         Provider.of<NotificacionesService>(context, listen: false);
     return Scaffold(
@@ -24,8 +40,7 @@ class _NotificacionesScreenState extends State<NotificacionesScreen> {
         actions: [
           IconButton(
             onPressed: () async {
-              await notificacion
-                  .marcarNotificaciones(siteInfo.infoSite.userid!);
+              await notificacion.marcarNotificaciones(userid2);
               setState(() {});
             },
             icon: const Icon(
@@ -36,7 +51,7 @@ class _NotificacionesScreenState extends State<NotificacionesScreen> {
         ],
       ),
       body: FutureBuilder(
-        future: notificacion.getNotificaciones(siteInfo.infoSite.userid!),
+        future: notificacion.getNotificaciones(userid2),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return loaderCardList();
@@ -63,8 +78,7 @@ class _NotificacionesScreenState extends State<NotificacionesScreen> {
             } else {
               return RefreshIndicator(
                 onRefresh: () async {
-                  await notificacion
-                      .getNotificaciones(siteInfo.infoSite.userid!);
+                  await notificacion.getNotificaciones(userid2);
                 },
                 child: ListView.builder(
                   itemCount: notificaciones.length,

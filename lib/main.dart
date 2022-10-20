@@ -5,6 +5,7 @@ import 'package:campus_virtual/utils/check_internet_connection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'screens/screens.dart';
+import 'services/inicio_service.dart';
 import 'services/sevices.dart';
 
 import 'package:intl/date_symbol_data_local.dart';
@@ -25,6 +26,7 @@ class AppState extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthService()),
+        ChangeNotifierProvider(create: (_) => InicioService()),
         ChangeNotifierProvider(
             create: (_) => ThemeProvider(isDarkmode: Preferences.isDarkmode)),
         ChangeNotifierProvider(

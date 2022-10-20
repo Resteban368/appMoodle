@@ -72,7 +72,7 @@ class NotificacionesService extends ChangeNotifier {
       if (response.statusCode < 400) {
         count = int.parse(response.body);
         notifyListeners();
-        print('contador notificaciones');
+        print('contador notificaciones: $count');
         return count;
       }
     } catch (e, s) {

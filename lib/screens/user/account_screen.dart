@@ -25,17 +25,15 @@ class _AccountScreenState extends State<AccountScreen> {
   bool isChecked = false;
   @override
   Widget build(BuildContext context) {
-    final userInfoProvider2 = Provider.of<UserInfoProvider>(context);
-    final userInfoProvider = Provider.of<UserProvider>(context);
+    final userInfoProvider2 =
+        Provider.of<UserInfoProvider>(context, listen: false);
+    final userInfoProvider = Provider.of<UserProvider>(context, listen: false);
 
     final size = MediaQuery.of(context).size;
     final authService = Provider.of<AuthService>(context, listen: false);
-    String imgeDefault =
-        'https://st1.uvnimg.com/d4/4a/006304a74db4902c0b4d8d8026c8/chevrolet-corvette-c8-stingray-2020-1280-08.jpg';
 
     late bool habilitarForm = userInfoProvider.habilitarForm;
 
-    print(userInfoProvider2.userInfo.profileimageurl!);
     return Scaffold(
       appBar: AppBar(
         title: Text(userInfoProvider2.userInfo.fullname!),
@@ -130,7 +128,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                             null
                                         ? userInfoProvider2
                                             .userInfo.profileimageurl!
-                                        : imgeDefault,
+                                        : 'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png',
                                     // imgeDefault,
                                     fit: BoxFit.fill,
                                   ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -6,14 +7,35 @@ import '../seacrh/search_contactos.dart';
 import '../services/sevices.dart';
 import '../theme/theme.dart';
 
-class CardContactos extends StatelessWidget {
+class CardContactos extends StatefulWidget {
   const CardContactos({Key? key}) : super(key: key);
+
+  @override
+  State<CardContactos> createState() => _CardContactosState();
+}
+
+class _CardContactosState extends State<CardContactos> {
+  late int userid2 = 0;
+  @override
+  void initState() {
+    super.initState();
+    funcion();
+  }
+
+  Future<int> funcion() async {
+    const storage = FlutterSecureStorage();
+    final id = await storage.read(key: 'id');
+    final userid = int.parse(id!);
+    userid2 = userid;
+    setState(() {});
+    return userid;
+  }
 
   @override
   Widget build(BuildContext context) {
     final contactosService =
         Provider.of<ContactosService>(context, listen: false);
-    final siteInfo = Provider.of<InfoSiteService>(context, listen: false);
+    // final siteInfo = Provider.of<InfoSiteService>(context, listen: false);
     // ignore: sized_box_for_whitespace
     return Container(
       width: double.infinity,
@@ -27,7 +49,7 @@ class CardContactos extends StatelessWidget {
         ),
         Expanded(
           child: FutureBuilder(
-            future: contactosService.getContactos(siteInfo.infoSite.userid!),
+            future: contactosService.getContactos(userid2),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               final contacto = snapshot.data;
               if (snapshot.connectionState == ConnectionState.waiting) {

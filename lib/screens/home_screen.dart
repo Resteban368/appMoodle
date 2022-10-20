@@ -1,10 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:campus_virtual/screens/screens.dart';
+import 'package:campus_virtual/services/inicio_service.dart';
 import 'package:campus_virtual/services/sevices.dart';
 import 'package:campus_virtual/theme/app_bar_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import '../providers/providers.dart';
 import '../services/socket_service.dart';
@@ -25,31 +27,32 @@ class _BottomNavBarState extends State<BottomNavBar> {
   }
 
   void iniciarFucniones() async {
+    const storage = FlutterSecureStorage();
+    final id = await storage.read(key: 'id');
+    final userid = int.parse(id!);
+    final username = await storage.read(key: 'username');
+
+    final token = Provider.of<GeneralService>(context, listen: false);
+    await token.ObtenerToken();
+
+    final notificacionesProvider =
+        Provider.of<NotificacionesService>(context, listen: false);
+    await notificacionesProvider.getCountNotificaciones(userid);
+    await notificacionesProvider.getNotificaciones(userid);
+
     final bannerService = Provider.of<BannerService>(context, listen: false);
     await bannerService.getBanner();
 
     final sockets = Provider.of<SocketService>(context, listen: false);
     sockets.connect();
 
-    final token = Provider.of<GeneralService>(context, listen: false);
-    await token.ObtenerToken();
-    final siteInfo = Provider.of<InfoSiteService>(context, listen: false);
-    await siteInfo.getInfoSite();
-
-    final notificacionesProvider =
-        Provider.of<NotificacionesService>(context, listen: false);
-    await notificacionesProvider.getNotificaciones(siteInfo.infoSite.userid!);
-
-    await notificacionesProvider
-        .getCountNotificaciones(siteInfo.infoSite.userid!);
-
     final userInfo = Provider.of<UserInfoProvider>(context, listen: false);
-    await userInfo.geInfoUser(siteInfo.infoSite.username!);
+    await userInfo.geInfoUser(username!);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    await userProvider.getData(siteInfo.infoSite.userid!);
+    await userProvider.getData(userid);
 
     final cursoInfo = Provider.of<CursoService>(context, listen: false);
-    await cursoInfo.getInfoCurso(siteInfo.infoSite.userid!);
+    await cursoInfo.getInfoCurso(userid);
   }
 
   final int _pageIndex = 0;

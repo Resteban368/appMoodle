@@ -21,13 +21,11 @@ class MateriasScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final siteInfo = Provider.of<SiteProvider>(context, listen: false);
-    // final cursoInfo = Provider.of<CursoProvider>(context, listen: false);
     final cursoIContenido =
         Provider.of<CursoContenidoService>(context, listen: false);
-    final providerGeneral = Provider.of<GeneralService>(context, listen: false);
-    final token = providerGeneral.tokencillo.toString();
-    final urlImg = contenido.overviewfiles![0].fileurl! + '?token=$token';
+    // final providerGeneral = Provider.of<GeneralService>(context, listen: false);
+    // final token = providerGeneral.tokencillo.toString();
+    // final urlImg = contenido.overviewfiles![0].fileurl! + '?token=$token';
     final htmlData = contenido.summary;
     return Scaffold(
       appBar: AppBar(

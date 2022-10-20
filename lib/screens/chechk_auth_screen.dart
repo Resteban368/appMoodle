@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../services/inicio_service.dart';
 import '../services/sevices.dart';
 import 'screens.dart';
 
@@ -27,6 +28,7 @@ class ChekeoAuthScreen extends StatelessWidget {
               });
             } else {
               Future.microtask(() {
+                Provider.of<InicioService>(context, listen: false);
                 Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(

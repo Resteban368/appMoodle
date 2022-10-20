@@ -6,6 +6,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:campus_virtual/utils/utils.dart';
 import 'package:campus_virtual/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
@@ -88,11 +89,26 @@ class SolicitudesScreen extends StatefulWidget {
 }
 
 class _SolicitudesScreenState extends State<SolicitudesScreen> {
+  late int userid2 = 0;
+  @override
+  void initState() {
+    super.initState();
+    funcion();
+  }
+
+  Future<int> funcion() async {
+    const storage = FlutterSecureStorage();
+    final id = await storage.read(key: 'id');
+    final userid = int.parse(id!);
+    userid2 = userid;
+    setState(() {});
+    return userid;
+  }
+
   @override
   Widget build(BuildContext context) {
     final contactosService =
         Provider.of<ContactosService>(context, listen: false);
-    final siteInfo = Provider.of<InfoSiteService>(context, listen: false);
     final chatSolicitud =
         Provider.of<ChatSolicitudService>(context, listen: false);
 
@@ -102,12 +118,10 @@ class _SolicitudesScreenState extends State<SolicitudesScreen> {
         backgroundColor: AppTheme.primary,
       ),
       body: FutureBuilder(
-          future: contactosService.getSolicitudes(siteInfo.infoSite.userid!),
+          future: contactosService.getSolicitudes(userid2),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (!snapshot.hasData) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return loaderSolicitudesList();
             }
             final solicitudes = snapshot.data;
             if (solicitudes.length == 0) {
@@ -126,10 +140,8 @@ class _SolicitudesScreenState extends State<SolicitudesScreen> {
                     ),
                     Text(
                       'No hay solicitudes',
-                      style: TextStyle(
-                          color: Colors.black38,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -137,8 +149,7 @@ class _SolicitudesScreenState extends State<SolicitudesScreen> {
             } else {
               return RefreshIndicator(
                 onRefresh: () async {
-                  await contactosService
-                      .getSolicitudes(siteInfo.infoSite.userid!);
+                  await contactosService.getSolicitudes(userid2);
                   setState(
                     () {},
                   );
@@ -162,8 +173,7 @@ class _SolicitudesScreenState extends State<SolicitudesScreen> {
                                 flex: 2,
                                 onPressed: (_) async {
                                   await chatSolicitud.acepetarSolicitud(
-                                      solicitudes[index].id!,
-                                      siteInfo.infoSite.userid!);
+                                      solicitudes[index].id!, userid2);
 
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
@@ -173,8 +183,8 @@ class _SolicitudesScreenState extends State<SolicitudesScreen> {
                                           'Solicitud aceptada correctamente'),
                                     ),
                                   );
-                                  await contactosService.getSolicitudes(
-                                      siteInfo.infoSite.userid!);
+                                  await contactosService
+                                      .getSolicitudes(userid2);
                                   setState(
                                     () {},
                                   );
@@ -189,8 +199,7 @@ class _SolicitudesScreenState extends State<SolicitudesScreen> {
                                 flex: 2,
                                 onPressed: (_) async {
                                   await chatSolicitud.rechazarSolicitud(
-                                      solicitudes[index].id!,
-                                      siteInfo.infoSite.userid!);
+                                      solicitudes[index].id!, userid2);
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       backgroundColor:
@@ -199,8 +208,8 @@ class _SolicitudesScreenState extends State<SolicitudesScreen> {
                                           'Solicitud rechazada correctamente'),
                                     ),
                                   );
-                                  await contactosService.getSolicitudes(
-                                      siteInfo.infoSite.userid!);
+                                  await contactosService
+                                      .getSolicitudes(userid2);
                                   setState(
                                     () {},
                                   );
@@ -269,19 +278,40 @@ class CardContainer extends StatelessWidget {
           ]);
 }
 
-class _ContenedorListChat extends StatelessWidget {
+class _ContenedorListChat extends StatefulWidget {
   const _ContenedorListChat({Key? key}) : super(key: key);
 
   @override
+  State<_ContenedorListChat> createState() => _ContenedorListChatState();
+}
+
+class _ContenedorListChatState extends State<_ContenedorListChat> {
+  late int userid2 = 0;
+  @override
+  void initState() {
+    super.initState();
+    funcion();
+  }
+
+  Future<int> funcion() async {
+    const storage = FlutterSecureStorage();
+    final id = await storage.read(key: 'id');
+    final userid = int.parse(id!);
+    userid2 = userid;
+    setState(() {});
+    return userid;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final siteInfo = Provider.of<InfoSiteService>(context, listen: false);
+    // final siteInfo = Provider.of<InfoSiteService>(context, listen: false);
     final chatService = Provider.of<ChatListService>(context, listen: false);
 
     return SizedBox(
         width: double.infinity,
         height: MediaQuery.of(context).size.height * 0.62,
         child: FutureBuilder(
-          future: chatService.getChatList(3),
+          future: chatService.getChatList(userid2),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
@@ -488,6 +518,57 @@ Widget loaderCardList() {
                 ),
                 trailing: const Icon(
                   Icons.timelapse,
+                  color: AppTheme.primary,
+                  size: 25,
+                ),
+              ),
+            ),
+          );
+        }),
+  );
+}
+
+Widget loaderSolicitudesList() {
+  return Shimmer.fromColors(
+    baseColor: Colors.white,
+    highlightColor: Colors.grey,
+    period: const Duration(seconds: 2),
+    child: ListView.builder(
+        itemCount: 5,
+        shrinkWrap: true,
+        itemBuilder: (BuildContext context, int i) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: AppTheme.primary),
+                borderRadius: BorderRadius.circular(10),
+                //sombra
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 10,
+                    spreadRadius: 5,
+                  ),
+                ],
+              ),
+              child: ListTile(
+                leading: const Icon(
+                  Icons.person,
+                  color: Colors.grey,
+                ),
+                title: Container(
+                  width: 100,
+                  height: 20,
+                  color: Colors.grey,
+                ),
+                subtitle: Container(
+                  width: 100,
+                  height: 20,
+                  color: Colors.white,
+                ),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
                   color: AppTheme.primary,
                   size: 25,
                 ),

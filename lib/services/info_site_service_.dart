@@ -13,6 +13,10 @@ class InfoSiteService extends ChangeNotifier {
   final String _moodlewsrestformat = 'json';
   late InfoSiteUser infoSite = InfoSiteUser();
 
+// Obtain shared preferences.
+
+// Save an integer value to 'counter' key.
+
   Future<String?> getInfoSite() async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: 'token');
@@ -24,8 +28,17 @@ class InfoSiteService extends ChangeNotifier {
       if (response.statusCode < 400) {
         // print('status code info site: ${response.statusCode}');
         // print(response.body);
+        //guardamos el id en el storage
+
         final InfoSiteUser decodeData = InfoSiteUser.fromJson(response.body);
         infoSite = decodeData;
+
+        //guardamos el id en el storage scure
+        print('guardando datos al secure storage');
+        await storage.write(key: 'id', value: decodeData.userid.toString());
+        //guardamos el nombre el storage scure
+        await storage.write(key: 'username', value: decodeData.username!);
+
         notifyListeners();
       }
     } catch (e) {

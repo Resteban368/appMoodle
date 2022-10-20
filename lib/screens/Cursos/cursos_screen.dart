@@ -1,8 +1,8 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:animate_do/animate_do.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../services/sevices.dart';
@@ -10,15 +10,35 @@ import '../../theme/app_bar_theme.dart';
 import '../../widgets/widgets.dart';
 import '../screens.dart';
 
-class CursosScreen extends StatelessWidget {
+class CursosScreen extends StatefulWidget {
   const CursosScreen({Key? key}) : super(key: key);
 
   @override
+  State<CursosScreen> createState() => _CursosScreenState();
+}
+
+class _CursosScreenState extends State<CursosScreen> {
+  late int userid2 = 0;
+  @override
+  void initState() {
+    super.initState();
+    funcion();
+  }
+
+  Future<int> funcion() async {
+    const storage = FlutterSecureStorage();
+    final id = await storage.read(key: 'id');
+    final userid = int.parse(id!);
+    userid2 = userid;
+    setState(() {});
+    return userid;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final siteInfo = Provider.of<InfoSiteService>(context, listen: false);
     final cursoInfo = Provider.of<CursoService>(context, listen: false);
-    final providerGeneral = Provider.of<GeneralService>(context, listen: false);
-    final token = providerGeneral.tokencillo.toString();
+    // final providerGeneral = Provider.of<GeneralService>(context, listen: false);
+    // final token = providerGeneral.tokencillo.toString();
     //mandamos a llamar el token para usarlo en esta clase
     return Scaffold(
         appBar: AppBar(
@@ -37,7 +57,7 @@ class CursosScreen extends StatelessWidget {
           ],
         ),
         body: FutureBuilder(
-          future: cursoInfo.getInfoCurso(siteInfo.infoSite.userid!),
+          future: cursoInfo.getInfoCurso(userid2),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
@@ -216,8 +236,3 @@ class CursosScreen extends StatelessWidget {
     );
   }
 }
-
-
-
-
-//creamos un widget shimmer para que se vea mas bonito

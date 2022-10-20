@@ -124,7 +124,9 @@ class _loginForm extends StatelessWidget {
                       if (error == null) {
                         SharedPreferences prefs =
                             await SharedPreferences.getInstance();
-
+                        final siteInfo = Provider.of<InfoSiteService>(context,
+                            listen: false);
+                        await siteInfo.getInfoSite();
                         Navigator.pushReplacementNamed(context, 'home');
                       } else {
                         //todo MOSTRAR ERROR EN PANTALLA
