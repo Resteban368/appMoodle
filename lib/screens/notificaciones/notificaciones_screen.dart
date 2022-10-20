@@ -1,6 +1,7 @@
 import 'package:campus_virtual/theme/app_bar_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../services/sevices.dart';
 import '../screens.dart';
 
@@ -37,7 +38,9 @@ class _NotificacionesScreenState extends State<NotificacionesScreen> {
       body: FutureBuilder(
         future: notificacion.getNotificaciones(siteInfo.infoSite.userid!),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return loaderCardList();
+          } else {
             final notificaciones = snapshot.data;
             if (notificaciones.length == 0) {
               return Center(
@@ -147,23 +150,63 @@ class _NotificacionesScreenState extends State<NotificacionesScreen> {
                 ),
               );
             }
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
           }
         },
       ),
     );
   }
+
+  Widget loaderCardList() {
+    return Shimmer.fromColors(
+      baseColor: Colors.white,
+      highlightColor: Colors.grey,
+      period: const Duration(seconds: 2),
+      child: ListView.builder(
+          itemCount: 10,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int i) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: AppTheme.primary),
+                  borderRadius: BorderRadius.circular(10),
+                  //sombra
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10,
+                      spreadRadius: 5,
+                    ),
+                  ],
+                ),
+                child: ListTile(
+                  leading: const Icon(
+                    Icons.notifications,
+                    color: Colors.grey,
+                  ),
+                  title: Container(
+                    width: 100,
+                    height: 20,
+                    color: Colors.red,
+                  ),
+                  subtitle: Container(
+                    width: 100,
+                    height: 20,
+                    color: Colors.white,
+                  ),
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios,
+                    color: AppTheme.primary,
+                    size: 25,
+                  ),
+                ),
+              ),
+            );
+          }),
+    );
+  }
 }
-
-
-
-
-
-
-
 
 
 

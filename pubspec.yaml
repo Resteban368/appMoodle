@@ -51,6 +51,7 @@ dependencies:
   socket_io_client: ^2.0.0-beta.4-nullsafety.0
   path_provider: ^2.0.11
   flutter_cached_pdfview: ^0.4.1
+  shimmer: ^2.0.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0

@@ -4,6 +4,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../services/sevices.dart';
 import '../../theme/app_bar_theme.dart';
 import '../../widgets/widgets.dart';
@@ -39,8 +40,8 @@ class CursosScreen extends StatelessWidget {
           future: cursoInfo.getInfoCurso(siteInfo.infoSite.userid!),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return Center(
+                child: loaderCardList(),
               );
             } else {
               if (snapshot.data.length == 0) {
@@ -159,4 +160,64 @@ class CursosScreen extends StatelessWidget {
           },
         ));
   }
+
+  Widget loaderCardList() {
+    return Shimmer.fromColors(
+      baseColor: Colors.white,
+      highlightColor: Colors.grey,
+      period: const Duration(seconds: 2),
+      child: ListView.builder(
+          itemCount: 5,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int i) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.4,
+                decoration: BoxDecoration(
+                  border: Border.all(color: AppTheme.primary),
+                  borderRadius: BorderRadius.circular(10),
+                  //sombra
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10,
+                      spreadRadius: 5,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: const Icon(
+                        Icons.book,
+                        color: Colors.grey,
+                        size: 40,
+                      ),
+                      subtitle: Container(
+                        width: double.infinity,
+                        height: 50,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        color: Colors.grey,
+                        width: double.infinity,
+                        height: 200,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
+    );
+  }
 }
+
+
+
+
+//creamos un widget shimmer para que se vea mas bonito
