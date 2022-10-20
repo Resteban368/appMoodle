@@ -1,4 +1,4 @@
-// ignore_for_file: constant_identifier_names
+// ignore_for_file: constant_identifier_names, avoid_print
 
 import 'package:campus_virtual/global/environment.dart';
 import 'package:flutter/material.dart';

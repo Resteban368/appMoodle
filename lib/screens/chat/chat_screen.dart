@@ -465,7 +465,7 @@ class _ContenedorBotones extends StatelessWidget {
                     fontSize: 15, letterSpacing: 2, color: Colors.white),
               ),
               style: ElevatedButton.styleFrom(
-                primary: AppTheme.primary,
+                backgroundColor: AppTheme.primary,
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),

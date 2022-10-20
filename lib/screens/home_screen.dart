@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:campus_virtual/screens/screens.dart';
-import 'package:campus_virtual/services/inicio_service.dart';
 import 'package:campus_virtual/services/sevices.dart';
 import 'package:campus_virtual/theme/app_bar_theme.dart';
 import 'package:flutter/material.dart';

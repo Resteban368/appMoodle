@@ -1,8 +1,10 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:animated_floating_buttons/widgets/animated_floating_action_button.dart';
 import 'package:campus_virtual/utils/warning_widget_change_notifier.dart';
 import 'package:campus_virtual/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../theme/app_bar_theme.dart';
@@ -13,6 +15,8 @@ class NoticiasScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<AnimatedFloatingActionButtonState> key =
+        GlobalKey<AnimatedFloatingActionButtonState>();
     //tamaño de la pantalla
     return Scaffold(
       appBar: AppBar(
@@ -82,8 +86,53 @@ class NoticiasScreen extends StatelessWidget {
           ),
         ),
       ),
+
+      //boton flotante con varias opciones
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterTop,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: AnimatedFloatingActionButton(
+            fabButtons: <Widget>[float1(), float2()],
+            key: key,
+            colorStartAnimation: AppTheme.primary,
+            colorEndAnimation: Colors.grey,
+            animatedIconData: AnimatedIcons.menu_close //To principal button
+            ),
+      ),
     );
   }
+}
+
+Widget float1() {
+  return FloatingActionButton(
+    backgroundColor: AppTheme.primary,
+    onPressed: null,
+    heroTag: "btn1",
+    tooltip: 'Preguntas Frecuentes',
+    child: IconButton(
+      icon: const Icon(Icons.book),
+      onPressed: () async {
+        await launch(
+            'https://distancia.uniamazonia.edu.co/distancia/Recursos/PreguntasFrecuentes/');
+      },
+    ),
+  );
+}
+
+Widget float2() {
+  return FloatingActionButton(
+    backgroundColor: AppTheme.primary,
+    onPressed: null,
+    heroTag: "btn2",
+    tooltip: 'Datos de Interes',
+    child: IconButton(
+      icon: const Icon(Icons.question_mark_outlined),
+      onPressed: () async {
+        await launch(
+            'https://distancia.uniamazonia.edu.co/distancia/Recursos/distancia/');
+      },
+    ),
+  );
 }
 
 class _OfertaAcademica extends StatelessWidget {

@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:campus_virtual/theme/app_bar_theme.dart';
 import 'package:flutter/material.dart';
 

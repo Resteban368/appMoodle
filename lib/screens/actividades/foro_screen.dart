@@ -74,7 +74,7 @@ class _ForoScreenState extends State<ForoScreen> {
                               child: const Text('Agregar un nuevo debate'),
                               //color al boton
                               style: ElevatedButton.styleFrom(
-                                primary: habilitarForm
+                                backgroundColor: habilitarForm
                                     ? AppTheme.primary
                                     : Colors.grey,
                               ),
@@ -483,7 +483,7 @@ class _ContenidoDebatesState extends State<_ContenidoDebates> {
                                 child: ElevatedButton(
                                   //color
                                   style: ElevatedButton.styleFrom(
-                                    primary: AppTheme.primary,
+                                    backgroundColor: AppTheme.primary,
                                   ),
                                   onPressed: () {
                                     //ventana emergente
@@ -664,7 +664,8 @@ class _ContenidoDebatesState extends State<_ContenidoDebates> {
                                                     ElevatedButton(
                                                         style: ElevatedButton
                                                             .styleFrom(
-                                                          primary: Colors.grey,
+                                                          backgroundColor:
+                                                              Colors.grey,
                                                         ),
                                                         onPressed: () {
                                                           foroDiscussion

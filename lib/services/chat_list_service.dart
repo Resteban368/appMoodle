@@ -89,5 +89,6 @@ class ChatListService extends ChangeNotifier {
     } else {
       print(response.reasonPhrase);
     }
+    return null;
   }
 }
