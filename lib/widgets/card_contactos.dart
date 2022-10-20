@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../seacrh/search_contactos.dart';
 import '../services/sevices.dart';
@@ -30,8 +31,8 @@ class CardContactos extends StatelessWidget {
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               final contacto = snapshot.data;
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
+                return Center(
+                  child: loaderCardList(),
                 );
               } else {
                 if (contacto.length == null || contacto.length == 0) {
@@ -116,38 +117,39 @@ class CardContactos extends StatelessWidget {
   }
 }
 
-// class _Contactos extends StatelessWidget {
-//   const _Contactos({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       width: 100,
-//       height: 150,
-//       // color: Color.fromARGB(255, 91, 219, 17),
-//       margin: const EdgeInsets.only(top: 10),
-//       child: Column(
-//         children: [
-//           GestureDetector(
-//             onTap: () {},
-//             child: ClipRRect(
-//               borderRadius: BorderRadius.circular(50),
-//               child: const FadeInImage(
-//                 placeholder: AssetImage('images/acount.png'),
-//                 image: AssetImage('images/acount.png'),
-//                 width: 60,
-//                 height: 60,
-//                 fit: BoxFit.cover,
-//               ),
-//             ),
-//           ),
-//           const Text(
-//             'esteban rpdriguez marles',
-//             overflow: TextOverflow.ellipsis,
-//             textAlign: TextAlign.center,
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
+Widget loaderCardList() {
+  return Shimmer.fromColors(
+    baseColor: Colors.white,
+    highlightColor: Colors.grey,
+    period: const Duration(seconds: 2),
+    child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: 10,
+        shrinkWrap: true,
+        itemBuilder: (BuildContext context, int i) {
+          return Padding(
+            padding: const EdgeInsets.only(left: 40.0),
+            child: ClipRRect(
+              //color del borde de la imagen
+              borderRadius: BorderRadius.circular(50),
+              child: Column(
+                children: [
+                  const CircleAvatar(
+                    backgroundColor: Colors.grey,
+                    radius: 30,
+                  ),
+                  const SizedBox(
+                    height: 3,
+                  ),
+                  Container(
+                    width: 50,
+                    height: 10,
+                    color: Colors.grey,
+                  ),
+                ],
+              ),
+            ),
+          );
+        }),
+  );
+}

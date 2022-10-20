@@ -8,6 +8,7 @@ import 'package:campus_virtual/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../seacrh/search_contactos.dart';
 import '../../services/sevices.dart';
@@ -283,8 +284,8 @@ class _ContenedorListChat extends StatelessWidget {
           future: chatService.getChatList(3),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return Center(
+                child: loaderCardList(),
               );
             } else {
               final chatList = snapshot.data;
@@ -443,4 +444,56 @@ class _ContenedorBotones extends StatelessWidget {
               ))),
     );
   }
+}
+
+Widget loaderCardList() {
+  return Shimmer.fromColors(
+    baseColor: Colors.white,
+    highlightColor: Colors.grey,
+    period: const Duration(seconds: 2),
+    child: ListView.builder(
+        itemCount: 10,
+        shrinkWrap: true,
+        itemBuilder: (BuildContext context, int i) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: AppTheme.primary),
+                borderRadius: BorderRadius.circular(10),
+                //sombra
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 10,
+                    spreadRadius: 5,
+                  ),
+                ],
+              ),
+              child: ListTile(
+                leading: const Icon(
+                  Icons.person,
+                  color: Colors.grey,
+                  size: 50,
+                ),
+                title: Container(
+                  width: 100,
+                  height: 20,
+                  color: Colors.red,
+                ),
+                subtitle: Container(
+                  width: 100,
+                  height: 20,
+                  color: Colors.white,
+                ),
+                trailing: const Icon(
+                  Icons.timelapse,
+                  color: AppTheme.primary,
+                  size: 25,
+                ),
+              ),
+            ),
+          );
+        }),
+  );
 }
