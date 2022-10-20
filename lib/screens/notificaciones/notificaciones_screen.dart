@@ -188,7 +188,7 @@ class _NotificacionesScreenState extends State<NotificacionesScreen> {
                   title: Container(
                     width: 100,
                     height: 20,
-                    color: Colors.red,
+                    color: Colors.grey,
                   ),
                   subtitle: Container(
                     width: 100,
