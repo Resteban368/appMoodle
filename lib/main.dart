@@ -31,6 +31,9 @@ class AppState extends StatelessWidget {
           create: (_) => GeneralService(),
         ),
         ChangeNotifierProvider(
+          create: (_) => BannerService(),
+        ),
+        ChangeNotifierProvider(
           create: (_) => InfoSiteService(),
         ),
         ChangeNotifierProvider(

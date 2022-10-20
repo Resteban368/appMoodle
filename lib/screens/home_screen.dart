@@ -25,7 +25,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
   }
 
   void iniciarFucniones() async {
-    
+    final bannerService = Provider.of<BannerService>(context, listen: false);
+    await bannerService.getBanner();
+
     final sockets = Provider.of<SocketService>(context, listen: false);
     sockets.connect();
 

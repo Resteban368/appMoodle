@@ -1,81 +1,88 @@
-// ignore_for_file: must_be_immutable
-
-import 'dart:async';
-import 'dart:io';
+// ignore_for_file: must_be_immutable, prefer_interpolation_to_compose_strings
 
 import 'package:flutter/material.dart';
+import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
+
 import 'package:provider/provider.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/models.dart';
 import '../../services/sevices.dart';
 import '../../theme/app_bar_theme.dart';
 
-class UrlScreen extends StatefulWidget {
+class UrlPDFScreen extends StatefulWidget {
   Module contenido;
-  UrlScreen(this.contenido, {Key? key}) : super(key: key);
+  UrlPDFScreen(this.contenido, {Key? key}) : super(key: key);
 
   @override
-  State<UrlScreen> createState() => _UrlScreenState();
+  State<UrlPDFScreen> createState() => _UrlPDFScreenState();
 }
 
-class _UrlScreenState extends State<UrlScreen> {
-  final Completer<WebViewController> _controller =
-      Completer<WebViewController>();
-
+class _UrlPDFScreenState extends State<UrlPDFScreen> {
   @override
   void initState() {
     super.initState();
-    if (Platform.isAndroid) {
-      WebView.platform = SurfaceAndroidWebView();
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     final providerGeneral = Provider.of<GeneralService>(context, listen: false);
     final token = providerGeneral.tokencillo.toString();
-    final url = widget.contenido.contents![0].fileurl!;
+    final url = widget.contenido.contents![0].fileurl! + '&token=' + token;
+
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(widget.contenido.name!),
+          backgroundColor: AppTheme.primary,
+          actions: [
+            //iconbuton para descargar el pdf
+            IconButton(
+                onPressed: () async {
+                  // ignore: deprecated_member_use
+                  await launch(url);
+                  //descargar pdf
+                },
+                icon: const Icon(Icons.download))
+          ],
+        ),
+        body: PDFViewerFromUrl(
+          url: url.toString(),
+        ));
+  }
+}
+
+class PDFViewerFromUrl extends StatelessWidget {
+  const PDFViewerFromUrl({Key? key, required this.url}) : super(key: key);
+
+  final String url;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: const PDF().fromUrl(
+        url,
+        placeholder: (double progress) => Center(child: Text('$progress %')),
+        errorWidget: (dynamic error) => Center(child: Text(error.toString())),
+      ),
+    );
+  }
+}
+
+class PDFViewerCachedFromUrl extends StatelessWidget {
+  const PDFViewerCachedFromUrl({Key? key, required this.url}) : super(key: key);
+
+  final String url;
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.contenido.name!),
-        backgroundColor: AppTheme.primary,
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.notifications,
-              size: 30,
-            ),
-            onPressed: () {},
-          ),
-        ],
+        title: const Text('Cached PDF From Url'),
       ),
-      body: WebView(
-        initialUrl: url,
-
-        javascriptMode: JavascriptMode.unrestricted,
-        onWebViewCreated: (WebViewController webViewController) {
-          _controller.complete(webViewController);
-        },
-        // onProgress: (int progress) {
-        //   print('WebView is loading (progress : $progress%)');
-        // },
-        // navigationDelegate: (NavigationRequest request) {
-        //   if (request.url.startsWith('https://www.youtube.com/')) {
-        //     print('blocking navigation to $request}');
-        //     return NavigationDecision.prevent;
-        //   }
-        //   print('allowing navigation to $request');
-        //   return NavigationDecision.navigate;
-        // },
-        // onPageStarted: (String url) {
-        //   print('Page started loading: $url');
-        // },
-        // onPageFinished: (String url) {
-        //   print('Page finished loading: $url');
-        // },
-        gestureNavigationEnabled: true,
-        backgroundColor: const Color(0x00000000),
+      body: const PDF().cachedFromUrl(
+        url,
+        placeholder: (double progress) => Center(child: Text('$progress %')),
+        errorWidget: (dynamic error) => Center(child: Text(error.toString())),
       ),
     );
   }

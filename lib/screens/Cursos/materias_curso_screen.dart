@@ -504,15 +504,20 @@ class _ContenidoTemas extends StatelessWidget {
                                                 contenido.modules![i])));
                                   } else if (contenido.modules![i].modplural ==
                                       'Archivos') {
-                                    await launch(contenido
-                                            .modules![i].contents![0].fileurl! +
-                                        '&token=$token');
-                                    // Navigator.push(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //         builder: (context) => PaginaScreen(
-                                    //             contenido.modules![i])));
-
+                                    if (contenido.modules![i].contents![0]
+                                            .mimetype ==
+                                        'application/pdf') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  UrlPDFScreen(
+                                                      contenido.modules![i])));
+                                    } else {
+                                      await launch(contenido.modules![i]
+                                              .contents![0].fileurl! +
+                                          '&token=$token');
+                                    }
                                   } else if (contenido.modules![i].modplural ==
                                       'Páginas') {
                                     Navigator.push(
@@ -525,6 +530,7 @@ class _ContenidoTemas extends StatelessWidget {
                                     //     context,
                                     //     MaterialPageRoute(
                                     //         builder: (context) => HelpScreen()));
+
                                   } else if (contenido.modules![i].modplural ==
                                       'Carpetas') {
                                     Navigator.push(
@@ -537,7 +543,7 @@ class _ContenidoTemas extends StatelessWidget {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => UrlScreen(
+                                            builder: (context) => UrlPDFScreen(
                                                 contenido.modules![i])));
                                   } else if (contenido.modules![i].modplural ==
                                       'Foros') {

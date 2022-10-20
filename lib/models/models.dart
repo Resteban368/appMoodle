@@ -1,3 +1,5 @@
+export 'package:campus_virtual/models/banner.dart';
+
 export 'package:campus_virtual/models/chat_list.dart';
 
 export 'package:campus_virtual/models/TareaCalificacionResponse.dart';

@@ -230,6 +230,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.3.0"
+  flutter_cached_pdfview:
+    dependency: "direct main"
+    description:
+      name: flutter_cached_pdfview
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.1"
   flutter_html:
     dependency: "direct main"
     description:
@@ -265,6 +272,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.5.0"
+  flutter_pdfview:
+    dependency: transitive
+    description:
+      name: flutter_pdfview
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.5"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -493,7 +507,7 @@ packages:
     source: hosted
     version: "0.2.1"
   path_provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path_provider
       url: "https://pub.dartlang.org"
@@ -664,14 +678,14 @@ packages:
       name: socket_io_client
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.2"
+    version: "2.0.0"
   socket_io_common:
     dependency: transitive
     description:
       name: socket_io_common
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.1"
+    version: "2.0.0"
   source_span:
     dependency: transitive
     description:
