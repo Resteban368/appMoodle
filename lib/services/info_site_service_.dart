@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:campus_virtual/models/InfoSite.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';

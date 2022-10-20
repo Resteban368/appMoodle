@@ -1,10 +1,9 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, unused_local_variable
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/providers.dart';
-import '../providers/user_providers.dart';
 import '../services/sevices.dart';
 import '../ui/input_decorations.dart';
 import '../widgets/widgets.dart';

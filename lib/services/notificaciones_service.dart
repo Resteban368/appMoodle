@@ -16,11 +16,11 @@ class NotificacionesService extends ChangeNotifier {
   int count = 0;
 
   Future<List<PostNotificaciones>?> getNotificaciones(useridto) async {
-    String _wsfunction = 'message_popup_get_popup_notifications';
+    String wsfunction = 'message_popup_get_popup_notifications';
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: 'token');
     final url =
-        '$_baseUrl${_url}wsfunction=$_wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&useridto=$useridto';
+        '$_baseUrl${_url}wsfunction=$wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&useridto=$useridto';
     try {
       final response = await http.get(Uri.parse(url));
       // print('url site info provider: $url');
@@ -42,11 +42,11 @@ class NotificacionesService extends ChangeNotifier {
 
   //marcar como leido todas las notificaciones
   Future<bool> marcarNotificaciones(useridto) async {
-    String _wsfunction = 'core_message_mark_all_notifications_as_read';
+    String wsfunction = 'core_message_mark_all_notifications_as_read';
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: 'token');
     final url =
-        '$_baseUrl${_url}wsfunction=$_wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&useridto=$useridto';
+        '$_baseUrl${_url}wsfunction=$wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&useridto=$useridto';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode < 400) {
@@ -62,11 +62,11 @@ class NotificacionesService extends ChangeNotifier {
 
 //para saber el count de las notificaciones
   Future<int> getCountNotificaciones(useridto) async {
-    String _wsfunction = 'message_popup_get_unread_popup_notification_count';
+    String wsfunction = 'message_popup_get_unread_popup_notification_count';
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: 'token');
     final url =
-        '$_baseUrl${_url}wsfunction=$_wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&useridto=$useridto';
+        '$_baseUrl${_url}wsfunction=$wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&useridto=$useridto';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode < 400) {
@@ -84,11 +84,11 @@ class NotificacionesService extends ChangeNotifier {
 
 //marcar una notificacion ledia por id
   Future<void> leidaId(int notificationid) async {
-    String _wsfunction = 'core_message_mark_notification_read';
+    String wsfunction = 'core_message_mark_notification_read';
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: 'token');
     final url =
-        '$_baseUrl${_url}wsfunction=$_wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&notificationid=$notificationid';
+        '$_baseUrl${_url}wsfunction=$wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&notificationid=$notificationid';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode < 400) {

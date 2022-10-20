@@ -41,6 +41,7 @@ class UserProvider with ChangeNotifier {
     } catch (e) {
       print(e);
     }
+    return null;
   }
 
   userInfoController(UserClass userInfoController) {

@@ -2,6 +2,8 @@
 //
 //     final searchResponse = searchResponseFromJson(jsonString);
 
+// ignore_for_file: file_names
+
 import 'dart:convert';
 
 List<SearchResponse> searchResponseFromJson(String str) =>

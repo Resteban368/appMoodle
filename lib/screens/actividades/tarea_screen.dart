@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable, unused_element
+
 import 'package:campus_virtual/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -139,10 +141,8 @@ class _ContainerInformacionTarea extends StatelessWidget {
             );
           } else {
             if (snapshot.hasData) {
-              print('erm');
-              print(snapshot.data.length);
               final tarea = snapshot.data;
-              return Text('helo');
+              return const Text('helo');
               // return SizedBox(
               //   width: double.infinity,
               //   height: MediaQuery.of(context).size.height * 0.5,
@@ -318,7 +318,7 @@ class _ContainerInformacionTarea extends StatelessWidget {
               //   ),
               // );
             } else {
-              return Text('No hay tarea');
+              return const Text('No hay tarea');
             }
           }
         });

@@ -1,6 +1,5 @@
-import 'dart:io';
+// ignore_for_file: must_be_immutable
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
@@ -9,7 +8,6 @@ import '../../models/models.dart';
 import '../../services/sevices.dart';
 import '../../theme/theme.dart';
 import '../../utils/utils.dart';
-import '../../widgets/widgets.dart';
 
 class ChatUserScreen extends StatefulWidget {
   Conversation chatList;
@@ -31,7 +29,6 @@ class _ChatUserScreenState extends State<ChatUserScreen>
   @override
   Widget build(BuildContext context) {
     final chatService = Provider.of<ChatListService>(context, listen: false);
-    final siteInfo = Provider.of<InfoSiteService>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
           elevation: 1,

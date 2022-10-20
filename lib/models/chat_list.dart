@@ -142,17 +142,14 @@ class Member {
         profileurl: json["profileurl"],
         profileimageurl: json["profileimageurl"],
         profileimageurlsmall: json["profileimageurlsmall"],
-        isonline: json["isonline"] == null ? null : json["isonline"],
+        isonline: json["isonline"],
         showonlinestatus: json["showonlinestatus"],
         isblocked: json["isblocked"],
         iscontact: json["iscontact"],
         isdeleted: json["isdeleted"],
-        canmessageevenifblocked: json["canmessageevenifblocked"] == null
-            ? null
-            : json["canmessageevenifblocked"],
-        canmessage: json["canmessage"] == null ? null : json["canmessage"],
-        requirescontact:
-            json["requirescontact"] == null ? null : json["requirescontact"],
+        canmessageevenifblocked: json["canmessageevenifblocked"],
+        canmessage: json["canmessage"],
+        requirescontact: json["requirescontact"],
         contactrequests:
             List<dynamic>.from(json["contactrequests"].map((x) => x)),
       );
@@ -163,15 +160,14 @@ class Member {
         "profileurl": profileurl,
         "profileimageurl": profileimageurl,
         "profileimageurlsmall": profileimageurlsmall,
-        "isonline": isonline == null ? null : isonline,
+        "isonline": isonline,
         "showonlinestatus": showonlinestatus,
         "isblocked": isblocked,
         "iscontact": iscontact,
         "isdeleted": isdeleted,
-        "canmessageevenifblocked":
-            canmessageevenifblocked == null ? null : canmessageevenifblocked,
-        "canmessage": canmessage == null ? null : canmessage,
-        "requirescontact": requirescontact == null ? null : requirescontact,
+        "canmessageevenifblocked": canmessageevenifblocked,
+        "canmessage": canmessage,
+        "requirescontact": requirescontact,
         "contactrequests": List<dynamic>.from(contactrequests!.map((x) => x)),
       };
 }

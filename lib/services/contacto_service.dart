@@ -1,4 +1,4 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers
+// ignore_for_file: no_leading_underscores_for_local_identifiers, avoid_print
 
 import 'dart:convert';
 
@@ -9,11 +9,6 @@ import 'package:http/http.dart' as http;
 import '../models/models.dart';
 
 class ContactosService extends ChangeNotifier {
-  //constructor
-  ContactosService() {
-    this.getContactos(4);
-  }
-
   final String _baseUrl =
       'https://plataformavirtual.uniamazonia.edu.co/DistanciaVirtual';
   final String _url = '/webservice/rest/server.php?';

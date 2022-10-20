@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 
 import 'package:campus_virtual/models/models.dart';
@@ -37,7 +39,7 @@ class CursoContenidoService extends ChangeNotifier {
         return contenidoCurso;
       }
     } catch (e) {
-      print('error en el provider de contenido curso: $e');
+      print('error en el servicie  de contenido curso: $e');
     }
 
     return null;

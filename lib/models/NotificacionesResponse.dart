@@ -2,6 +2,8 @@
 //
 //     final notificacion = notificacionFromMap(jsonString);
 
+// ignore_for_file: file_names
+
 import 'dart:convert';
 
 import 'package:campus_virtual/models/PostNotificaciones.dart';

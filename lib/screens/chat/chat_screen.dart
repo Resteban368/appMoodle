@@ -1,7 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:math';
-
 import 'package:animate_do/animate_do.dart';
 import 'package:campus_virtual/utils/utils.dart';
 import 'package:campus_virtual/widgets/widgets.dart';
@@ -169,7 +167,7 @@ class _SolicitudesScreenState extends State<SolicitudesScreen> {
                             children: [
                               SlidableAction(
                                 backgroundColor:
-                                    Color.fromARGB(255, 65, 63, 63),
+                                    const Color.fromARGB(255, 65, 63, 63),
                                 flex: 2,
                                 onPressed: (_) async {
                                   await chatSolicitud.acepetarSolicitud(
@@ -195,7 +193,7 @@ class _SolicitudesScreenState extends State<SolicitudesScreen> {
                               ),
                               SlidableAction(
                                 backgroundColor:
-                                    Color.fromARGB(255, 65, 63, 63),
+                                    const Color.fromARGB(255, 65, 63, 63),
                                 flex: 2,
                                 onPressed: (_) async {
                                   await chatSolicitud.rechazarSolicitud(
@@ -220,7 +218,7 @@ class _SolicitudesScreenState extends State<SolicitudesScreen> {
                               ),
                             ],
                           ),
-                          child: Container(
+                          child: SizedBox(
                             width: double.infinity,
                             child: ListTile(
                               leading: CircleAvatar(

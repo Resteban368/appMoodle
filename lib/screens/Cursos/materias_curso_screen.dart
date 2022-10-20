@@ -51,7 +51,6 @@ class MateriasScreen extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  //TODO  IMAGEN
                   Container(
                       color: AppTheme.primary,
                       width: double.infinity,
@@ -236,7 +235,7 @@ class _ContenidoTemas extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Container(
+              child: SizedBox(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.8,
                 child: ListView.builder(

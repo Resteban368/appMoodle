@@ -71,8 +71,8 @@ class CategoryElement {
       CategoryElement(
         id: json["id"],
         name: json["name"],
-        idnumber: json["idnumber"] == null ? null : json["idnumber"],
-        description: json["description"] == null ? null : json["description"],
+        idnumber: json["idnumber"],
+        description: json["description"],
         descriptionformat: json["descriptionformat"],
         parent: json["parent"],
         sortorder: json["sortorder"],
@@ -88,8 +88,8 @@ class CategoryElement {
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-        "idnumber": idnumber == null ? null : idnumber,
-        "description": description == null ? null : description,
+        "idnumber": idnumber,
+        "description": description,
         "descriptionformat": descriptionformat,
         "parent": parent,
         "sortorder": sortorder,

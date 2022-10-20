@@ -2,6 +2,8 @@
 //
 //     final tareaCalificacionResponse = tareaCalificacionResponseFromJson(jsonString);
 
+// ignore_for_file: file_names
+
 import 'dart:convert';
 
 class TareaCalificacionResponse {

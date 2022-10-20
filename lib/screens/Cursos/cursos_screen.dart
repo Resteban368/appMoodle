@@ -141,16 +141,7 @@ class _CursosScreenState extends State<CursosScreen> {
                                     ButtonBar(
                                       children: [
                                         Center(
-                                          child: FlatButton(
-                                            color: AppTheme.primary,
-                                            //poner el color del texto en blanco
-                                            textColor: Colors.white,
-                                            //poner borderradius
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
-
-                                            child: const Text('Ver Temas'),
+                                          child: MaterialButton(
                                             onPressed: () {
                                               Navigator.push(
                                                   context,
@@ -161,6 +152,10 @@ class _CursosScreenState extends State<CursosScreen> {
                                                               snapshot
                                                                   .data[i])));
                                             },
+                                            // ignore: sort_child_properties_last
+                                            child: const Text('Ver más'),
+                                            color: AppTheme.primary,
+                                            textColor: Colors.white,
                                           ),
                                         ),
                                       ],

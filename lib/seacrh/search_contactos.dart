@@ -39,49 +39,43 @@ class ContactosDeBusqueda extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    // ignore: todo
-    // TODO: implement buildResults
-    return Container(
-      child: Center(
-        child: Column(
-          children: const [
-            SizedBox(
-              height: 100,
-            ),
-            Icon(
-              Icons.search_off,
-              size: 100,
-              color: Colors.grey,
-            ),
-            Text(
-              'No hay resultados',
-              style: TextStyle(fontSize: 15),
-            ),
-          ],
-        ),
+    return Center(
+      child: Column(
+        children: const [
+          SizedBox(
+            height: 100,
+          ),
+          Icon(
+            Icons.search_off,
+            size: 100,
+            color: Colors.grey,
+          ),
+          Text(
+            'No hay resultados',
+            style: TextStyle(fontSize: 15),
+          ),
+        ],
       ),
     );
   }
 
   Widget _emptyContainer() {
-    return Container(
-      child: Center(
-        child: Column(
-          children: const [
-            SizedBox(
-              height: 100,
-            ),
-            Icon(
-              Icons.search_off,
-              size: 100,
-              color: Colors.grey,
-            ),
-            Text(
-              'No hay resultados',
-              style: TextStyle(fontSize: 15),
-            ),
-          ],
-        ),
+    return Center(
+      child: Column(
+        children: const [
+          SizedBox(
+            height: 100,
+          ),
+          Icon(
+            Icons.search_off,
+            size: 100,
+            color: Colors.grey,
+          ),
+          Text(
+            'No hay resultados',
+            style: TextStyle(fontSize: 15),
+          ),
+        ],
       ),
     );
   }
@@ -95,7 +89,6 @@ class ContactosDeBusqueda extends SearchDelegate {
     final contactosService =
         Provider.of<ContactosService>(context, listen: false);
     final siteInfo = Provider.of<InfoSiteService>(context, listen: false);
-    const bool color = false;
     return FutureBuilder(
         future: contactosService.searchContacto(query),
         builder: (BuildContext context, AsyncSnapshot snapshot) {

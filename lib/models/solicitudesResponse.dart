@@ -2,6 +2,8 @@
 //
 //     final solicitudesResponse = solicitudesResponseFromJson(jsonString);
 
+// ignore_for_file: file_names
+
 import 'dart:convert';
 
 List<SolicitudesResponse> solicitudesResponseFromJson(String str) =>

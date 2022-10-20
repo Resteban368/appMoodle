@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class HelpScreen extends StatefulWidget {
+  const HelpScreen({Key? key}) : super(key: key);
+
   @override
   HelpScreenState createState() {
     return HelpScreenState();
@@ -17,7 +19,7 @@ class HelpScreenState extends State<HelpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Help')),
+      appBar: AppBar(title: const Text('Help')),
       body: WebView(
         initialUrl: 'about:blank',
         onWebViewCreated: (WebViewController webViewController) {

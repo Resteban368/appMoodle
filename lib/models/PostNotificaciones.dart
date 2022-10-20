@@ -2,6 +2,8 @@
 //
 //     final postNotificaciones = postNotificacionesFromMap(jsonString);
 
+// ignore_for_file: file_names
+
 import 'dart:convert';
 
 PostNotificaciones postNotificacionesFromMap(String str) =>

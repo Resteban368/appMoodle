@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, must_be_immutable, prefer_interpolation_to_compose_strings
 
 import 'package:campus_virtual/services/sevices.dart';
 import 'package:flutter/material.dart';

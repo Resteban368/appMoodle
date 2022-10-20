@@ -2,6 +2,8 @@
 //
 //     final responseContacto = responseContactoFromJson(jsonString);
 
+// ignore_for_file: file_names
+
 import 'dart:convert';
 
 List<ResponseContacto> responseContactoFromJson(String str) =>

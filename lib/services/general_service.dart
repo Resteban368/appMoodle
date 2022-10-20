@@ -1,10 +1,10 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class GeneralService extends ChangeNotifier {
-  final storage = FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
   late String tokencillo = '';
 
 //obetner token del storage

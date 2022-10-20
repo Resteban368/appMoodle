@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, no_leading_underscores_for_local_identifiers, sort_child_properties_last
+// ignore_for_file: use_build_context_synchronously, no_leading_underscores_for_local_identifiers, sort_child_properties_last, must_be_immutable
 
 import 'package:animate_do/animate_do.dart';
 import 'package:campus_virtual/models/cursoId.dart';
@@ -83,7 +83,7 @@ class _ForoScreenState extends State<ForoScreen> {
                             const SizedBox(
                               height: 10,
                             ),
-                            Container(
+                            SizedBox(
                               width: double.infinity,
                               height: MediaQuery.of(context).size.height * 0.05,
                               child: TextFormField(

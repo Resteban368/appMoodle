@@ -1,12 +1,8 @@
 // ignore_for_file: avoid_print
 
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-
-import '../models/PostNotificaciones.dart';
 
 class ChatSolicitudService extends ChangeNotifier {
   final String _baseUrl =
@@ -17,11 +13,11 @@ class ChatSolicitudService extends ChangeNotifier {
 
   //aceptar solicitud de chat de contacto
   Future<void> acepetarSolicitud(int userid, int requesteduserid) async {
-    String _wsfunction = 'core_message_confirm_contact_request';
+    String wsfunction = 'core_message_confirm_contact_request';
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: 'token');
     final url =
-        '$_baseUrl${_url}wsfunction=$_wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&userid=$userid&requesteduserid=$requesteduserid';
+        '$_baseUrl${_url}wsfunction=$wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&userid=$userid&requesteduserid=$requesteduserid';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode < 400) {
@@ -35,11 +31,11 @@ class ChatSolicitudService extends ChangeNotifier {
 
   //rechazar solicitud de chat de contacto
   Future<void> rechazarSolicitud(int userid, int requesteduserid) async {
-    String _wsfunction = 'core_message_decline_contact_request';
+    String wsfunction = 'core_message_decline_contact_request';
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: 'token');
     final url =
-        '$_baseUrl${_url}wsfunction=$_wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&userid=$userid&requesteduserid=$requesteduserid';
+        '$_baseUrl${_url}wsfunction=$wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&userid=$userid&requesteduserid=$requesteduserid';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode < 400) {
