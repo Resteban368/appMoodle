@@ -4,7 +4,6 @@ import 'package:animated_floating_buttons/widgets/animated_floating_action_butto
 import 'package:campus_virtual/utils/warning_widget_change_notifier.dart';
 import 'package:campus_virtual/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../theme/app_bar_theme.dart';
@@ -295,57 +294,59 @@ class _CardMision extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     // ignore: sized_box_for_whitespace
+    final List<String> images = [
+      'images/Encuentros.png',
+      'images/guias.png',
+      'images/Calendario.png',
+      'images/Acuerdo.png',
+    ];
+
+    //lista de links
+    final List<String> links = [
+      'https://distancia.uniamazonia.edu.co/distancia/login/index.php',
+      'https://distancia.uniamazonia.edu.co/distancia/login/index.php',
+      'https://distancia.uniamazonia.edu.co/distancia/Noticias/CalendarioAcademico//',
+      'https://distancia.uniamazonia.edu.co/distancia/Recursos/Calendario/',
+    ];
     return Container(
       width: double.infinity,
-      height: size.width * 0.45,
+      height: size.width * 0.5,
       // color: Colors.red,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         const SizedBox(height: 10),
         Expanded(
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: 5,
+            itemCount: 4,
             itemBuilder: (_, int index) {
-              return const _Noticias();
+              return GestureDetector(
+                child: Container(
+                  width: size.width * 0.85,
+                  height: size.height,
+                  // color: Color.fromARGB(255, 91, 219, 17),
+                  margin: const EdgeInsets.all(5),
+                  child: InkWell(
+                      splashColor: Colors.red,
+                      onTap: () {
+                        // print('hello');
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.asset(
+                          images[index],
+                          fit: BoxFit.fill,
+                        ),
+                      )),
+                ),
+                onTap: () async {
+                  // await launch(links[index]);
+                  print('indexxxxxx $index');
+                },
+              );
             },
           ),
         ),
       ]),
-    );
-  }
-}
-
-class _Noticias extends StatelessWidget {
-  const _Noticias({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    //variable para saber el tamaño de la pantalla
-    final size = MediaQuery.of(context).size;
-
-    return Container(
-      width: size.width * 0.98,
-      height: size.height,
-      // color: Color.fromARGB(255, 91, 219, 17),
-      margin: const EdgeInsets.all(5),
-      child: InkWell(
-          splashColor: Colors.red,
-          onTap: () {
-            // print('hello');
-          },
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child:
-                // CachedNetworkImage(
-                //   imageUrl:
-                //       'https://distancia.uniamazonia.edu.co/distancia/pluginfile.php/1/theme_roshnilite/slideimage5/1660140177/Blue%20and%20yellow%20simple%20digital%20marketing%20banner%205.png',
-                //   fit: BoxFit.cover,
-                // ),
-                Image.asset(
-              'images/noticia.jpg',
-              fit: BoxFit.cover,
-            ),
-          )),
     );
   }
 }

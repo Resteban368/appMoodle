@@ -8,24 +8,32 @@ import 'package:http/http.dart' as http;
 import '../models/models.dart';
 
 class BannerService with ChangeNotifier {
-  List<ResponseBanner> banner = [];
+  //construcctor
+  BannerService() {
+    this.getBanner();
+  }
 
-  Future<String?> getBanner() async {
+  Future<List<Result>?> getBanner() async {
     print('getBanner');
     try {
-      const url = 'http://192.168.1.1:3000/api/banner/all';
+      const url = 'http://172.16.23.187:3000/api/banner/all';
       // print(Uri.parse(url));
       // print(url);
       final response = await http.get(Uri.parse(url));
-      print('erm${response.body}');
-      final List decodata = json.decode(response.body);
 
-      banner = decodata.map((e) => ResponseBanner.fromMap(e)).toList();
-      notifyListeners();
-      return '';
+      if (response.statusCode < 400) {
+        List<Result> banner = [];
+        Map<String, dynamic> mapaRespBody = json.decode(response.body);
+        for (var element in mapaRespBody['results']) {
+          banner.add(Result.fromMap(element));
+        }
+        notifyListeners();
+        return banner;
+      }
     } catch (e) {
       print(e);
     }
+    notifyListeners();
     return null;
   }
 }

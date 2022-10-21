@@ -86,6 +86,10 @@ flutter:
     - images/Tareas.png
     - images/files.png
     - images/course-default.png
+    - images/Acuerdo.png
+    - images/Calendario.png
+    - images/Encuentros.png
+    - images/guias.png
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

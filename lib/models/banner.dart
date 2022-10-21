@@ -6,7 +6,6 @@ import 'dart:convert';
 
 class ResponseBanner {
   ResponseBanner({
-    this.ok,
     this.results,
   });
 
@@ -19,13 +18,11 @@ class ResponseBanner {
   String toJson() => json.encode(toMap());
 
   factory ResponseBanner.fromMap(Map<String, dynamic> json) => ResponseBanner(
-        ok: json["ok"],
         results:
             List<Result>.from(json["results"].map((x) => Result.fromMap(x))),
       );
 
   Map<String, dynamic> toMap() => {
-        "ok": ok,
         "results": List<dynamic>.from(results!.map((x) => x.toMap())),
       };
 }
