@@ -40,7 +40,7 @@ class NoticiasScreen extends StatelessWidget {
             children: const [
               WarningWidgetChangeNotifier(),
               SizedBox(height: 10),
-              CardNoticias(),
+              // CardNoticias(),
               SizedBox(height: 20),
               Text(
                 'OFERTA ACADÉMICA',
@@ -161,7 +161,7 @@ class _OfertaAcademica extends StatelessWidget {
                         IconButton(
                           onPressed: () async {
                             await launch(
-                                'https://distancia.uniamazonia.edu.co/distancia/');
+                                'https://distancia.uniamazonia.edu.co/distancia/login/index.php/');
                           },
                           icon: const Icon(Icons.book),
                           color: AppTheme.primary,
@@ -228,7 +228,7 @@ class _OfertaAcademica extends StatelessWidget {
                         IconButton(
                           onPressed: () async {
                             await launch(
-                                'https://distancia.uniamazonia.edu.co/distancia/');
+                                'https://distancia.uniamazonia.edu.co/rrm/#/');
                           },
                           icon: const Icon(Icons.insert_drive_file_outlined),
                           color: AppTheme.primary,
@@ -260,7 +260,7 @@ class _OfertaAcademica extends StatelessWidget {
                         IconButton(
                           onPressed: () async {
                             await launch(
-                                'https://distancia.uniamazonia.edu.co/distancia/');
+                                'https://distancia.uniamazonia.edu.co/distancia/login/index.php');
                           },
                           icon: const Icon(Icons.calendar_month),
                           color: AppTheme.primary,
@@ -308,7 +308,7 @@ class _CardMision extends StatelessWidget {
       'https://distancia.uniamazonia.edu.co/distancia/Noticias/CalendarioAcademico//',
       'https://distancia.uniamazonia.edu.co/distancia/Recursos/Calendario/',
     ];
-    return Container(
+    return SizedBox(
       width: double.infinity,
       height: size.width * 0.5,
       // color: Colors.red,
@@ -325,22 +325,16 @@ class _CardMision extends StatelessWidget {
                   height: size.height,
                   // color: Color.fromARGB(255, 91, 219, 17),
                   margin: const EdgeInsets.all(5),
-                  child: InkWell(
-                      splashColor: Colors.red,
-                      onTap: () {
-                        // print('hello');
-                      },
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.asset(
-                          images[index],
-                          fit: BoxFit.fill,
-                        ),
-                      )),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.asset(
+                      images[index],
+                      fit: BoxFit.fill,
+                    ),
+                  ),
                 ),
                 onTap: () async {
-                  // await launch(links[index]);
-                  print('indexxxxxx $index');
+                  await launch(links[index]);
                 },
               );
             },
