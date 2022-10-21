@@ -28,6 +28,8 @@ class BannerService with ChangeNotifier {
           banner.add(Result.fromMap(element));
         }
         notifyListeners();
+        print(banner.length);
+        print(banner);
         return banner;
       }
     } catch (e) {
