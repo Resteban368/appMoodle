@@ -160,6 +160,7 @@ class _Temas extends StatelessWidget {
               );
             } else {
               return ListView.builder(
+                // reverse: true,
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 itemCount: snapshot.data!.length!,
@@ -389,7 +390,9 @@ class _ContenidoTemas extends StatelessWidget {
                                       const Icon(Icons.keyboard_arrow_right,
                                           color: AppTheme.primary, size: 30)
                                     else if (contenido.modules![i].modplural! ==
-                                        'URLs')
+                                            'URLs' ||
+                                        contenido.modules![i].modplural! ==
+                                            'Páginas')
                                       const Icon(Icons.public_rounded,
                                           color: AppTheme.primary, size: 30)
                                     else

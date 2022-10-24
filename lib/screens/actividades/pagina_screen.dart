@@ -1,15 +1,3 @@
-import 'dart:async';
-import 'dart:io';
-
-import 'package:campus_virtual/services/sevices.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-
-import '../../models/models.dart';
-import '../../providers/providers.dart';
-import '../../theme/app_bar_theme.dart';
-
 // class PaginaScreen extends StatefulWidget {
 //   Module contenido;
 //   PaginaScreen(this.contenido, {Key? key}) : super(key: key);
@@ -32,10 +20,11 @@ import '../../theme/app_bar_theme.dart';
 
 //   @override
 //   Widget build(BuildContext context) {
-//     final providerGeneral =
-//         Provider.of<GeneralProvider>(context, listen: false);
-//     final token = providerGeneral.tokencillo.toString();
-//     final url = widget.contenido.contents![0].fileurl! + '&token=$token';
+//     // final providerGeneral =
+//     //     Provider.of<GeneralProvider>(context, listen: false);
+//     // final token = providerGeneral.tokencillo.toString();
+//     final url = widget.contenido.contents![0].fileurl! +
+//         '&token=6551d6b4f1495fd4fcdaa64547703da2';
 //     // final url2 =
 //     //     'https://plataformavirtual.uniamazonia.edu.co/DistanciaVirtual/webservice/pluginfile.php/123/mod_page/content/index.html?forcedownload=1&token=$token';
 //     final newUrl = url.replaceAll("forcedownload=1", "");
@@ -61,8 +50,8 @@ import '../../theme/app_bar_theme.dart';
 //         onWebViewCreated: (WebViewController webViewController) {
 //           _controller.complete(webViewController);
 //           webViewController.loadUrl(
-//             // 'https://plataformavirtual.uniamazonia.edu.co/DistanciaVirtual/webservice/pluginfile.php/123/mod_page/content/index.html?forcedownload=1&token=7c66c6eb548e990c420ab25911f9ef17',
-//             newUrl,
+//             'https://plataformavirtual.uniamazonia.edu.co/DistanciaVirtual/webservice/pluginfile.php/52/mod_page/content/index.html?&token=6551d6b4f1495fd4fcdaa64547703da2',
+
 //             headers: {"Content-Disposition": "inline"},
 //             //parametros
 //           );
@@ -75,8 +64,19 @@ import '../../theme/app_bar_theme.dart';
 //   }
 // }
 
+// ignore_for_file: library_private_types_in_public_api, must_be_immutable
+
+import 'dart:convert';
+
+import 'package:campus_virtual/theme/app_bar_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+// import 'package:flutter_html/flutter_html.dart';
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+
+import '../../models/models.dart';
+import '../../services/sevices.dart';
 
 class PaginaScreen extends StatefulWidget {
   Module contenido;
@@ -88,58 +88,52 @@ class PaginaScreen extends StatefulWidget {
 }
 
 class _PaginaScreen extends State<PaginaScreen> {
-  int _stackIndex = 1;
+  Future<String?> getContent(String url) async {
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode < 400) {
+      print('good');
+      final content = response.body;
+      print(content);
+      return content;
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final providerGeneral = Provider.of<GeneralService>(context, listen: false);
     final token = providerGeneral.tokencillo.toString();
     final url = widget.contenido.contents![0].fileurl! + '&token=$token';
-    // final url2 =
-    //     'https://plataformavirtual.uniamazonia.edu.co/DistanciaVirtual/webservice/pluginfile.php/123/mod_page/content/index.html?forcedownload=1&token=$token';
-    final newUrl = url.replaceAll("forcedownload=1", "");
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppTheme.primary,
         title: Text(widget.contenido.name!),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(12),
-        child: Expanded(
-          child: IndexedStack(
-            index: _stackIndex,
-            children: [
-              InAppWebView(
-                initialUrlRequest: URLRequest(url: Uri.parse(newUrl), headers: {
-                  "Content-Type": "text/html",
-                }),
-                initialOptions: InAppWebViewGroupOptions(
-                  crossPlatform:
-                      InAppWebViewOptions(useShouldOverrideUrlLoading: true),
-                ),
-                onLoadStop: (_, __) {
-                  setState(() {
-                    _stackIndex = 0;
-                  });
-                },
-                onLoadError: (_, __, ___, ____) {
-                  setState(() {
-                    _stackIndex = 0;
-                  });
-                  //TODO: Show error alert message (Error in receive data from server)
-                },
-                onLoadHttpError: (_, __, ___, ____) {
-                  setState(() {
-                    _stackIndex = 0;
-                  });
-                  //TODO: Show error alert message (Error in receive data from server)
-                },
-              ),
-              const SizedBox(
-                height: 50,
-                child: CircularProgressIndicator(),
-              ),
-            ],
-          ),
+        //accion del retroceder a la pagina anterior
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
+      ),
+      body: FutureBuilder<String?>(
+        future: getContent(url),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            // return Html(data: snapshot.data);
+            return WebView(
+              initialUrl: Uri.dataFromString(snapshot.data!,
+                      mimeType: 'text/html',
+                      encoding: Encoding.getByName('utf-8'))
+                  .toString(),
+              javascriptMode: JavascriptMode.unrestricted,
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
       ),
     );
   }
