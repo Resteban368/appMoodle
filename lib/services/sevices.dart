@@ -1,3 +1,5 @@
+export 'package:campus_virtual/services/category_service.dart';
+
 export 'package:campus_virtual/services/banner_service.dart';
 
 export 'package:campus_virtual/services/chat_list_service.dart';

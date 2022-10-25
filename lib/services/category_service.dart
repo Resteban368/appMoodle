@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -7,30 +5,30 @@ import 'package:http/http.dart' as http;
 
 import '../models/models.dart';
 
-class BannerService with ChangeNotifier {
+class CategoryService with ChangeNotifier {
   //construcctor
-  BannerService() {
-    getBanner();
+  CategoryService() {
+    getCategoryById(2);
   }
 
-  Future<List<Result>?> getBanner() async {
-    print('getBanner');
+  Future<List<Category>?> getCategoryById(int id) async {
+    print('getCtaegoryById');
+
     try {
-      const url = 'http://172.16.23.187:3000/api/banner/all';
+      final url = 'http://172.16.23.187:3000/api/course/Category/$id';
       // print(Uri.parse(url));
       // print(url);
       final response = await http.get(Uri.parse(url));
 
       if (response.statusCode < 400) {
-        List<Result> banner = [];
+        List<Category> category = [];
         Map<String, dynamic> mapaRespBody = json.decode(response.body);
         for (var element in mapaRespBody['results']) {
-          banner.add(Result.fromMap(element));
+          category.add(Category.fromMap(element));
         }
         notifyListeners();
-        print(banner.length);
-        print(banner);
-        return banner;
+        print(category);
+        return category;
       }
     } catch (e) {
       print(e);

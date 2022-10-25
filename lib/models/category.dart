@@ -1,41 +1,35 @@
 // To parse this JSON data, do
 //
-//     final category = categoryFromMap(jsonString);
+//     final responseCategories = responseCategoriesFromJson(jsonString);
 
 import 'dart:convert';
 
-class Category {
-  Category({
-    this.code,
-    this.status,
-    this.categories,
+ResponseCategories responseCategoriesFromMap(String str) =>
+    ResponseCategories.fromMap(json.decode(str));
+
+String responseCategoriesToMap(ResponseCategories data) =>
+    json.encode(data.toMap());
+
+class ResponseCategories {
+  ResponseCategories({
+    required this.category,
   });
 
-  int? code;
-  String? status;
-  List<CategoryElement>? categories;
+  List<Category> category;
 
-  factory Category.fromRawJson(String str) =>
-      Category.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory Category.fromJson(Map<String, dynamic> json) => Category(
-        code: json["code"],
-        status: json["status"],
-        categories: List<CategoryElement>.from(
-            json["categories"].map((x) => CategoryElement.fromJson(x))),
+  factory ResponseCategories.fromMap(Map<String, dynamic> json) =>
+      ResponseCategories(
+        category: List<Category>.from(
+            json["results"].map((x) => Category.fromMap(x))),
       );
 
-  Map<String, dynamic> toJson() => {
-        "code": code,
-        "status": status,
-        "categories": List<dynamic>.from(categories!.map((x) => x.toJson())),
+  Map<String, dynamic> toMap() => {
+        "results": List<dynamic>.from(category.map((x) => x.toMap())),
       };
 }
 
-class CategoryElement {
-  CategoryElement({
+class Category {
+  Category({
     this.id,
     this.name,
     this.idnumber,
@@ -67,8 +61,7 @@ class CategoryElement {
   String? path;
   dynamic theme;
 
-  factory CategoryElement.fromJson(Map<String, dynamic> json) =>
-      CategoryElement(
+  factory Category.fromMap(Map<String, dynamic> json) => Category(
         id: json["id"],
         name: json["name"],
         idnumber: json["idnumber"],
@@ -85,7 +78,7 @@ class CategoryElement {
         theme: json["theme"],
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toMap() => {
         "id": id,
         "name": name,
         "idnumber": idnumber,

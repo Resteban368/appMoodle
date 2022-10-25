@@ -37,6 +37,7 @@ class _CursosScreenState extends State<CursosScreen> {
   @override
   Widget build(BuildContext context) {
     final cursoInfo = Provider.of<CursoService>(context, listen: false);
+    final category = Provider.of<CategoryService>(context, listen: false);
     // final providerGeneral = Provider.of<GeneralService>(context, listen: false);
     // final token = providerGeneral.tokencillo.toString();
     //mandamos a llamar el token para usarlo en esta clase
@@ -93,6 +94,7 @@ class _CursosScreenState extends State<CursosScreen> {
                       //         '?token=$token';
                       // print(urlImg);
                       // final urlImg = 'https://via.placeholder.com/350x150';
+                      final curso = snapshot.data.length;
                       return ElasticInDown(
                         child:
                             //creamos una card para poner los cursos
@@ -119,17 +121,15 @@ class _CursosScreenState extends State<CursosScreen> {
                                 child: Column(
                                   children: [
                                     ListTile(
-                                      leading: const Icon(
-                                        Icons.book,
-                                        color: AppTheme.primary,
-                                        size: 40,
-                                      ),
-                                      title: Text(snapshot.data[i].fullname,
-                                          style: const TextStyle(fontSize: 20)),
-                                      subtitle: Text(
-                                          snapshot.data[i].category.toString(),
-                                          style: const TextStyle(fontSize: 15)),
-                                    ),
+                                        leading: const Icon(
+                                          Icons.book,
+                                          color: AppTheme.primary,
+                                          size: 40,
+                                        ),
+                                        title: Text(snapshot.data[i].fullname,
+                                            style:
+                                                const TextStyle(fontSize: 20)),
+                                        subtitle: Text('semestre N°')),
                                     Container(
                                         color: AppTheme.primary,
                                         width: double.infinity,
