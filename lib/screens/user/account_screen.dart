@@ -36,7 +36,7 @@ class _AccountScreenState extends State<AccountScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(userInfoProvider2.userInfo.fullname!),
+        title: const Text('Perfil'),
         backgroundColor: AppTheme.primary,
         //para cerrar sesion
         actions: [

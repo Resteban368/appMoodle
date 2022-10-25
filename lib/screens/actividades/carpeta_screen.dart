@@ -18,19 +18,9 @@ class CarpetaScreen extends StatelessWidget {
     final token = providerGeneral.tokencillo.toString();
 
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Carpeta'),
+        title: const Text('Contenido de la carpeta'),
         backgroundColor: AppTheme.primary,
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.notifications,
-              size: 30,
-            ),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: Column(
         children: [
@@ -43,7 +33,7 @@ class CarpetaScreen extends StatelessWidget {
               child: Row(
                 children: [
                   Image.asset(
-                    'images/folder.png',
+                    'images/Carpetas.png',
                     fit: BoxFit.contain,
                     height: 40,
                   ),

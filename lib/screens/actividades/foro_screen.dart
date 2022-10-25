@@ -6,6 +6,7 @@ import 'package:campus_virtual/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../services/debate_service.dart';
 import '../../services/foroDiscussion_service.dart';
 import '../../theme/app_bar_theme.dart';
@@ -233,8 +234,8 @@ class _ForoScreenState extends State<ForoScreen> {
                         final debates = snapshot.data;
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
+                          return Center(
+                            child: loaderForoList(),
                           );
                         } else {
                           if (snapshot.data.length == 0) {
@@ -415,8 +416,8 @@ class _ContenidoDebatesState extends State<_ContenidoDebates> {
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             final post = snapshot.data;
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return Center(
+                child: loaderForoList(),
               );
             } else {
               return RefreshIndicator(
@@ -699,4 +700,59 @@ class _ContenidoDebatesState extends State<_ContenidoDebates> {
       ),
     );
   }
+}
+
+Widget loaderForoList() {
+  return Shimmer.fromColors(
+    baseColor: Colors.white,
+    highlightColor: Colors.grey,
+    period: const Duration(seconds: 2),
+    child: ListView.builder(
+        itemCount: 5,
+        shrinkWrap: true,
+        itemBuilder: (BuildContext context, int i) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.2,
+              decoration: BoxDecoration(
+                border: Border.all(color: AppTheme.primary),
+                borderRadius: BorderRadius.circular(10),
+                //sombra
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 10,
+                    spreadRadius: 5,
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: const Icon(
+                      Icons.message,
+                      color: Colors.grey,
+                      size: 40,
+                    ),
+                    subtitle: Container(
+                      width: double.infinity,
+                      height: 50,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      color: Colors.grey,
+                      width: double.infinity,
+                      height: 50,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }),
+  );
 }

@@ -395,9 +395,16 @@ class _ContenidoTemas extends StatelessWidget {
                                             'Páginas')
                                       const Icon(Icons.public_rounded,
                                           color: AppTheme.primary, size: 30)
-                                    else
-                                      const Icon(Icons.download,
-                                          color: AppTheme.primary, size: 30),
+                                    else if (contenido.modules![i].modplural! ==
+                                        'Archivos')
+                                      if (contenido.modules![i].contents![0]
+                                              .mimetype ==
+                                          'application/pdf')
+                                        const Icon(Icons.picture_as_pdf_rounded,
+                                            color: AppTheme.primary, size: 30)
+                                      else
+                                        const Icon(Icons.download,
+                                            color: AppTheme.primary, size: 30),
                                   ],
                                 ),
                                 subtitle: Column(
@@ -526,12 +533,6 @@ class _ContenidoTemas extends StatelessWidget {
                                         MaterialPageRoute(
                                             builder: (context) => PaginaScreen(
                                                 contenido.modules![i])));
-
-                                    // Navigator.push(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //         builder: (context) => HelpScreen()));
-
                                   } else if (contenido.modules![i].modplural ==
                                       'Carpetas') {
                                     Navigator.push(
@@ -544,7 +545,7 @@ class _ContenidoTemas extends StatelessWidget {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => UrlPDFScreen(
+                                            builder: (context) => PaginaScreen(
                                                 contenido.modules![i])));
                                   } else if (contenido.modules![i].modplural ==
                                       'Foros') {

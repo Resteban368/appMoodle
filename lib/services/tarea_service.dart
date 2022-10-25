@@ -15,7 +15,7 @@ class TareaService extends ChangeNotifier {
 
   final TextEditingController controllerMessage = TextEditingController();
 
-  Future<TareaCalificacionResponse> getTarea(int userid, int assignid) async {
+  Future<TareaCalificacionResponse?> getTarea(int userid, int assignid) async {
     print('get info tarea');
     const String wsfunction = 'mod_assign_get_submission_status';
     const storage = FlutterSecureStorage();
@@ -25,19 +25,17 @@ class TareaService extends ChangeNotifier {
     try {
       final response = await http.get(Uri.parse(url2));
       if (response.statusCode < 400) {
-        //mapeando la respuesta
-        final Map<String, dynamic> mapaRespBody = json.decode(response.body);
-        final TareaCalificacionResponse tareaCalificacionResponse =
-            TareaCalificacionResponse.fromJson(mapaRespBody);
+        //mapeamos el respondes.body a un objeto de tipo TareaCalificacionResponse
+        final tareaCalificacionResponse =
+            TareaCalificacionResponse.fromJson(json.decode(response.body));
         notifyListeners();
-        // print(tareaCalificacionResponse.lastattempt!.submission!.status);
-        print(response.body);
+        print(tareaCalificacionResponse.feedback!.gradefordisplay);
         return tareaCalificacionResponse;
       }
-    } catch (e) {
-      print('error en la response tarea: $e');
+    } catch (e, s) {
+      print('error en la response tarea service: $e + $s');
     }
     notifyListeners();
-    return TareaCalificacionResponse();
+    return null;
   }
 }

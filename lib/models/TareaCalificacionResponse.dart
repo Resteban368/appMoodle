@@ -9,7 +9,7 @@ import 'dart:convert';
 class TareaCalificacionResponse {
   TareaCalificacionResponse({
     this.lastattempt,
-    this.feedback,
+    feedback,
     this.warnings,
   });
 
@@ -26,7 +26,10 @@ class TareaCalificacionResponse {
   factory TareaCalificacionResponse.fromJson(Map<String, dynamic> json) =>
       TareaCalificacionResponse(
         lastattempt: Lastattempt.fromJson(json["lastattempt"]),
-        feedback: Feedback.fromJson(json["feedback"]),
+        //verificar si el feedback es null o no
+        feedback: json["feedback"] == null
+            ? null
+            : Feedback.fromJson(json["feedback"]),
         warnings: List<dynamic>.from(json["warnings"].map((x) => x)),
       );
 

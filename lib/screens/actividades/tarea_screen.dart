@@ -4,6 +4,7 @@ import 'package:campus_virtual/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/models.dart';
 import '../../services/sevices.dart';
@@ -51,7 +52,6 @@ class _TareaScreenState extends State<TareaScreen> {
                   const SizedBox(height: 5),
                   _ContainerInformacionTarea(widget.contenido),
                   const SizedBox(height: 5),
-                  // _ComentarioTarea(widget.contenido),
                 ],
               ),
             ),
@@ -133,195 +133,392 @@ class _ContainerInformacionTarea extends StatelessWidget {
     final siteInfo = Provider.of<InfoSiteService>(context, listen: false);
 
     return FutureBuilder(
-        future: tarea.getTarea(siteInfo.infoSite.userid!, contenido.instance!),
+        future: tarea.getTarea(3, 1),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           } else {
-            if (snapshot.hasData) {
-              final tarea = snapshot.data;
-              return const Text('helo');
-              // return SizedBox(
-              //   width: double.infinity,
-              //   height: MediaQuery.of(context).size.height * 0.5,
-              //   child: Card(
-              //     elevation: 3,
-              //     child: Padding(
-              //       padding: const EdgeInsets.all(8.0),
-              //       child: Column(children: [
-              //         const Padding(
-              //           padding: EdgeInsets.all(8.0),
-              //           child: Text(
-              //             'Estado de la entrega',
-              //             style:
-              //                 TextStyle(fontSize: 22, color: AppTheme.primary),
-              //           ),
-              //         ),
-              //         const SizedBox(height: 10),
-              //         const Divider(),
-              //         Row(
-              //           children: [
-              //             SizedBox(
-              //               width: MediaQuery.of(context).size.width * 0.3,
-              //               height: MediaQuery.of(context).size.height * 0.05,
-              //               child: const Padding(
-              //                 padding: EdgeInsets.only(top: 2.0, left: 2.0),
-              //                 child: Text('Estado de la entrega: ',
-              //                     style: TextStyle(color: AppTheme.primary)),
-              //               ),
-              //             ),
-              //             const SizedBox(width: 5),
-              //             SizedBox(
-              //                 width: MediaQuery.of(context).size.width * 0.6,
-              //                 height: MediaQuery.of(context).size.height * 0.05,
-              //                 child: const Padding(
-              //                   padding: EdgeInsets.all(8.0),
-              //                   child: Text(''),
-              //                 )),
-              //           ],
-              //         ),
-              //         const Divider(),
-              //         Row(
-              //           children: [
-              //             SizedBox(
-              //               width: MediaQuery.of(context).size.width * 0.3,
-              //               height: MediaQuery.of(context).size.height * 0.05,
-              //               child: const Padding(
-              //                 padding: EdgeInsets.only(top: 2.0, left: 2.0),
-              //                 child: Text('Estado de la calificación: ',
-              //                     style: TextStyle(color: AppTheme.primary)),
-              //               ),
-              //             ),
-              //             const SizedBox(width: 5),
-              //             SizedBox(
-              //                 width: MediaQuery.of(context).size.width * 0.6,
-              //                 height: MediaQuery.of(context).size.height * 0.05,
-              //                 child: const Padding(
-              //                   padding: EdgeInsets.all(8.0),
-              //                   child: Text(''),
-              //                 )),
-              //           ],
-              //         ),
-              //         const Divider(),
-              //         Row(
-              //           children: [
-              //             SizedBox(
-              //               width: MediaQuery.of(context).size.width * 0.3,
-              //               height: MediaQuery.of(context).size.height * 0.05,
-              //               child: const Padding(
-              //                 padding: EdgeInsets.only(top: 8.0, left: 2.0),
-              //                 child: Text('Tiempo restante: ',
-              //                     style: TextStyle(color: AppTheme.primary)),
-              //               ),
-              //             ),
-              //             const SizedBox(width: 5),
-              //             SizedBox(
-              //                 width: MediaQuery.of(context).size.width * 0.6,
-              //                 height: MediaQuery.of(context).size.height * 0.05,
-              //                 child: const Padding(
-              //                   padding: EdgeInsets.only(left: 8.0, right: 8.0),
-              //                   child: Text(''),
-              //                 )),
-              //           ],
-              //         ),
-              //         const Divider(),
-              //         Row(
-              //           children: [
-              //             SizedBox(
-              //               width: MediaQuery.of(context).size.width * 0.3,
-              //               height: MediaQuery.of(context).size.height * 0.05,
-              //               child: const Padding(
-              //                 padding: EdgeInsets.only(top: 2.0, left: 2.0),
-              //                 child: Text('Última modificación: ',
-              //                     style: TextStyle(color: AppTheme.primary)),
-              //               ),
-              //             ),
-              //             const SizedBox(width: 5),
-              //             SizedBox(
-              //                 width: MediaQuery.of(context).size.width * 0.6,
-              //                 height: MediaQuery.of(context).size.height * 0.05,
-              //                 child: Padding(
-              //                   padding: const EdgeInsets.all(8.0),
-              //                   child: Text(
-              //                     tarea.lastattempt.submission ?? 0
-              //                         ? getData(tarea
-              //                             .lastattempt!
-              //                             .submission!
-              //                             .plugins![0]
-              //                             .fileareas![0]
-              //                             .files![0]
-              //                             .timemodified)
-              //                         : 'No hay mofigicaciones',
-              //                   ),
-              //                 )),
-              //           ],
-              //         ),
-              //         const Divider(),
-              //         Row(
-              //           children: [
-              //             SizedBox(
-              //               width: MediaQuery.of(context).size.width * 0.3,
-              //               height: MediaQuery.of(context).size.height * 0.05,
-              //               child: const Padding(
-              //                 padding: EdgeInsets.only(top: 2.0, left: 2.0),
-              //                 child: Text('Archivos enviados: ',
-              //                     style: TextStyle(color: AppTheme.primary)),
-              //               ),
-              //             ),
-              //             const SizedBox(width: 5),
-              //             SizedBox(
-              //                 width: MediaQuery.of(context).size.width * 0.6,
-              //                 height: MediaQuery.of(context).size.height * 0.05,
-              //                 child: Padding(
-              //                     padding: const EdgeInsets.all(8.0),
-              //                     child: Text(
-              //                       tarea.lastattempt!.submission!.plugins![0]
-              //                                   .fileareas![0].files.length >
-              //                               0
-              //                           ? tarea
-              //                               .lastattempt!
-              //                               .submission!
-              //                               .plugins![0]
-              //                               .fileareas![0]
-              //                               .files![0]
-              //                               .filename
-              //                           : 'No hay archivos',
-              //                     ))),
-              //           ],
-              //         ),
-              //         const Divider(),
-              //         Row(
-              //           children: [
-              //             SizedBox(
-              //               width: MediaQuery.of(context).size.width * 0.3,
-              //               height: MediaQuery.of(context).size.height * 0.05,
-              //               child: const Padding(
-              //                 padding: EdgeInsets.only(top: 2.0, left: 2.0),
-              //                 child: Text('Comentarios de la entrega: ',
-              //                     style: TextStyle(color: AppTheme.primary)),
-              //               ),
-              //             ),
-              //             const SizedBox(width: 5),
-              //             SizedBox(
-              //                 width: MediaQuery.of(context).size.width * 0.6,
-              //                 height: MediaQuery.of(context).size.height * 0.05,
-              //                 child: const Padding(
-              //                   padding: EdgeInsets.all(8.0),
-              //                   child: Text('Comentarios (0)'),
-              //                 )),
-              //           ],
-              //         ),
-              //       ]),
-              //     ),
-              //   ),
-              // );
-            } else {
-              return const Text('No hay tarea');
-            }
+            final tarea = snapshot.data;
+            return _EstadoEntrega(tarea!);
+            // return Container();
           }
         });
+  }
+}
+
+class _EstadoEntrega extends StatelessWidget {
+  TareaCalificacionResponse tarea;
+  _EstadoEntrega(this.tarea, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: MediaQuery.of(context).size.height * 1.5,
+      child: Column(
+        children: [
+          Card(
+            elevation: 3,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(children: [
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'Estado de la entrega',
+                    style: TextStyle(fontSize: 22, color: AppTheme.primary),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const Divider(),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      height: MediaQuery.of(context).size.height * 0.05,
+                      child: const Padding(
+                        padding: EdgeInsets.only(top: 2.0, left: 2.0),
+                        child: Text('Estado de la entrega: ',
+                            style: TextStyle(color: AppTheme.primary)),
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: (tarea.lastattempt!.submission!.status ==
+                                  'submitted')
+                              ? const Text('Enviado para calificar')
+                              : const Text('No entregado'),
+                        )),
+                  ],
+                ),
+                const Divider(),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      height: MediaQuery.of(context).size.height * 0.05,
+                      child: const Padding(
+                        padding: EdgeInsets.only(top: 2.0, left: 2.0),
+                        child: Text('Estado de la calificación: ',
+                            style: TextStyle(color: AppTheme.primary)),
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      height: MediaQuery.of(context).size.height * 0.04,
+                      child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: (tarea.feedback == null)
+                              ? const Text('No calificado')
+                              : const Text('Calificado')),
+                    ),
+                  ],
+                ),
+                const Divider(),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      height: MediaQuery.of(context).size.height * 0.05,
+                      child: const Padding(
+                        padding: EdgeInsets.only(top: 8.0, left: 2.0),
+                        child: Text('Tiempo restante: ',
+                            style: TextStyle(color: AppTheme.primary)),
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        child: const Padding(
+                          padding: EdgeInsets.only(left: 8.0, right: 8.0),
+                          child: Text(''),
+                        )),
+                  ],
+                ),
+                const Divider(),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      height: MediaQuery.of(context).size.height * 0.05,
+                      child: const Padding(
+                        padding: EdgeInsets.only(top: 2.0, left: 2.0),
+                        child: Text('Última modificación: ',
+                            style: TextStyle(color: AppTheme.primary)),
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        height: MediaQuery.of(context).size.height * 0.06,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(getData(
+                              tarea.lastattempt!.submission!.timemodified!)),
+                        )),
+                  ],
+                ),
+                const Divider(),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      height: MediaQuery.of(context).size.height * 0.08,
+                      child: const Padding(
+                        padding: EdgeInsets.only(top: 2.0, left: 2.0),
+                        child: Text('Archivos enviados: ',
+                            style: TextStyle(color: AppTheme.primary)),
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    SingleChildScrollView(
+                      child: SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.6,
+                          height: MediaQuery.of(context).size.height * 0.12,
+                          child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ListView.builder(
+                                  itemCount: tarea.lastattempt!.submission!
+                                      .plugins![0].fileareas![0].files!.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Card(
+                                      elevation: 2,
+                                      child: GestureDetector(
+                                        child: ListTile(
+                                          trailing: Column(
+                                            children: const [
+                                              SizedBox(height: 15),
+                                              Icon(
+                                                Icons.download,
+                                                color: AppTheme.primary,
+                                              ),
+                                            ],
+                                          ),
+                                          leading: Column(
+                                            children: const [
+                                              SizedBox(height: 15),
+                                              Icon(
+                                                Icons.insert_drive_file,
+                                                color: AppTheme.primary,
+                                                size: 20,
+                                              ),
+                                            ],
+                                          ),
+                                          title: Text(
+                                            tarea
+                                                .lastattempt!
+                                                .submission!
+                                                .plugins![0]
+                                                .fileareas![0]
+                                                .files![index]
+                                                .filename!,
+                                            style:
+                                                const TextStyle(fontSize: 12),
+                                          ),
+                                          subtitle: Text(
+                                              getFecha(tarea
+                                                  .lastattempt!
+                                                  .submission!
+                                                  .plugins![0]
+                                                  .fileareas![0]
+                                                  .files![index]
+                                                  .timemodified!),
+                                              style: const TextStyle(
+                                                  fontSize: 11)),
+                                        ),
+                                        onTap: () async {
+                                          // print(tarea
+                                          //     .lastattempt!
+                                          //     .submission!
+                                          //     .plugins![0]
+                                          //     .fileareas![0]
+                                          //     .files![0]
+                                          //     .fileurl!);
+                                          // await launch(tarea
+                                          //     .lastattempt!
+                                          //     .submission!
+                                          //     .plugins![0]
+                                          //     .fileareas![0]
+                                          //     .files![0]
+                                          //     .fileurl!);
+                                        },
+                                      ),
+                                    );
+                                  }))),
+                    ),
+                  ],
+                ),
+                const Divider(),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      height: MediaQuery.of(context).size.height * 0.05,
+                      child: const Padding(
+                        padding: EdgeInsets.only(top: 2.0, left: 2.0),
+                        child: Text('Comentarios de la entrega: ',
+                            style: TextStyle(color: AppTheme.primary)),
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text('Comentarios (0)'),
+                        )),
+                  ],
+                ),
+              ]),
+            ),
+          ),
+          Card(
+            elevation: 2,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(children: [
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'Comentario',
+                    style: TextStyle(fontSize: 22, color: AppTheme.primary),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const Divider(),
+                Row(children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    height: MediaQuery.of(context).size.height * 0.05,
+                    child: const Padding(
+                      padding: EdgeInsets.only(top: 2.0, left: 2.0),
+                      child: Text('Calificacion: ',
+                          style: TextStyle(color: AppTheme.primary)),
+                    ),
+                  ),
+                  const SizedBox(width: 5),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    height: MediaQuery.of(context).size.height * 0.05,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(''),
+                    ),
+                  ),
+                ]),
+                const Divider(),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      height: MediaQuery.of(context).size.height * 0.05,
+                      child: const Padding(
+                        padding: EdgeInsets.only(top: 2.0, left: 2.0),
+                        child: Text('Calificado sobre: ',
+                            style: TextStyle(color: AppTheme.primary)),
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(''),
+                        )),
+                  ],
+                ),
+                const Divider(),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      height: MediaQuery.of(context).size.height * 0.05,
+                      child: const Padding(
+                        padding: EdgeInsets.only(top: 8.0, left: 2.0),
+                        child: Text('Calificado por: ',
+                            style: TextStyle(color: AppTheme.primary)),
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        child: const Padding(
+                          padding: EdgeInsets.only(left: 8.0, right: 8.0),
+                          child: Text(''),
+                        )),
+                  ],
+                ),
+                const Divider(),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      height: MediaQuery.of(context).size.height * 0.05,
+                      child: const Padding(
+                        padding: EdgeInsets.only(top: 2.0, left: 2.0),
+                        child: Text('Comentarios de retroalimentación: ',
+                            style: TextStyle(color: AppTheme.primary)),
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    // SizedBox(
+                    //     width: MediaQuery.of(context).size.width * 0.6,
+                    //     height: MediaQuery.of(context).size.height * 0.10,
+                    //     child: Padding(
+                    //         padding: const EdgeInsets.all(8.0),
+                    //         child: SingleChildScrollView(
+                    //           child: Html(
+                    //             data: html,
+                    //             style: {
+                    //               'body': Style(
+                    //                   fontSize: const FontSize(14),
+                    //                   //justificar todo el texto
+                    //                   textAlign: TextAlign.justify),
+                    //             },
+                    //           ),
+                    //         ))),
+                  ],
+                ),
+                const Divider(),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      height: MediaQuery.of(context).size.height * 0.05,
+                      child: const Padding(
+                        padding: EdgeInsets.only(top: 2.0, left: 2.0),
+                        child: Text('Archivos de retroalimentación: ',
+                            style: TextStyle(color: AppTheme.primary)),
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(''),
+                        )),
+                  ],
+                ),
+              ]),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
 
@@ -379,9 +576,7 @@ class _ComentarioTarea extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
-                                children: [
-                                  Text(newValue),
-                                ],
+                                children: [(tarea!.fe)],
                               ),
                             )),
                       ],
@@ -479,8 +674,7 @@ class _ComentarioTarea extends StatelessWidget {
                             height: MediaQuery.of(context).size.height * 0.05,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Text(tarea.feedback!.plugins![2]
-                                  .fileareas![0].files![0].filename),
+                              child: Text(''),
                             )),
                       ],
                     ),
