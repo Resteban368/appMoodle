@@ -128,7 +128,7 @@ class Module {
         // customdata: json["customdata"],
         noviewlink: json["noviewlink"],
         completion: json["completion"],
-        completiondata: Completiondata.fromJson(json["completiondata"]),
+        // completiondata: Completiondata.fromJson(json["completiondata"]),
         contents: json["contents"] == null
             ? null
             : List<Content>.from(
@@ -155,8 +155,8 @@ class Module {
         // "customdata": customdata,
         "noviewlink": noviewlink,
         "completion": completion,
-        "completiondata":
-            completiondata == null ? {} : completiondata!.toJson(),
+        // "completiondata":
+        //     completiondata == null ? {} : completiondata!.toJson(),
         "contents": contents == null
             ? null
             : List<dynamic>.from(contents!.map((x) => x.toJson())),

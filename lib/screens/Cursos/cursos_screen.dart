@@ -83,8 +83,9 @@ class _CursosScreenState extends State<CursosScreen> {
                 );
               } else {
                 return SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.84,
+                  height: MediaQuery.of(context).size.height * 0.9,
                   child: ListView.builder(
+                    // reverse: true,
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int i) {
                       // final urlImg =
@@ -97,9 +98,6 @@ class _CursosScreenState extends State<CursosScreen> {
                             //creamos una card para poner los cursos
                             Column(
                           children: [
-                            const SizedBox(
-                              height: 20,
-                            ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 10),
@@ -128,12 +126,14 @@ class _CursosScreenState extends State<CursosScreen> {
                                       ),
                                       title: Text(snapshot.data[i].fullname,
                                           style: const TextStyle(fontSize: 20)),
-                                      subtitle: const Text('Semestre 1'),
+                                      subtitle: Text(
+                                          snapshot.data[i].category.toString(),
+                                          style: const TextStyle(fontSize: 15)),
                                     ),
                                     Container(
                                         color: AppTheme.primary,
                                         width: double.infinity,
-                                        height: 200,
+                                        height: 183,
                                         child: Image.asset(
                                           'images/course-default.png',
                                           fit: BoxFit.fill,

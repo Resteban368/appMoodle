@@ -138,9 +138,11 @@ class _Temas extends StatelessWidget {
     ];
 
     int indice;
+    print('id');
+    print(contenido.id);
     return SizedBox(
       width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.5,
+      height: MediaQuery.of(context).size.height * 0.55,
       // decoration: const BoxDecoration(
       //   color: AppTheme.secondary,
       //   borderRadius: BorderRadius.only(
@@ -163,12 +165,11 @@ class _Temas extends StatelessWidget {
                 // reverse: true,
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                itemCount: snapshot.data!.length!,
+                itemCount: snapshot.data.length!,
                 itemBuilder: (BuildContext context, int i) {
                   indice = int.parse((snapshot.data.length - i).toString());
                   return ElasticInDown(
                     child:
-
                         //creamos una card para poner los cursos
                         Card(
                       elevation: 5,

@@ -19,14 +19,16 @@ class CursoContenidoService extends ChangeNotifier {
   Future<List<ResponseDataCursoForId>?> getInfoCursoID(int courseID) async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: 'token');
-
+    print('getInfoCursoID');
     final url =
         '$_baseUrl${_url}wsfunction=$_wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&courseid=$courseID';
     try {
       final resp = await http.get(Uri.parse(url));
-      // print('url curso contenido: $url');
+      print('url curso contenido: $url');
       if (resp.statusCode < 400) {
-        // print('status code: ${resp.statusCode}');
+        print('status code: ${resp.statusCode}');
+        print('response');
+        print(resp.body);
         List<ResponseDataCursoForId> contenidoCurso = [];
         List<ResponseDataCursoForId> contenidoModules = [];
         List<dynamic> mapaRespBody = json.decode(resp.body);
@@ -38,8 +40,8 @@ class CursoContenidoService extends ChangeNotifier {
         notifyListeners();
         return contenidoCurso;
       }
-    } catch (e) {
-      print('error en el servicie  de contenido curso: $e');
+    } catch (e, s) {
+      print('error en el servicie  de contenido curso: $e + $s');
     }
 
     return null;
