@@ -162,7 +162,7 @@ class Gradeitem {
         weightraw: json["weightraw"],
         weightformatted: json["weightformatted"],
         status: json["status"],
-        graderaw: json["graderaw"].toDouble(),
+        graderaw: json["graderaw"],
         gradedatesubmitted: json["gradedatesubmitted"],
         gradedategraded: json["gradedategraded"],
         gradehiddenbydate: json["gradehiddenbydate"],

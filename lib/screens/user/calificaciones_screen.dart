@@ -4,13 +4,36 @@ import 'package:animate_do/animate_do.dart';
 import 'package:campus_virtual/services/sevices.dart';
 import 'package:campus_virtual/theme/app_bar_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../models/notasCurso.dart';
 
-class CalificacionesScreen extends StatelessWidget {
+class CalificacionesScreen extends StatefulWidget {
   const CalificacionesScreen({Key? key}) : super(key: key);
+
+  @override
+  State<CalificacionesScreen> createState() => _CalificacionesScreenState();
+}
+
+class _CalificacionesScreenState extends State<CalificacionesScreen> {
+  late int userid2 = 0;
+  @override
+  void initState() {
+    super.initState();
+    funcion();
+  }
+
+  Future<int> funcion() async {
+    const storage = FlutterSecureStorage();
+    final id = await storage.read(key: 'id');
+    final userid = int.parse(id!);
+    userid2 = userid;
+    setState(() {});
+    return userid;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +54,7 @@ class CalificacionesScreen extends StatelessWidget {
                   style: TextStyle(fontSize: 20, color: AppTheme.primary)),
             ),
             FutureBuilder(
-                future: notasService.getNotas(3),
+                future: notasService.getNotas(userid2),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return SizedBox(
@@ -56,7 +79,8 @@ class CalificacionesScreen extends StatelessWidget {
                                   size: 45,
                                 ),
                                 title: Text(notas[i].courseid.toString()),
-                                subtitle: Text(notas[i].grade.toString()),
+                                subtitle: Text(
+                                    'Calificacion ${notas[i].grade.toString()}'),
                                 trailing: const Icon(
                                   Icons.arrow_forward_ios,
                                   color: AppTheme.primary,
@@ -85,23 +109,46 @@ class CalificacionesScreen extends StatelessWidget {
   }
 }
 
-class DetalleNotasCursoScreen extends StatelessWidget {
+class DetalleNotasCursoScreen extends StatefulWidget {
   DetalleNotasCursoScreen(this.idCurso, {Key? key}) : super(key: key);
   Notas idCurso;
+
+  @override
+  State<DetalleNotasCursoScreen> createState() =>
+      _DetalleNotasCursoScreenState();
+}
+
+class _DetalleNotasCursoScreenState extends State<DetalleNotasCursoScreen> {
+  late int userid2 = 0;
+  @override
+  void initState() {
+    super.initState();
+    funcion();
+  }
+
+  Future<int> funcion() async {
+    const storage = FlutterSecureStorage();
+    final id = await storage.read(key: 'id');
+    final userid = int.parse(id!);
+    userid2 = userid;
+    setState(() {});
+    return userid;
+  }
+
   @override
   Widget build(BuildContext context) {
     final notasService = Provider.of<NotasService>(context, listen: false);
     return Scaffold(
         appBar: AppBar(
-          title: Text(idCurso.courseid.toString()),
+          title: Text(widget.idCurso.courseid.toString()),
           backgroundColor: AppTheme.primary,
         ),
-        body: Container(
-          color: Colors.white,
+        body: SizedBox(
           width: double.infinity,
           height: double.infinity,
           child: FutureBuilder(
-              future: notasService.getItemNotas(3, idCurso.courseid!),
+              future:
+                  notasService.getItemNotas(userid2, widget.idCurso.courseid!),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return SizedBox(
@@ -110,17 +157,117 @@ class DetalleNotasCursoScreen extends StatelessWidget {
                       child: loaderCardListNotas());
                 } else {
                   final notasItems = snapshot.data;
-                  return ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: notasItems![0].gradeitems.length,
-                    shrinkWrap: true,
-                    itemBuilder: (BuildContext context, int i) {
-                      return ElasticInDown(
-                        child: Card(
-                          elevation: 3,
+                  return Column(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Text('Notas del curso',
+                            style: TextStyle(
+                                fontSize: 25, color: AppTheme.primary)),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: DataTable(
+                            columns: const <DataColumn>[
+                              DataColumn(
+                                label: Text(
+                                  'Item de Calificación',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  'Ponderación calculada',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  'Calificación',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  'Rango',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  'Porcentaje',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  'Retroalimentación',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  'Aporte total al curso',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
+                              ),
+                            ],
+                            rows: notasItems[0].gradeitems.map<DataRow>((item) {
+                              return DataRow(
+                                selected: true,
+                                cells: <DataCell>[
+                                  DataCell(
+                                    (item.itemname != null)
+                                        ? Text(item.itemname.toString())
+                                        : const Text('Total Curso'),
+                                  ),
+                                  DataCell(
+                                    (item.weightformatted != null)
+                                        ? Text(item.weightformatted.toString())
+                                        : const Text('-'),
+                                  ),
+                                  DataCell(
+                                    (item.graderaw != null)
+                                        ? Text(item.graderaw.toString())
+                                        : const Text('-'),
+                                  ),
+                                  DataCell(Text(
+                                    //poner grademin y grademax
+                                    '${item.grademin} - ${item.grademax}',
+                                  )),
+                                  DataCell(Text(
+                                      item.percentageformatted.toString())),
+                                  DataCell(
+                                    SingleChildScrollView(
+                                      child: SizedBox(
+                                        width: 100,
+                                        height: 100,
+                                        child: Html(
+                                          data: item.feedback.toString(),
+                                          style: {
+                                            'body': Style(
+                                                fontSize: const FontSize(14),
+                                                //justificar todo el texto
+                                                textAlign: TextAlign.justify),
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  DataCell(Text(
+                                      item.percentageformatted.toString())),
+                                ],
+                              );
+                            }).toList(),
+                          ),
                         ),
-                      );
-                    },
+                      ),
+                    ],
                   );
                 }
               }),
