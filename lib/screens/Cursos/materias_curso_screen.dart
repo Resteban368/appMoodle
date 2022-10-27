@@ -138,18 +138,9 @@ class _Temas extends StatelessWidget {
     ];
 
     int indice;
-    print('id');
-    print(contenido.id);
     return SizedBox(
       width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.55,
-      // decoration: const BoxDecoration(
-      //   color: AppTheme.secondary,
-      //   borderRadius: BorderRadius.only(
-      //     topLeft: Radius.circular(20),
-      //     topRight: Radius.circular(20),
-      //   ),
-      // ),
+      height: MediaQuery.of(context).size.height * 0.52,
       child: Padding(
         padding:
             const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),

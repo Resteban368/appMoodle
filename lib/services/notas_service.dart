@@ -54,11 +54,34 @@ class NotasService extends ChangeNotifier {
           notasItems.add(Usergrade.fromMap(element));
         }
         notifyListeners();
-        print(notasItems[0].gradeitems![0].itemname);
         return notasItems;
       }
     } catch (e, s) {
       print('error en el service de notas curso: $e+$s');
+    }
+    notifyListeners();
+    return null;
+  }
+
+  Future<List<Usergrade>?> getAllStudentsNotas(int courseid) async {
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: 'token');
+    const String _wsfunction = 'gradereport_user_get_grade_items';
+    final url =
+        '$_baseUrl${_url}wsfunction=$_wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&courseid=$courseid';
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode < 400) {
+        List<Usergrade> notasItems = [];
+        Map<String, dynamic> mapaRespBody = json.decode(response.body);
+        for (var element in mapaRespBody['usergrades']) {
+          notasItems.add(Usergrade.fromMap(element));
+        }
+        notifyListeners();
+        return notasItems;
+      }
+    } catch (e, s) {
+      print('error en el service de notas  all estudiante curso: $e+$s');
     }
     notifyListeners();
     return null;

@@ -1,3 +1,5 @@
+export 'package:campus_virtual/models/notasCursoEstudiante.dart';
+
 export 'package:campus_virtual/models/notasItemsCurso.dart';
 
 export 'package:campus_virtual/models/notasCurso.dart';
