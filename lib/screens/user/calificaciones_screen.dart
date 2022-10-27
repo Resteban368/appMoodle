@@ -90,15 +90,41 @@ class DetalleNotasCursoScreen extends StatelessWidget {
   Notas idCurso;
   @override
   Widget build(BuildContext context) {
+    final notasService = Provider.of<NotasService>(context, listen: false);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(idCurso.courseid.toString()),
-        backgroundColor: AppTheme.primary,
-      ),
-      body: Center(
-        child: Text('DetalleNotasCursoScreen'),
-      ),
-    );
+        appBar: AppBar(
+          title: Text(idCurso.courseid.toString()),
+          backgroundColor: AppTheme.primary,
+        ),
+        body: Container(
+          color: Colors.white,
+          width: double.infinity,
+          height: double.infinity,
+          child: FutureBuilder(
+              future: notasService.getItemNotas(3, idCurso.courseid!),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return SizedBox(
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height * 0.8,
+                      child: loaderCardListNotas());
+                } else {
+                  final notasItems = snapshot.data;
+                  return ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: notasItems![0].gradeitems.length,
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext context, int i) {
+                      return ElasticInDown(
+                        child: Card(
+                          elevation: 3,
+                        ),
+                      );
+                    },
+                  );
+                }
+              }),
+        ));
   }
 }
 
