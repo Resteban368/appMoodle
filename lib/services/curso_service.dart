@@ -31,7 +31,6 @@ class CursoService extends ChangeNotifier {
         for (var element in mapaRespBody) {
           responseCursosData.add(ResponseCursos.fromJson(element));
         }
-        // print(responseCursosData[0].overviewfiles![0].filename);
         notifyListeners();
         return responseCursosData;
       }

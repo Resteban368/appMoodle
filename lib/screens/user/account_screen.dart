@@ -313,7 +313,6 @@ class _AccountScreenState extends State<AccountScreen> {
                   "El diligenciamiento de mi información personal será requerida para explorar el campus virtual. La información suministrada se encuentra amparada mediante la Ley de Protección de Datos Personales (L. 1581 de Octubre 17 de 2012)",
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.black,
                   ),
                   textAlign: TextAlign.justify),
               const SizedBox(height: 50),
@@ -365,9 +364,10 @@ class _AccountScreenState extends State<AccountScreen> {
                       child: const Text(
                         "Guardar",
                         style: TextStyle(
-                            fontSize: 15,
-                            letterSpacing: 2,
-                            color: Colors.black),
+                          fontSize: 15,
+                          letterSpacing: 2,
+                          color: AppTheme.primary,
+                        ),
                       ),
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -377,7 +377,9 @@ class _AccountScreenState extends State<AccountScreen> {
                   const SizedBox(width: 10),
                   ElevatedButton(
                       onPressed: () {
-                        userInfoProvider.habilitarFormulario();
+                        setState(() {
+                          userInfoProvider.habilitarFormulario();
+                        });
                       },
                       // ignore: sort_child_properties_last
                       child: const Text(
@@ -400,7 +402,6 @@ class _AccountScreenState extends State<AccountScreen> {
                 "En este formato hay campos obligatorios",
                 style: TextStyle(
                   fontSize: 12,
-                  color: Colors.black,
                 ),
                 textAlign: TextAlign.center,
               ),

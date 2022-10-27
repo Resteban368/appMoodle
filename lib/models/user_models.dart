@@ -1,34 +1,31 @@
 // To parse this JSON data, do
 //
-//     final user = userFromJson(jsonString);
+//     final user = userFromMap(jsonString);
 
 import 'dart:convert';
 
 class User {
   User({
-    this.code,
-    this.status,
-    this.user,
+    this.ok,
+    this.results,
   });
 
-  int? code;
-  String? status;
-  UserClass? user;
+  bool? ok;
+  List<UserClass>? results;
 
-  factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
+  factory User.fromJson(String str) => User.fromMap(json.decode(str));
 
-  String toRawJson() => json.encode(toJson());
+  String toJson() => json.encode(toMap());
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
-        code: json["code"],
-        status: json["status"],
-        user: UserClass.fromJson(json["user"]),
+  factory User.fromMap(Map<String, dynamic> json) => User(
+        ok: json["ok"],
+        results: List<UserClass>.from(
+            json["results"].map((x) => UserClass.fromMap(x))),
       );
 
-  Map<String, dynamic> toJson() => {
-        "code": code,
-        "status": status,
-        "user": user!.toJson(),
+  Map<String, dynamic> toMap() => {
+        "ok": ok,
+        "results": List<dynamic>.from(results!.map((x) => x.toMap())),
       };
 }
 
@@ -82,11 +79,6 @@ class UserClass {
     this.middlename,
     this.alternatename,
     this.moodlenetprofile,
-    this.icq,
-    this.skype,
-    this.yahoo,
-    this.aim,
-    this.msn,
   });
 
   int? id;
@@ -131,24 +123,18 @@ class UserClass {
   int? timecreated;
   int? timemodified;
   int? trustbitmask;
+  String? alternatename;
   String? imagealt;
   String? lastnamephonetic;
   String? firstnamephonetic;
   String? middlename;
-  String? alternatename;
   dynamic moodlenetprofile;
-  dynamic icq;
-  String? skype;
-  String? yahoo;
-  String? aim;
-  String? msn;
 
-  factory UserClass.fromRawJson(String str) =>
-      UserClass.fromJson(json.decode(str));
+  factory UserClass.fromJson(String str) => UserClass.fromMap(json.decode(str));
 
-  String toRawJson() => json.encode(toJson());
+  String toJson() => json.encode(toMap());
 
-  factory UserClass.fromJson(Map<String, dynamic> json) => UserClass(
+  factory UserClass.fromMap(Map<String, dynamic> json) => UserClass(
         id: json["id"],
         auth: json["auth"],
         confirmed: json["confirmed"],
@@ -197,14 +183,9 @@ class UserClass {
         middlename: json["middlename"],
         alternatename: json["alternatename"],
         moodlenetprofile: json["moodlenetprofile"],
-        icq: json["icq"],
-        skype: json["skype"],
-        yahoo: json["yahoo"],
-        aim: json["aim"],
-        msn: json["msn"],
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toMap() => {
         "id": id,
         "auth": auth,
         "confirmed": confirmed,
@@ -253,10 +234,5 @@ class UserClass {
         "middlename": middlename,
         "alternatename": alternatename,
         "moodlenetprofile": moodlenetprofile,
-        "icq": icq,
-        "skype": skype,
-        "yahoo": yahoo,
-        "aim": aim,
-        "msn": msn,
       };
 }

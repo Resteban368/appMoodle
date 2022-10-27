@@ -12,6 +12,7 @@ class UserProvider with ChangeNotifier {
   File? newImage;
 
   late UserClass userInfo = UserClass();
+
   final TextEditingController controllerId = TextEditingController();
   final TextEditingController controllerLastname = TextEditingController();
   final TextEditingController controllerFirstname = TextEditingController();
@@ -27,17 +28,25 @@ class UserProvider with ChangeNotifier {
 
   late bool habilitarForm = false;
 
-  Future<String?> getData(int id) async {
+  Future<UserClass?> getData(int id) async {
     try {
-      final url = 'http://api-moodle.com.devel/public/api/user/$id';
+      final url = 'http://172.16.23.187:3000/api/user/user/$id';
       print(Uri.parse(url));
       // print(url);
       final response = await http.get(Uri.parse(url));
-      final User decodata = User.fromJson(json.decode(response.body));
-      userInfo = decodata.user!;
-      userInfoController(decodata.user!);
-      notifyListeners();
-      return '';
+
+      if (response.statusCode < 400) {
+        List<UserClass> infoUser = [];
+        Map<String, dynamic> mapaRespBody = json.decode(response.body);
+        for (var element in mapaRespBody['results']) {
+          infoUser.add(UserClass.fromMap(element));
+        }
+        userInfo = infoUser[0];
+        userInfoController(userInfo);
+        print(userInfo);
+        notifyListeners();
+        return null;
+      }
     } catch (e) {
       print(e);
     }
@@ -54,8 +63,8 @@ class UserProvider with ChangeNotifier {
     controllerAddress.text = userInfoController.address!.toString();
     controllerPhone1.text = userInfoController.phone1!;
     controllerPhone2.text = userInfoController.phone2!;
-    controllerYahoo.text = userInfoController.yahoo!;
-    controllerMsm.text = userInfoController.msn!;
+    // controllerYahoo.text = userInfoController.yahoo!;
+    // controllerMsm.text = userInfoController.msn!;
   }
 
   habilitarFormulario() {

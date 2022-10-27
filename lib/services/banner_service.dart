@@ -14,7 +14,6 @@ class BannerService with ChangeNotifier {
   }
 
   Future<List<Result>?> getBanner() async {
-    print('getBanner');
     try {
       const url = 'http://172.16.23.187:3000/api/banner/all';
       // print(Uri.parse(url));
@@ -28,8 +27,6 @@ class BannerService with ChangeNotifier {
           banner.add(Result.fromMap(element));
         }
         notifyListeners();
-        print(banner.length);
-        print(banner);
         return banner;
       }
     } catch (e) {
