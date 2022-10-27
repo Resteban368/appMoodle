@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import '../../providers/providers.dart';
 import '../../services/sevices.dart';
 import '../../theme/app_bar_theme.dart';
+import 'calificaciones_screen.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({Key? key}) : super(key: key);
@@ -67,6 +68,18 @@ class _AccountScreenState extends State<AccountScreen> {
                   ],
                 ),
               ),
+              PopupMenuItem(
+                value: 3,
+                child: Row(
+                  children: const [
+                    Icon(Icons.assessment, color: AppTheme.primary),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text('Calificaciones'),
+                  ],
+                ),
+              ),
             ],
             onSelected: (value) {
               if (value == 1) {
@@ -78,6 +91,11 @@ class _AccountScreenState extends State<AccountScreen> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => const ConfiguracionScreen()));
+              } else if (value == 3) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CalificacionesScreen()));
               }
             },
           )

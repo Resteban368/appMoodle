@@ -2,7 +2,7 @@
 //
 //     final notasItemCurso = notasItemCursoFromMap(jsonString);
 
-// ignore_for_file: prefer_null_aware_operators, constant_identifier_names
+// ignore_for_file: prefer_null_aware_operators, constant_identifier_names, file_names
 
 import 'dart:convert';
 

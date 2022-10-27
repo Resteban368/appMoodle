@@ -75,6 +75,9 @@ class AppState extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => TareaService(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => NotasService(),
+        ),
       ],
       child: const MyApp(),
     );
