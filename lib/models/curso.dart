@@ -4,8 +4,6 @@
 
 import 'dart:convert';
 
-import 'package:campus_virtual/models/category.dart';
-
 List<ResponseCursos> responseCursosFromJson(String str) =>
     List<ResponseCursos>.from(
         json.decode(str).map((x) => ResponseCursos.fromJson(x)));
@@ -61,7 +59,7 @@ class ResponseCursos {
   bool? completionhascriteria;
   bool? completionusertracked;
   int? category;
-  Category? category2;
+  Category2? category2;
   dynamic progress;
   bool? completed;
   int? startdate;
@@ -91,7 +89,7 @@ class ResponseCursos {
         completionhascriteria: json["completionhascriteria"],
         completionusertracked: json["completionusertracked"],
         category: json["category"],
-        category2: Category.fromMap(json["category2"]),
+        // category2: Category2?.fromMap(json["category2"]),
         progress: json["progress"],
         completed: json["completed"],
         startdate: json["startdate"],
@@ -174,8 +172,8 @@ class Overviewfile {
       };
 }
 
-class Category {
-  Category({
+class Category2 {
+  Category2({
     this.id,
     this.name,
     this.idnumber,
@@ -207,7 +205,7 @@ class Category {
   String? path;
   dynamic theme;
 
-  factory Category.fromMap(Map<String, dynamic> json) => Category(
+  factory Category2.fromMap(Map<String, dynamic> json) => Category2(
         id: json["id"],
         name: json["name"],
         idnumber: json["idnumber"],

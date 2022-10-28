@@ -22,23 +22,26 @@ class CursoService extends ChangeNotifier {
         '$_baseUrl${_url}wsfunction=$_wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&userid=$userid';
     try {
       final resp = await http.get(Uri.parse(url));
-
+      print(url);
       if (resp.statusCode < 400) {
         // print('status code: ${resp.statusCode}');
 
         List<ResponseCursos> responseCursosData = [];
         List<dynamic> mapaRespBody = json.decode(resp.body);
-        for (Map<String, dynamic> element in mapaRespBody) {
+        for (Map<String, dynamic>? element in mapaRespBody) {
           // responseCursosData.add(final curso =  ResponseCursos.fromJson(element));
-          final curso = ResponseCursos.fromJson(element);
+          final curso = ResponseCursos.fromJson(element!);
+          curso.category2 = await getCategoryById(curso.id!);
           responseCursosData.add(curso);
-          final categoria = getCategoryById(curso.id!);
+
+          // print(categoria);
         }
+        print(responseCursosData[0].category2);
         notifyListeners();
         return responseCursosData;
       }
-    } catch (e) {
-      print('error en el service de cursos: $e');
+    } catch (e, s) {
+      print('error en el service de cursos: $e +$s');
     }
     return null;
   }
@@ -48,7 +51,7 @@ class CursoService extends ChangeNotifier {
 
 // responseCursosData.add(curso);
 
-  Future<List<Category>?> getCategoryById(int id) async {
+  Future<Category2?> getCategoryById(int id) async {
     print('getCtaegoryById');
 
     try {
@@ -57,14 +60,14 @@ class CursoService extends ChangeNotifier {
       final response = await http.get(Uri.parse(url));
 
       if (response.statusCode < 400) {
-        List<Category> category = [];
+        List<Category2> category = [];
         Map<String, dynamic> mapaRespBody = json.decode(response.body);
         for (var element in mapaRespBody['results']) {
-          category.add(Category.fromMap(element));
+          category.add(Category2.fromMap(element));
         }
         notifyListeners();
         print(category);
-        return category;
+        return category[0];
       }
     } catch (e) {
       print(e);

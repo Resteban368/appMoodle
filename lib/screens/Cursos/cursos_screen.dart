@@ -129,7 +129,7 @@ class _CursosScreenState extends State<CursosScreen> {
                                         title: Text(snapshot.data[i].fullname,
                                             style:
                                                 const TextStyle(fontSize: 20)),
-                                        subtitle: Text('semestre N°')),
+                                        subtitle: Text('')),
                                     Container(
                                         color: AppTheme.primary,
                                         width: double.infinity,

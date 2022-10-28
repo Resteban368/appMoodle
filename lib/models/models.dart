@@ -6,7 +6,7 @@ export 'package:campus_virtual/models/notasItemsCurso.dart';
 
 export 'package:campus_virtual/models/notasCurso.dart';
 
-export 'package:campus_virtual/models/category.dart';
+// export 'package:campus_virtual/models/category.dart';
 
 export 'package:campus_virtual/models/category.dart';
 
