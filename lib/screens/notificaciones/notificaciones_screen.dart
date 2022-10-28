@@ -86,6 +86,7 @@ class _NotificacionesScreenState extends State<NotificacionesScreen> {
               return RefreshIndicator(
                 onRefresh: () async {
                   await notificacion.getNotificaciones(userid2);
+                  await notificacion.getCountNotificaciones(userid2);
                 },
                 child: ListView.builder(
                   itemCount: notificaciones.length,

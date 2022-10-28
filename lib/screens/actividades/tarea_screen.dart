@@ -1,7 +1,5 @@
 // ignore_for_file: must_be_immutable, unused_element
 
-import 'dart:ffi';
-
 import 'package:campus_virtual/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -68,7 +66,7 @@ class _TareaScreenState extends State<TareaScreen> {
                   const SizedBox(height: 5),
                   _ContainerBanner(widget.idTarea, userid2),
                   const SizedBox(height: 5),
-                  // _ContainerInformacionTarea(widget.contenido),
+                  _ContainerInformacionTarea(widget.idTarea, userid2),
                   const SizedBox(height: 5),
                 ],
               ),
@@ -154,16 +152,17 @@ class _ContainerBanner extends StatelessWidget {
 }
 
 class _ContainerInformacionTarea extends StatelessWidget {
-  Module contenido;
+  int idTarea;
+  int userid;
   _ContainerInformacionTarea(
-    this.contenido, {
+    this.idTarea,
+    this.userid, {
     Key? key,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final tarea = Provider.of<TareaService>(context, listen: false);
     //PROVIDER DE SITEiNFO
-    final siteInfo = Provider.of<InfoSiteService>(context, listen: false);
 
     return FutureBuilder(
         future: tarea.getTarea(3, 1),
@@ -174,7 +173,7 @@ class _ContainerInformacionTarea extends StatelessWidget {
             );
           } else {
             final tarea = snapshot.data;
-            return _EstadoEntrega(tarea!);
+            return _EstadoEntrega(tarea);
             // return Container();
           }
         });
@@ -313,7 +312,8 @@ class _EstadoEntrega extends StatelessWidget {
                     ),
                     const SizedBox(width: 5),
                     SingleChildScrollView(
-                      child: SizedBox(
+                      child: Container(
+                          color: Colors.white,
                           width: MediaQuery.of(context).size.width * 0.6,
                           height: MediaQuery.of(context).size.height * 0.12,
                           child: Padding(
@@ -324,6 +324,7 @@ class _EstadoEntrega extends StatelessWidget {
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return Card(
+                                      color: Colors.red,
                                       elevation: 2,
                                       child: GestureDetector(
                                         child: ListTile(
@@ -391,27 +392,6 @@ class _EstadoEntrega extends StatelessWidget {
                   ],
                 ),
                 const Divider(),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      child: const Padding(
-                        padding: EdgeInsets.only(top: 2.0, left: 2.0),
-                        child: Text('Comentarios de la entrega: ',
-                            style: TextStyle(color: AppTheme.primary)),
-                      ),
-                    ),
-                    const SizedBox(width: 5),
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        height: MediaQuery.of(context).size.height * 0.05,
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text('Comentarios (0)'),
-                        )),
-                  ],
-                ),
               ]),
             ),
           ),

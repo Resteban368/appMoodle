@@ -24,7 +24,6 @@ class CursoContenidoService extends ChangeNotifier {
     try {
       final resp = await http.get(Uri.parse(url));
       if (resp.statusCode < 400) {
-        print(resp.body);
         List<ResponseDataCursoForId> contenidoCurso = [];
         List<ResponseDataCursoForId> contenidoModules = [];
         List<dynamic> mapaRespBody = json.decode(resp.body);

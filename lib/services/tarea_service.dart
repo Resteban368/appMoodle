@@ -29,7 +29,8 @@ class TareaService extends ChangeNotifier {
         final tareaCalificacionResponse =
             TareaCalificacionResponse.fromJson(json.decode(response.body));
         notifyListeners();
-        print(tareaCalificacionResponse.feedback!.gradefordisplay);
+        print(tareaCalificacionResponse
+            .lastattempt!.submission!.plugins![0].fileareas![0].files!.length);
         return tareaCalificacionResponse;
       }
     } catch (e, s) {

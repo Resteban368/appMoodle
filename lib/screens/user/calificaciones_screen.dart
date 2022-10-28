@@ -79,7 +79,7 @@ class CursoDocenteScreen extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: const [
-                            Icon(Icons.book,
+                            Icon(Icons.assessment,
                                 size: 100, color: AppTheme.primary),
                             Text(
                               'No hay cursos disponibles',
