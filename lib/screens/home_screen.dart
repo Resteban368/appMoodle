@@ -33,6 +33,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
     final token = Provider.of<GeneralService>(context, listen: false);
     await token.ObtenerToken();
+    await token.getFechaHoraActual();
 
     final notificacionesProvider =
         Provider.of<NotificacionesService>(context, listen: false);

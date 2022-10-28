@@ -28,8 +28,11 @@ class CursoService extends ChangeNotifier {
 
         List<ResponseCursos> responseCursosData = [];
         List<dynamic> mapaRespBody = json.decode(resp.body);
-        for (var element in mapaRespBody) {
-          responseCursosData.add(ResponseCursos.fromJson(element));
+        for (Map<String, dynamic> element in mapaRespBody) {
+          // responseCursosData.add(final curso =  ResponseCursos.fromJson(element));
+          final curso = ResponseCursos.fromJson(element);
+          responseCursosData.add(curso);
+          final categoria = getCategoryById(curso.id!);
         }
         notifyListeners();
         return responseCursosData;
@@ -37,6 +40,36 @@ class CursoService extends ChangeNotifier {
     } catch (e) {
       print('error en el service de cursos: $e');
     }
+    return null;
+  }
+
+// final urcso = ResponseCursos.fromJson(element);
+// curso.categoria = //obtener aquí categoría
+
+// responseCursosData.add(curso);
+
+  Future<List<Category>?> getCategoryById(int id) async {
+    print('getCtaegoryById');
+
+    try {
+      final url = 'http://172.16.23.187:3000/api/course/Category/$id';
+
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode < 400) {
+        List<Category> category = [];
+        Map<String, dynamic> mapaRespBody = json.decode(response.body);
+        for (var element in mapaRespBody['results']) {
+          category.add(Category.fromMap(element));
+        }
+        notifyListeners();
+        print(category);
+        return category;
+      }
+    } catch (e) {
+      print(e);
+    }
+    notifyListeners();
     return null;
   }
 }

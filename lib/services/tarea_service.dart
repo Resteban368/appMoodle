@@ -41,6 +41,7 @@ class TareaService extends ChangeNotifier {
   }
 
   Future<TareaFechas?> getFechasTare(int userid, int assignid) async {
+    print('get fechas tarea');
     const String wsfunction = 'mod_assign_get_participant';
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: 'token');
@@ -50,7 +51,10 @@ class TareaService extends ChangeNotifier {
       final response = await http.get(Uri.parse(url2));
       if (response.statusCode < 400) {
         //mapeamos el respondes.body a un objeto de tipo TareaCalificacionResponse
+        print(response.body);
         final tareaFechas = TareaFechas.fromJson(response.body);
+
+        print(tareaFechas.allowsubmissionsfromdate);
         notifyListeners();
         return tareaFechas;
       }

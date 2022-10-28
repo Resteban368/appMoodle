@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable, unused_element
 
+import 'package:campus_virtual/services/tarea_service.dart';
 import 'package:campus_virtual/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -7,7 +8,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/models.dart';
-import '../../services/sevices.dart';
 import '../../theme/theme.dart';
 import '../../widgets/widgets.dart';
 import '../screens.dart';
@@ -41,7 +41,7 @@ class _TareaScreenState extends State<TareaScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Nombre Tarea'),
+          title: const Text('Nombre Tarea'),
           backgroundColor: AppTheme.primary,
           actions: [
             NamedIcon(
@@ -87,7 +87,7 @@ class _ContainerBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tareaService = Provider.of<TareaService>(context, listen: false);
+    final tareaService = Provider.of<TareaService>(context);
     return SizedBox(
         width: double.infinity,
         height: MediaQuery.of(context).size.height * 0.15,
@@ -312,8 +312,7 @@ class _EstadoEntrega extends StatelessWidget {
                     ),
                     const SizedBox(width: 5),
                     SingleChildScrollView(
-                      child: Container(
-                          color: Colors.white,
+                      child: SizedBox(
                           width: MediaQuery.of(context).size.width * 0.6,
                           height: MediaQuery.of(context).size.height * 0.12,
                           child: Padding(
@@ -324,7 +323,6 @@ class _EstadoEntrega extends StatelessWidget {
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return Card(
-                                      color: Colors.red,
                                       elevation: 2,
                                       child: GestureDetector(
                                         child: ListTile(
@@ -391,7 +389,6 @@ class _EstadoEntrega extends StatelessWidget {
                     ),
                   ],
                 ),
-                const Divider(),
               ]),
             ),
           ),
@@ -534,6 +531,8 @@ class _EstadoEntrega extends StatelessWidget {
     );
   }
 }
+
+//
 
 class _ComentarioTarea extends StatelessWidget {
   Module contenido;
