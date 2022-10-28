@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:campus_virtual/theme/app_bar_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
+import '../../models/notificaciones/notificacionData.dart';
 import '../../services/sevices.dart';
 import '../screens.dart';
 
@@ -152,10 +155,15 @@ class _NotificacionesScreenState extends State<NotificacionesScreen> {
                                 .leidaId(notificaciones[index].id!);
                           } else if (notificaciones[index].eventtype ==
                               'assign_notification') {
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => const ChatScreen()));
+                            final newCadena = notificaciones[index].customdata;
+                            final decode = TareaFechas.fromJson(newCadena);
+                            final instace = int.parse(decode.instance!);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        TareaScreen(instace)));
+                            notificacion.leidaId(notificaciones[index].id!);
                           }
                         },
                       ),

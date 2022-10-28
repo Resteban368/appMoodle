@@ -38,4 +38,25 @@ class TareaService extends ChangeNotifier {
     notifyListeners();
     return null;
   }
+
+  Future<TareaFechas?> getFechasTare(int userid, int assignid) async {
+    const String wsfunction = 'mod_assign_get_participant';
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: 'token');
+    final url2 =
+        '$_baseUrl${_url}wsfunction=$wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&userid=$userid&assignid=$assignid';
+    try {
+      final response = await http.get(Uri.parse(url2));
+      if (response.statusCode < 400) {
+        //mapeamos el respondes.body a un objeto de tipo TareaCalificacionResponse
+        final tareaFechas = TareaFechas.fromJson(response.body);
+        notifyListeners();
+        return tareaFechas;
+      }
+    } catch (e, s) {
+      print('error en la response tarea fecha service: $e + $s');
+    }
+    notifyListeners();
+    return null;
+  }
 }

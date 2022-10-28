@@ -1,3 +1,5 @@
+export 'package:campus_virtual/models/tarea/TareaInfoFechas.dart';
+
 export 'package:campus_virtual/models/notasCursoEstudiante.dart';
 
 export 'package:campus_virtual/models/notasItemsCurso.dart';
@@ -12,7 +14,7 @@ export 'package:campus_virtual/models/banner.dart';
 
 export 'package:campus_virtual/models/chat_list.dart';
 
-export 'package:campus_virtual/models/TareaCalificacionResponse.dart';
+export 'package:campus_virtual/models/tarea/TareaCalificacionResponse.dart';
 
 export 'package:campus_virtual/models/solicitudesResponse.dart';
 

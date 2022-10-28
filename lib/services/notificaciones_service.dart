@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
-import '../models/PostNotificaciones.dart';
+import '../models/notificaciones/PostNotificaciones.dart';
 
 class NotificacionesService extends ChangeNotifier {
   final String _baseUrl =

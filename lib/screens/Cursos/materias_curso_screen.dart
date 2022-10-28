@@ -501,7 +501,8 @@ class _ContenidoTemas extends StatelessWidget {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => TareaScreen(
-                                                contenido.modules![i])));
+                                                contenido
+                                                    .modules![i].instance!)));
                                   } else if (contenido.modules![i].modplural ==
                                       'Archivos') {
                                     if (contenido.modules![i].contents![0]

@@ -1,10 +1,12 @@
 // ignore_for_file: must_be_immutable, unused_element
 
+import 'dart:ffi';
+
 import 'package:campus_virtual/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/models.dart';
 import '../../services/sevices.dart';
@@ -13,19 +15,35 @@ import '../../widgets/widgets.dart';
 import '../screens.dart';
 
 class TareaScreen extends StatefulWidget {
-  Module contenido;
-  TareaScreen(this.contenido, {Key? key}) : super(key: key);
+  int idTarea;
+  TareaScreen(this.idTarea, {Key? key}) : super(key: key);
 
   @override
   State<TareaScreen> createState() => _TareaScreenState();
 }
 
 class _TareaScreenState extends State<TareaScreen> {
+  late int userid2 = 0;
+  @override
+  void initState() {
+    super.initState();
+    funcion();
+  }
+
+  Future<int> funcion() async {
+    const storage = FlutterSecureStorage();
+    final id = await storage.read(key: 'id');
+    final userid = int.parse(id!);
+    userid2 = userid;
+    setState(() {});
+    return userid;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Tarea '),
+          title: Text('Nombre Tarea'),
           backgroundColor: AppTheme.primary,
           actions: [
             NamedIcon(
@@ -48,9 +66,9 @@ class _TareaScreenState extends State<TareaScreen> {
               child: Column(
                 children: [
                   const SizedBox(height: 5),
-                  _ContainerBanner(widget.contenido),
+                  _ContainerBanner(widget.idTarea, userid2),
                   const SizedBox(height: 5),
-                  _ContainerInformacionTarea(widget.contenido),
+                  // _ContainerInformacionTarea(widget.contenido),
                   const SizedBox(height: 5),
                 ],
               ),
@@ -61,62 +79,77 @@ class _TareaScreenState extends State<TareaScreen> {
 }
 
 class _ContainerBanner extends StatelessWidget {
-  Module contenido;
-  _ContainerBanner(
-    this.contenido, {
+  final int idTarea;
+  final int userid;
+  const _ContainerBanner(
+    this.idTarea,
+    this.userid, {
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final tareaService = Provider.of<TareaService>(context, listen: false);
     return SizedBox(
-      width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.15,
-      child: Card(
-        elevation: 3,
-        child: Column(children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              contenido.name!,
-              style: const TextStyle(fontSize: 20, color: AppTheme.primary),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-                left: 10.0, right: 8.0, bottom: 5.0, top: 8.0),
-            child: Row(
-              children: [
-                Text(
-                  contenido.dates![0].label!,
-                  style: const TextStyle(color: AppTheme.primary),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 5.0),
-                  child: Text(getData(contenido.dates![0].timestamp!)),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-                left: 10.0, right: 8.0, bottom: 5.0, top: 8.0),
-            child: Row(
-              children: [
-                Text(
-                  contenido.dates![1].label!,
-                  style: const TextStyle(color: AppTheme.primary),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 21.0),
-                  child: Text(getData(contenido.dates![1].timestamp!)),
-                ),
-              ],
-            ),
-          ),
-        ]),
-      ),
-    );
+        width: double.infinity,
+        height: MediaQuery.of(context).size.height * 0.15,
+        child: FutureBuilder(
+          future: tareaService.getFechasTare(userid, idTarea),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              final fechaDate = snapshot.data;
+              return Card(
+                elevation: 3,
+                child: Column(children: [
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'Nombre Tarea',
+                      style: TextStyle(fontSize: 20, color: AppTheme.primary),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 10.0, right: 8.0, bottom: 5.0, top: 8.0),
+                    child: Row(
+                      children: [
+                        const Text(
+                          'Apertura',
+                          style: TextStyle(color: AppTheme.primary),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 5.0),
+                          child:
+                              Text(getData(fechaDate.allowsubmissionsfromdate)),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 10.0, right: 8.0, bottom: 5.0, top: 8.0),
+                    child: Row(
+                      children: [
+                        const Text(
+                          'Cierre',
+                          style: TextStyle(color: AppTheme.primary),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 21.0),
+                          child: Text(getData(fechaDate.duedate)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ]),
+              );
+            }
+          },
+        ));
   }
 }
 

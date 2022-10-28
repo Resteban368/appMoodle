@@ -19,15 +19,11 @@ class CursoContenidoService extends ChangeNotifier {
   Future<List<ResponseDataCursoForId>?> getInfoCursoID(int courseID) async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: 'token');
-    print('getInfoCursoID');
     final url =
         '$_baseUrl${_url}wsfunction=$_wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&courseid=$courseID';
     try {
       final resp = await http.get(Uri.parse(url));
-      print('url curso contenido: $url');
       if (resp.statusCode < 400) {
-        print('status code: ${resp.statusCode}');
-        print('response');
         print(resp.body);
         List<ResponseDataCursoForId> contenidoCurso = [];
         List<ResponseDataCursoForId> contenidoModules = [];

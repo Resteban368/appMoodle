@@ -6,7 +6,7 @@
 
 import 'dart:convert';
 
-import 'package:campus_virtual/models/PostNotificaciones.dart';
+import 'package:campus_virtual/models/notificaciones/PostNotificaciones.dart';
 
 class NotificacionResponse {
   NotificacionResponse({
