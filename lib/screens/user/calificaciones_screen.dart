@@ -196,67 +196,73 @@ class _NotasEstudianteScreen extends State<NotasEstudianteScreen> {
   @override
   Widget build(BuildContext context) {
     final notasService = Provider.of<NotasService>(context, listen: false);
-    return SizedBox(
-      width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.9,
-      child: Column(
-        children: [
-          const Padding(
-            padding: EdgeInsets.all(20),
-            child: Text('Cursos que estoy tomando',
-                style: TextStyle(fontSize: 20, color: AppTheme.primary)),
-          ),
-          FutureBuilder(
-              future: notasService.getNotas(userid2),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return SizedBox(
-                      width: double.infinity,
-                      height: MediaQuery.of(context).size.height * 0.8,
-                      child: loaderCardListNotas());
-                } else {
-                  final notas = snapshot.data;
-                  return ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: notas.length,
-                    shrinkWrap: true,
-                    itemBuilder: (BuildContext context, int i) {
-                      return ElasticInDown(
-                        child: GestureDetector(
-                          child: Card(
-                            elevation: 3,
-                            child: ListTile(
-                              leading: const Icon(
-                                Icons.assessment,
-                                color: AppTheme.primary,
-                                size: 45,
-                              ),
-                              title: Text(notas[i].courseid.toString()),
-                              subtitle: Text(
-                                  'Calificacion ${notas[i].grade.toString()}'),
-                              trailing: const Icon(
-                                Icons.arrow_forward_ios,
-                                color: AppTheme.primary,
-                                size: 25,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Mis Cursos'),
+        backgroundColor: AppTheme.primary,
+      ),
+      body: SizedBox(
+        width: double.infinity,
+        height: MediaQuery.of(context).size.height * 0.9,
+        child: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(20),
+              child: Text('Cursos que estoy tomando',
+                  style: TextStyle(fontSize: 20, color: AppTheme.primary)),
+            ),
+            FutureBuilder(
+                future: notasService.getNotas(userid2),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return SizedBox(
+                        width: double.infinity,
+                        height: MediaQuery.of(context).size.height * 0.8,
+                        child: loaderCardListNotas());
+                  } else {
+                    final notas = snapshot.data;
+                    return ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemCount: notas.length,
+                      shrinkWrap: true,
+                      itemBuilder: (BuildContext context, int i) {
+                        return ElasticInDown(
+                          child: GestureDetector(
+                            child: Card(
+                              elevation: 3,
+                              child: ListTile(
+                                leading: const Icon(
+                                  Icons.assessment,
+                                  color: AppTheme.primary,
+                                  size: 45,
+                                ),
+                                title: Text(notas[i].courseid.toString()),
+                                subtitle: Text(
+                                    'Calificacion ${notas[i].grade.toString()}'),
+                                trailing: const Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: AppTheme.primary,
+                                  size: 25,
+                                ),
                               ),
                             ),
+                            onTap: () {
+                              //enviamos a la screen DetalleNotasCursoScreen
+                              final int idcurso = notas[i].courseid;
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          DetalleNotasCursoScreen(idcurso)));
+                            },
                           ),
-                          onTap: () {
-                            //enviamos a la screen DetalleNotasCursoScreen
-                            final int idcurso = notas[i].courseid;
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        DetalleNotasCursoScreen(idcurso)));
-                          },
-                        ),
-                      );
-                    },
-                  );
-                }
-              }),
-        ],
+                        );
+                      },
+                    );
+                  }
+                }),
+          ],
+        ),
       ),
     );
   }
