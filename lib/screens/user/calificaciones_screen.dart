@@ -9,6 +9,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../models/curso.dart';
+
 class CalificacionesScreen extends StatefulWidget {
   const CalificacionesScreen({Key? key}) : super(key: key);
 
@@ -36,13 +38,134 @@ class _CalificacionesScreenState extends State<CalificacionesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Calificaciones'),
-          backgroundColor: AppTheme.primary,
-        ),
         body: (userid2 == 8)
-            ? const NotasDocenteScreen()
+            // ? const NotasDocenteScreen()
+            ? CursoDocenteScreen(userid2)
             : const NotasEstudianteScreen());
+  }
+}
+
+class CursoDocenteScreen extends StatelessWidget {
+  int userid2;
+  CursoDocenteScreen(this.userid2, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final cursoInfo = Provider.of<CursoService>(context, listen: false);
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Cursos que estoy enseñando'),
+        backgroundColor: AppTheme.primary,
+      ),
+      body: SizedBox(
+        width: double.infinity,
+        height: MediaQuery.of(context).size.height * 9,
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+            FutureBuilder(
+              future: cursoInfo.getInfoCurso(userid2),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: loaderCardListNotas(),
+                  );
+                } else {
+                  if (snapshot.data.length == 0) {
+                    return Center(
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 200,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.book,
+                                size: 100, color: AppTheme.primary),
+                            Text(
+                              'No hay cursos disponibles',
+                              style: TextStyle(
+                                  fontSize: 20, color: Colors.black38),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  } else {
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.8,
+                      child: ListView.builder(
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (BuildContext context, int i) {
+                          return ElasticInDown(
+                            child:
+                                //creamos una card para poner los cursos
+                                Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 10),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      border:
+                                          Border.all(color: AppTheme.primary),
+                                      borderRadius: BorderRadius.circular(10),
+                                      //sombra
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.1),
+                                          blurRadius: 10,
+                                          spreadRadius: 5,
+                                        ),
+                                      ],
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        GestureDetector(
+                                          child: ListTile(
+                                            leading: const Icon(
+                                              Icons.book,
+                                              color: AppTheme.primary,
+                                              size: 40,
+                                            ),
+                                            title: Text(
+                                                snapshot.data[i].fullname,
+                                                style: const TextStyle(
+                                                    fontSize: 20)),
+                                            subtitle: Text('semestre N°'),
+                                            trailing: const Icon(
+                                              Icons.arrow_forward_ios,
+                                              color: AppTheme.primary,
+                                            ),
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          NotasDocenteScreen(
+                                                              snapshot
+                                                                  .data[i])));
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }
+                }
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -310,233 +433,240 @@ class _DetalleNotasCursoScreenState extends State<DetalleNotasCursoScreen> {
 }
 
 class NotasDocenteScreen extends StatelessWidget {
-  const NotasDocenteScreen({Key? key}) : super(key: key);
+  ResponseCursos course;
+  NotasDocenteScreen(this.course, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final notasService = Provider.of<NotasService>(context, listen: false);
     return Scaffold(
+        appBar: AppBar(
+          title: Text(course.fullname.toString()),
+          backgroundColor: AppTheme.primary,
+        ),
         body: SizedBox(
-      width: double.infinity,
-      height: double.infinity,
-      child: FutureBuilder(
-          future: notasService.getAllStudentsNotas(2),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return SizedBox(
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.8,
-                  child: loaderCardListNotas());
-            } else {
-              final notasallItems = snapshot.data;
-              return Column(
-                children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Text('Informe del calificador',
-                        style: TextStyle(
-                            fontSize: 25,
-                            color: AppTheme.primary,
-                            fontWeight: FontWeight.bold)),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Text('Todos los participantes',
-                        style:
-                            TextStyle(fontSize: 25, color: AppTheme.primary)),
-                  ),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: DataTable(
-                        columns: const <DataColumn>[
-                          DataColumn(
-                            label: Text(
-                              'Nombre / Apellidos',
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Text(
-                              'Accion',
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Text(
-                              'Asistencia',
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Text(
-                              'Primer Aprendizaje Autónomo',
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Text(
-                              'Primer Producto de Interaprendizaje',
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Text(
-                              'Autoevaluación Virtual',
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Text(
-                              'Segundo Producto de Autoaprendizaje',
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Text(
-                              'Segundo Producto de Interaprendizaje',
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Text(
-                              '2da. Autoevaluación virtual',
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Text(
-                              '1er. Heteroevaluación',
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Text(
-                              '2da. Heteroevaluación',
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Text(
-                              'Coevaluación Virtual',
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Text(
-                              'Total del curso',
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                        ],
-                        rows: notasallItems.map<DataRow>((item) {
-                          return DataRow(
-                            selected: true,
-                            cells: <DataCell>[
-                              DataCell(
-                                Text(item.userfullname.toString()),
-                              ),
-                              DataCell(
-                                //boton de ver notas,
-                                ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                _EstudianteScreen(item.courseid,
-                                                    item.userid)));
-                                  },
-                                  child: const Text('Ver notas'),
-                                  //color del boton
-                                  style: ElevatedButton.styleFrom(
-                                      primary: AppTheme.primary),
+          width: double.infinity,
+          height: double.infinity,
+          child: FutureBuilder(
+              future: notasService.getAllStudentsNotas(2),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return SizedBox(
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height * 0.8,
+                      child: loaderCardListNotas());
+                } else {
+                  final notasallItems = snapshot.data;
+                  return Column(
+                    children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Text('Informe del calificador',
+                            style: TextStyle(
+                                fontSize: 25,
+                                color: AppTheme.primary,
+                                fontWeight: FontWeight.bold)),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Text('Todos los participantes',
+                            style: TextStyle(
+                                fontSize: 25, color: AppTheme.primary)),
+                      ),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: DataTable(
+                            columns: const <DataColumn>[
+                              DataColumn(
+                                label: Text(
+                                  'Nombre / Apellidos',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
                                 ),
                               ),
-                              DataCell(
-                                (item.gradeitems[0].graderaw != null)
-                                    ? Text(
-                                        item.gradeitems[0].graderaw.toString())
-                                    : const Text('-'),
+                              DataColumn(
+                                label: Text(
+                                  'Accion',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
                               ),
-                              DataCell(
-                                (item.gradeitems[1].graderaw != null)
-                                    ? Text(
-                                        item.gradeitems[1].graderaw.toString())
-                                    : const Text('-'),
+                              DataColumn(
+                                label: Text(
+                                  'Asistencia',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
                               ),
-                              DataCell(
-                                (item.gradeitems[2].graderaw != null)
-                                    ? Text(
-                                        item.gradeitems[2].graderaw.toString())
-                                    : const Text('-'),
+                              DataColumn(
+                                label: Text(
+                                  'Primer Aprendizaje Autónomo',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
                               ),
-                              DataCell(
-                                (item.gradeitems[3].graderaw != null)
-                                    ? Text(
-                                        item.gradeitems[3].graderaw.toString())
-                                    : const Text('-'),
+                              DataColumn(
+                                label: Text(
+                                  'Primer Producto de Interaprendizaje',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
                               ),
-                              DataCell(
-                                (item.gradeitems[4].graderaw != null)
-                                    ? Text(
-                                        item.gradeitems[4].graderaw.toString())
-                                    : const Text('-'),
+                              DataColumn(
+                                label: Text(
+                                  'Autoevaluación Virtual',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
                               ),
-                              DataCell(
-                                (item.gradeitems[5].graderaw != null)
-                                    ? Text(
-                                        item.gradeitems[5].graderaw.toString())
-                                    : const Text('-'),
+                              DataColumn(
+                                label: Text(
+                                  'Segundo Producto de Autoaprendizaje',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
                               ),
-                              DataCell(
-                                (item.gradeitems[6].graderaw != null)
-                                    ? Text(
-                                        item.gradeitems[6].graderaw.toString())
-                                    : const Text('-'),
+                              DataColumn(
+                                label: Text(
+                                  'Segundo Producto de Interaprendizaje',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
                               ),
-                              DataCell(
-                                (item.gradeitems[7].graderaw != null)
-                                    ? Text(
-                                        item.gradeitems[7].graderaw.toString())
-                                    : const Text('-'),
+                              DataColumn(
+                                label: Text(
+                                  '2da. Autoevaluación virtual',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
                               ),
-                              DataCell(
-                                (item.gradeitems[8].graderaw != null)
-                                    ? Text(
-                                        item.gradeitems[8].graderaw.toString())
-                                    : const Text('-'),
+                              DataColumn(
+                                label: Text(
+                                  '1er. Heteroevaluación',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
                               ),
-                              DataCell(
-                                (item.gradeitems[9].graderaw != null)
-                                    ? Text(
-                                        item.gradeitems[9].graderaw.toString())
-                                    : const Text('-'),
+                              DataColumn(
+                                label: Text(
+                                  '2da. Heteroevaluación',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
                               ),
-                              DataCell(
-                                (item.gradeitems[10].graderaw != null)
-                                    ? Text(
-                                        item.gradeitems[10].graderaw.toString())
-                                    : const Text('-'),
+                              DataColumn(
+                                label: Text(
+                                  'Coevaluación Virtual',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  'Total del curso',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
                               ),
                             ],
-                          );
-                        }).toList(),
+                            rows: notasallItems.map<DataRow>((item) {
+                              return DataRow(
+                                selected: true,
+                                cells: <DataCell>[
+                                  DataCell(
+                                    Text(item.userfullname.toString()),
+                                  ),
+                                  DataCell(
+                                    //boton de ver notas,
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        _EstudianteScreen(
+                                                            item.courseid,
+                                                            item.userid)));
+                                      },
+                                      child: const Text('Ver notas'),
+                                      //color del boton
+                                      style: ElevatedButton.styleFrom(
+                                          primary: AppTheme.primary),
+                                    ),
+                                  ),
+                                  DataCell(
+                                    (item.gradeitems[0].graderaw != null)
+                                        ? Text(item.gradeitems[0].graderaw
+                                            .toString())
+                                        : const Text('-'),
+                                  ),
+                                  DataCell(
+                                    (item.gradeitems[1].graderaw != null)
+                                        ? Text(item.gradeitems[1].graderaw
+                                            .toString())
+                                        : const Text('-'),
+                                  ),
+                                  DataCell(
+                                    (item.gradeitems[2].graderaw != null)
+                                        ? Text(item.gradeitems[2].graderaw
+                                            .toString())
+                                        : const Text('-'),
+                                  ),
+                                  DataCell(
+                                    (item.gradeitems[3].graderaw != null)
+                                        ? Text(item.gradeitems[3].graderaw
+                                            .toString())
+                                        : const Text('-'),
+                                  ),
+                                  DataCell(
+                                    (item.gradeitems[4].graderaw != null)
+                                        ? Text(item.gradeitems[4].graderaw
+                                            .toString())
+                                        : const Text('-'),
+                                  ),
+                                  DataCell(
+                                    (item.gradeitems[5].graderaw != null)
+                                        ? Text(item.gradeitems[5].graderaw
+                                            .toString())
+                                        : const Text('-'),
+                                  ),
+                                  DataCell(
+                                    (item.gradeitems[6].graderaw != null)
+                                        ? Text(item.gradeitems[6].graderaw
+                                            .toString())
+                                        : const Text('-'),
+                                  ),
+                                  DataCell(
+                                    (item.gradeitems[7].graderaw != null)
+                                        ? Text(item.gradeitems[7].graderaw
+                                            .toString())
+                                        : const Text('-'),
+                                  ),
+                                  DataCell(
+                                    (item.gradeitems[8].graderaw != null)
+                                        ? Text(item.gradeitems[8].graderaw
+                                            .toString())
+                                        : const Text('-'),
+                                  ),
+                                  DataCell(
+                                    (item.gradeitems[9].graderaw != null)
+                                        ? Text(item.gradeitems[9].graderaw
+                                            .toString())
+                                        : const Text('-'),
+                                  ),
+                                  DataCell(
+                                    (item.gradeitems[10].graderaw != null)
+                                        ? Text(item.gradeitems[10].graderaw
+                                            .toString())
+                                        : const Text('-'),
+                                  ),
+                                ],
+                              );
+                            }).toList(),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                ],
-              );
-            }
-          }),
-    ));
+                    ],
+                  );
+                }
+              }),
+        ));
   }
 }
 
