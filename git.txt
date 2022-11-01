@@ -1,15 +1,47 @@
-1.validar las credenciales de windows
+{
 
-2. Cambiar el username y email de Git
-git config --global user.name "new name"
-git config --global user.email "newcorreo@example.com" 
+//TODO: TAREA QUE NO TIENE NADA
 
-3. Cambiar el usuario de Credenciales
-git config credential.username "new name"
-
-Para validar la configuración actual
-git config --global -e 
-
-git remote add origin https://github.com/Resteban368/app_moodle.git
-git branch -M main
-git push -u origin main
+{
+    "lastattempt": {
+        "submission": {
+            "id": 8,
+            "userid": 3,
+            "attemptnumber": 0,
+            "timecreated": 1665158894,
+            "timemodified": 1665158894,
+            "status": "new",
+            "groupid": 0,
+            "assignment": 3,
+            "latest": 1,
+            "plugins": [
+                {
+                    "type": "file",
+                    "name": "Archivos enviados",
+                    "fileareas": [
+                        {
+                            "area": "submission_files",
+                            "files": []
+                        }
+                    ]
+                },
+                {
+                    "type": "comments",
+                    "name": "Comentarios de la entrega"
+                }
+            ]
+        },
+        "submissiongroupmemberswhoneedtosubmit": [],
+        "submissionsenabled": true,
+        "locked": false,
+        "graded": false,
+        "canedit": false,
+        "caneditowner": false,
+        "cansubmit": false,
+        "extensionduedate": null,
+        "blindmarking": false,
+        "gradingstatus": "notgraded",
+        "usergroups": []
+    },
+    "warnings": []
+}

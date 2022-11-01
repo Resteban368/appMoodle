@@ -1,12 +1,110 @@
+{
 
+//TAREA CALIFICADA
 
-obetener el token
-https://moodlepruebas.xeted.com/login/token.php?username=erm&password=Admin2022*&service=moodle_mobile_app
-
-
-obtener informacion del usuario (por campo de nombre)
-https://moodlepruebas.xeted.com/webservice/rest/server.php?wstoken=2d41bc78e7d8c16333dd31fb1ef59a1a&wsfunction=core_user_get_users_by_field&field=username&values[0]=erm
-
-
-obtener los cursos matriculados por el usuario (id)
-https://moodlepruebas.xeted.com/webservice/rest/server.php?wsfunction=core_enrol_get_users_courses&moodlewsrestformat=json&wstoken=2d41bc78e7d8c16333dd31fb1ef59a1a&userid=3
+{
+    "lastattempt": {
+        "submission": {
+            "id": 7,
+            "userid": 3,
+            "attemptnumber": 0,
+            "timecreated": 1665158637,
+            "timemodified": 1666630694,
+            "status": "submitted",
+            "groupid": 0,
+            "assignment": 6,
+            "latest": 1,
+            "plugins": [
+                {
+                    "type": "file",
+                    "name": "Archivos enviados",
+                    "fileareas": [
+                        {
+                            "area": "submission_files",
+                            "files": [
+                                {
+                                    "filename": "2022-09-16_22h55_31.png",
+                                    "filepath": "/",
+                                    "filesize": 1696788,
+                                    "fileurl": "https://plataformavirtual.uniamazonia.edu.co/DistanciaVirtual/webservice/pluginfile.php/91/assignsubmission_file/submission_files/7/2022-09-16_22h55_31.png",
+                                    "timemodified": 1666630694,
+                                    "mimetype": "image/png",
+                                    "isexternalfile": false
+                                },
+                                {
+                                    "filename": "slide_1.jpg",
+                                    "filepath": "/",
+                                    "filesize": 74875,
+                                    "fileurl": "https://plataformavirtual.uniamazonia.edu.co/DistanciaVirtual/webservice/pluginfile.php/91/assignsubmission_file/submission_files/7/slide_1.jpg",
+                                    "timemodified": 1665158800,
+                                    "mimetype": "image/jpeg",
+                                    "isexternalfile": false
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "comments",
+                    "name": "Comentarios de la entrega"
+                }
+            ]
+        },
+        "submissiongroupmemberswhoneedtosubmit": [],
+        "submissionsenabled": true,
+        "locked": false,
+        "graded": true,
+        "canedit": true,
+        "caneditowner": true,
+        "cansubmit": false,
+        "extensionduedate": 0,
+        "blindmarking": false,
+        "gradingstatus": "graded",
+        "usergroups": []
+    },
+    "feedback": {
+        "grade": {
+            "id": 4,
+            "assignment": 6,
+            "userid": 3,
+            "attemptnumber": 0,
+            "timecreated": 1666988079,
+            "timemodified": 1666988216,
+            "grader": 8,
+            "grade": "4.30000"
+        },
+        "gradefordisplay": "4,30&nbsp;/&nbsp;5,00",
+        "gradeddate": 1666988216,
+        "plugins": [
+            {
+                "type": "comments",
+                "name": "Comentarios de retroalimentación",
+                "fileareas": [
+                    {
+                        "area": "feedback",
+                        "files": [
+                            {
+                                "filename": "guias.png",
+                                "filepath": "/",
+                                "filesize": 686133,
+                                "fileurl": "https://plataformavirtual.uniamazonia.edu.co/DistanciaVirtual/webservice/pluginfile.php/91/assignfeedback_comments/feedback/4/guias.png",
+                                "timemodified": 1666988216,
+                                "mimetype": "image/png",
+                                "isexternalfile": false
+                            }
+                        ]
+                    }
+                ],
+                "editorfields": [
+                    {
+                        "name": "comments",
+                        "description": "Comentarios de retroalimentación",
+                        "text": "no me gusto el titulo, pero te di buena nota 👍",
+                        "format": 1
+                    }
+                ]
+            }
+        ]
+    },
+    "warnings": []
+}

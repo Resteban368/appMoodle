@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 
-import 'package:campus_virtual/models/ForoResponse.dart';
+import 'package:campus_virtual/models/foro/ForoResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;

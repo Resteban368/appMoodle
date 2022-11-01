@@ -1,10 +1,10 @@
 export 'package:campus_virtual/models/tarea/TareaInfoFechas.dart';
 
-export 'package:campus_virtual/models/notasCursoEstudiante.dart';
+export 'package:campus_virtual/models/notas/notasCursoEstudiante.dart';
 
-export 'package:campus_virtual/models/notasItemsCurso.dart';
+export 'package:campus_virtual/models/notas/notasItemsCurso.dart';
 
-export 'package:campus_virtual/models/notasCurso.dart';
+export 'package:campus_virtual/models/notas/notasCurso.dart';
 
 // export 'package:campus_virtual/models/category.dart';
 

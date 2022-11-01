@@ -4,7 +4,8 @@ class InputDecorations {
   static InputDecoration authInputDecoration(
       {required String hintText,
       required String labelText,
-      IconData? prefixIcon}) {
+      IconData? prefixIcon,
+      IconData? suffixIcon}) {
     return InputDecoration(
         enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.grey),
@@ -15,6 +16,7 @@ class InputDecorations {
         hintText: hintText,
         labelText: labelText,
         labelStyle: const TextStyle(color: Colors.grey),
+        suffixIcon: Icon(suffixIcon, color: Colors.grey),
         prefixIcon: prefixIcon != null
             ? Icon(prefixIcon, color: const Color.fromARGB(255, 37, 188, 183))
             : null);

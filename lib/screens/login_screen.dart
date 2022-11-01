@@ -81,10 +81,13 @@ class _loginForm extends StatelessWidget {
             keyboardType: TextInputType.emailAddress,
             obscureText: true,
             decoration: InputDecorations.authInputDecoration(
-                hintText: '********',
-                labelText: 'Contraseña',
-                prefixIcon: Icons.lock),
+              hintText: '********',
+              labelText: 'Contraseña',
+              prefixIcon: Icons.lock,
+            ),
             onChanged: (value) => formProvider.password = value,
+            //ver el exto de la contraseña con el icono de suffixIcon
+
             validator: (value) {
               if (value != null && value.length >= 6) return null;
               return 'Contraseña invalida minimo 4 caracteres';

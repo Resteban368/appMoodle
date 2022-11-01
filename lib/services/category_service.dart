@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -7,17 +9,10 @@ import '../models/models.dart';
 
 class CategoryService with ChangeNotifier {
   //construcctor
-  CategoryService() {
-    getCategoryById(2);
-  }
 
   Future<List<Category>?> getCategoryById(int id) async {
-    print('getCtaegoryById');
-
+    final url = 'http://172.16.23.187:3000/api/course/Category/$id';
     try {
-      final url = 'http://172.16.23.187:3000/api/course/Category/$id';
-      // print(Uri.parse(url));
-      // print(url);
       final response = await http.get(Uri.parse(url));
 
       if (response.statusCode < 400) {
@@ -27,11 +22,10 @@ class CategoryService with ChangeNotifier {
           category.add(Category.fromMap(element));
         }
         notifyListeners();
-        print(category);
         return category;
       }
     } catch (e) {
-      print(e);
+      print('error en el service de categorias: $e');
     }
     notifyListeners();
     return null;

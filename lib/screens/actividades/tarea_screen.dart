@@ -1,11 +1,13 @@
-// ignore_for_file: must_be_immutable, unused_element
+// ignore_for_file: must_be_immutable, unused_element, unrelated_type_equality_checks, deprecated_member_use
 
 import 'package:campus_virtual/services/tarea_service.dart';
 import 'package:campus_virtual/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/models.dart';
 import '../../theme/theme.dart';
@@ -76,9 +78,10 @@ class _TareaScreenState extends State<TareaScreen> {
   }
 }
 
-class _ContainerBanner extends StatelessWidget {
+class _ContainerBanner extends StatefulWidget {
   final int idTarea;
   final int userid;
+
   const _ContainerBanner(
     this.idTarea,
     this.userid, {
@@ -86,13 +89,18 @@ class _ContainerBanner extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<_ContainerBanner> createState() => _ContainerBannerState();
+}
+
+class _ContainerBannerState extends State<_ContainerBanner> {
+  @override
   Widget build(BuildContext context) {
-    final tareaService = Provider.of<TareaService>(context);
+    final tareaService = Provider.of<TareaService>(context, listen: false);
     return SizedBox(
         width: double.infinity,
-        height: MediaQuery.of(context).size.height * 0.15,
+        height: MediaQuery.of(context).size.height * 0.2,
         child: FutureBuilder(
-          future: tareaService.getFechasTare(userid, idTarea),
+          future: tareaService.getFechasTare(widget.userid, widget.idTarea),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -100,6 +108,19 @@ class _ContainerBanner extends StatelessWidget {
               );
             } else {
               final fechaDate = snapshot.data;
+
+              //Todo: fechas
+              // final fechaFinal = getFechaNormal(fechaDate.duedate);
+              // final fechaConvertida = DateTime.parse(fechaFinal);
+
+              // final fechaHoy = DateTime.now();
+              // var diferencia = fechaConvertida.difference(fechaHoy);
+              // final diferenciaTotal = (' Minutos: ${diferencia.inMinutes}');
+
+              // final minutos = diferencia.inMinutes;
+
+              // final tiempo = getTiempo(minutos);
+
               return Card(
                 elevation: 3,
                 child: Column(children: [
@@ -116,7 +137,7 @@ class _ContainerBanner extends StatelessWidget {
                     child: Row(
                       children: [
                         const Text(
-                          'Apertura',
+                          'Apertura :',
                           style: TextStyle(color: AppTheme.primary),
                         ),
                         Padding(
@@ -128,12 +149,12 @@ class _ContainerBanner extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(
-                        left: 10.0, right: 8.0, bottom: 5.0, top: 8.0),
+                    padding:
+                        const EdgeInsets.only(left: 10.0, right: 8.0, top: 8.0),
                     child: Row(
                       children: [
                         const Text(
-                          'Cierre',
+                          'Cierre :',
                           style: TextStyle(color: AppTheme.primary),
                         ),
                         Padding(
@@ -142,6 +163,29 @@ class _ContainerBanner extends StatelessWidget {
                         ),
                       ],
                     ),
+                  ),
+                  const Divider(),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        child: const Padding(
+                          padding: EdgeInsets.only(right: 8.0, left: 10.0),
+                          child: Text('Tiempo restante: ',
+                              style: TextStyle(color: AppTheme.primary)),
+                        ),
+                      ),
+                      const SizedBox(width: 5),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                          child: Text('tiempo'),
+                        ),
+                      ),
+                    ],
                   ),
                 ]),
               );
@@ -165,7 +209,7 @@ class _ContainerInformacionTarea extends StatelessWidget {
     //PROVIDER DE SITEiNFO
 
     return FutureBuilder(
-        future: tarea.getTarea(3, 1),
+        future: tarea.getTarea(userid, idTarea),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -173,6 +217,7 @@ class _ContainerInformacionTarea extends StatelessWidget {
             );
           } else {
             final tarea = snapshot.data;
+            print('idTarea$idTarea');
             return _EstadoEntrega(tarea);
             // return Container();
           }
@@ -186,95 +231,242 @@ class _EstadoEntrega extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String nota;
+    String resultNota;
     return SizedBox(
       width: double.infinity,
       height: MediaQuery.of(context).size.height * 1.5,
-      child: Column(
-        children: [
-          Card(
-            elevation: 3,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(children: [
+      child: Column(children: [
+        Card(
+          elevation: 3,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(children: [
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  'Estado de la entrega',
+                  style: TextStyle(fontSize: 22, color: AppTheme.primary),
+                ),
+              ),
+              const SizedBox(height: 10),
+              const Divider(),
+              Row(
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    height: MediaQuery.of(context).size.height * 0.05,
+                    child: const Padding(
+                      padding: EdgeInsets.only(top: 2.0, left: 2.0),
+                      child: Text('Estado de la entrega: ',
+                          style: TextStyle(color: AppTheme.primary)),
+                    ),
+                  ),
+                  const SizedBox(width: 5),
+                  SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      height: MediaQuery.of(context).size.height * 0.05,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (tarea.lastattempt!.submission!.status ==
+                                'submitted')
+                              const Text('Enviado para calificar')
+                            else if (tarea.lastattempt!.submission!.status ==
+                                'draft')
+                              const Text('Borrador (no enviado)')
+                            else
+                              const Text('No entregado')
+                          ],
+                        ),
+                      )),
+                ],
+              ),
+              const Divider(),
+              Row(
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    height: MediaQuery.of(context).size.height * 0.05,
+                    child: const Padding(
+                      padding: EdgeInsets.only(top: 2.0, left: 2.0),
+                      child: Text('Estado de la calificación: ',
+                          style: TextStyle(color: AppTheme.primary)),
+                    ),
+                  ),
+                  const SizedBox(width: 5),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    height: MediaQuery.of(context).size.height * 0.04,
+                    child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: (tarea.lastattempt!.graded == false)
+                            ? const Text('Sin calificar')
+                            : const Text('Calificado')),
+                  ),
+                ],
+              ),
+              const Divider(),
+              Row(
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    height: MediaQuery.of(context).size.height * 0.05,
+                    child: const Padding(
+                      padding: EdgeInsets.only(top: 2.0, left: 2.0),
+                      child: Text('Última modificación: ',
+                          style: TextStyle(color: AppTheme.primary)),
+                    ),
+                  ),
+                  const SizedBox(width: 5),
+                  SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      height: MediaQuery.of(context).size.height * 0.06,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(getData(
+                            tarea.lastattempt!.submission!.timemodified!)),
+                      )),
+                ],
+              ),
+              const Divider(),
+              Row(
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    height: MediaQuery.of(context).size.height * 0.08,
+                    child: const Padding(
+                      padding: EdgeInsets.only(top: 2.0, left: 2.0),
+                      child: Text('Archivos enviados: ',
+                          style: TextStyle(color: AppTheme.primary)),
+                    ),
+                  ),
+                  const SizedBox(width: 5),
+                  SingleChildScrollView(
+                    child: Container(
+                        color: Colors.grey[200],
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        height: MediaQuery.of(context).size.height * 0.11,
+                        child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListView.builder(
+                                itemCount: tarea
+                                        .lastattempt!
+                                        .submission!
+                                        .plugins![0]
+                                        .fileareas![0]
+                                        .files
+                                        ?.length ??
+                                    0,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Card(
+                                    elevation: 2,
+                                    child: GestureDetector(
+                                      child: ListTile(
+                                        trailing: Column(
+                                          children: const [
+                                            SizedBox(height: 15),
+                                            Icon(
+                                              Icons.download,
+                                              color: AppTheme.primary,
+                                            ),
+                                          ],
+                                        ),
+                                        leading: Column(
+                                          children: const [
+                                            SizedBox(height: 15),
+                                            Icon(
+                                              Icons.insert_drive_file,
+                                              color: AppTheme.primary,
+                                              size: 20,
+                                            ),
+                                          ],
+                                        ),
+                                        title: Text(
+                                          tarea
+                                                  .lastattempt!
+                                                  .submission!
+                                                  .plugins![0]
+                                                  .fileareas![0]
+                                                  .files![index]
+                                                  .filename ??
+                                              '',
+                                          style: const TextStyle(fontSize: 12),
+                                        ),
+                                        subtitle: Text(
+                                            getFecha(tarea
+                                                    .lastattempt!
+                                                    .submission!
+                                                    .plugins![0]
+                                                    .fileareas![0]
+                                                    .files![index]
+                                                    .timemodified ??
+                                                0),
+                                            style:
+                                                const TextStyle(fontSize: 11)),
+                                      ),
+                                      onTap: () async {
+                                        const storage = FlutterSecureStorage();
+                                        final token =
+                                            await storage.read(key: 'token');
+                                        final url = tarea
+                                            .lastattempt!
+                                            .submission!
+                                            .plugins![0]
+                                            .fileareas![0]
+                                            .files![0]
+                                            .fileurl;
+                                        // print('$url?token=$token');
+                                        await launch('$url?token=$token');
+                                      },
+                                    ),
+                                  );
+                                }))),
+                  ),
+                ],
+              ),
+            ]),
+          ),
+        ),
+        Card(
+          elevation: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
                 const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Text(
-                    'Estado de la entrega',
+                    'Comentario',
                     style: TextStyle(fontSize: 22, color: AppTheme.primary),
                   ),
                 ),
                 const SizedBox(height: 10),
                 const Divider(),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      child: const Padding(
-                        padding: EdgeInsets.only(top: 2.0, left: 2.0),
-                        child: Text('Estado de la entrega: ',
-                            style: TextStyle(color: AppTheme.primary)),
-                      ),
+                Row(children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    height: MediaQuery.of(context).size.height * 0.05,
+                    child: const Padding(
+                      padding: EdgeInsets.only(top: 2.0, left: 2.0),
+                      child: Text('Calificacion: ',
+                          style: TextStyle(color: AppTheme.primary)),
                     ),
-                    const SizedBox(width: 5),
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        height: MediaQuery.of(context).size.height * 0.05,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: (tarea.lastattempt!.submission!.status ==
-                                  'submitted')
-                              ? const Text('Enviado para calificar')
-                              : const Text('No entregado'),
-                        )),
-                  ],
-                ),
-                const Divider(),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      child: const Padding(
-                        padding: EdgeInsets.only(top: 2.0, left: 2.0),
-                        child: Text('Estado de la calificación: ',
-                            style: TextStyle(color: AppTheme.primary)),
-                      ),
-                    ),
-                    const SizedBox(width: 5),
-                    SizedBox(
+                  ),
+                  const SizedBox(width: 5),
+                  SizedBox(
                       width: MediaQuery.of(context).size.width * 0.6,
-                      height: MediaQuery.of(context).size.height * 0.04,
+                      height: MediaQuery.of(context).size.height * 0.05,
                       child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: (tarea.feedback == null)
-                              ? const Text('No calificado')
-                              : const Text('Calificado')),
-                    ),
-                  ],
-                ),
-                const Divider(),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      child: const Padding(
-                        padding: EdgeInsets.only(top: 8.0, left: 2.0),
-                        child: Text('Tiempo restante: ',
-                            style: TextStyle(color: AppTheme.primary)),
-                      ),
-                    ),
-                    const SizedBox(width: 5),
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        height: MediaQuery.of(context).size.height * 0.05,
-                        child: const Padding(
-                          padding: EdgeInsets.only(left: 8.0, right: 8.0),
-                          child: Text(''),
-                        )),
-                  ],
-                ),
+                          child: (tarea.lastattempt!.graded == 'false')
+                              ? const Text('Sin calificar')
+                              : Text(
+                                  '${tarea.feedback?.gradefordisplay.replaceAll('&nbsp;', '')}',
+                                ))),
+                ]),
                 const Divider(),
                 Row(
                   children: [
@@ -283,7 +475,7 @@ class _EstadoEntrega extends StatelessWidget {
                       height: MediaQuery.of(context).size.height * 0.05,
                       child: const Padding(
                         padding: EdgeInsets.only(top: 2.0, left: 2.0),
-                        child: Text('Última modificación: ',
+                        child: Text('Calificado sobre: ',
                             style: TextStyle(color: AppTheme.primary)),
                       ),
                     ),
@@ -293,8 +485,11 @@ class _EstadoEntrega extends StatelessWidget {
                         height: MediaQuery.of(context).size.height * 0.06,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(getData(
-                              tarea.lastattempt!.submission!.timemodified!)),
+                          child: (tarea.lastattempt!.graded == 'false')
+                              ? const Text('Sin calificar')
+                              : Text(
+                                  getData(tarea.feedback?.gradeddate ?? 0),
+                                ),
                         )),
                   ],
                 ),
@@ -303,23 +498,60 @@ class _EstadoEntrega extends StatelessWidget {
                   children: [
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.08,
+                      height: MediaQuery.of(context).size.height * 0.05,
                       child: const Padding(
                         padding: EdgeInsets.only(top: 2.0, left: 2.0),
-                        child: Text('Archivos enviados: ',
+                        child: Text('Comentarios de retroalimentación: ',
+                            style: TextStyle(color: AppTheme.primary)),
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    Container(
+                        color: Colors.grey[200],
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        height: MediaQuery.of(context).size.height * 0.10,
+                        child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SingleChildScrollView(
+                              child: Html(
+                                data: tarea.feedback?.plugins?[0]
+                                        .editorfields?[0].text ??
+                                    '-',
+                                style: {
+                                  'body': Style(
+                                      fontSize: const FontSize(14),
+                                      //justificar todo el texto
+                                      color: Colors.black,
+                                      textAlign: TextAlign.justify),
+                                },
+                              ),
+                            ))),
+                  ],
+                ),
+                const Divider(),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      height: MediaQuery.of(context).size.height * 0.05,
+                      child: const Padding(
+                        padding: EdgeInsets.only(top: 2.0, left: 2.0),
+                        child: Text('Archivos de retroalimentación: ',
                             style: TextStyle(color: AppTheme.primary)),
                       ),
                     ),
                     const SizedBox(width: 5),
                     SingleChildScrollView(
-                      child: SizedBox(
+                      child: Container(
+                          color: Colors.grey[200],
                           width: MediaQuery.of(context).size.width * 0.6,
-                          height: MediaQuery.of(context).size.height * 0.12,
+                          height: MediaQuery.of(context).size.height * 0.11,
                           child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ListView.builder(
-                                  itemCount: tarea.lastattempt!.submission!
-                                      .plugins![0].fileareas![0].files!.length,
+                                  itemCount: tarea.feedback?.plugins?[2]
+                                          .fileareas?[0].files?.length ??
+                                      0,
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return Card(
@@ -347,41 +579,39 @@ class _EstadoEntrega extends StatelessWidget {
                                           ),
                                           title: Text(
                                             tarea
-                                                .lastattempt!
-                                                .submission!
-                                                .plugins![0]
-                                                .fileareas![0]
-                                                .files![index]
-                                                .filename!,
+                                                    .feedback
+                                                    ?.plugins?[2]
+                                                    .fileareas?[0]
+                                                    .files?[index]
+                                                    .filename ??
+                                                '',
                                             style:
                                                 const TextStyle(fontSize: 12),
                                           ),
                                           subtitle: Text(
                                               getFecha(tarea
-                                                  .lastattempt!
-                                                  .submission!
-                                                  .plugins![0]
-                                                  .fileareas![0]
-                                                  .files![index]
-                                                  .timemodified!),
+                                                      .feedback
+                                                      ?.plugins?[2]
+                                                      .fileareas?[0]
+                                                      .files?[index]
+                                                      .timemodified ??
+                                                  0),
                                               style: const TextStyle(
                                                   fontSize: 11)),
                                         ),
                                         onTap: () async {
-                                          // print(tarea
-                                          //     .lastattempt!
-                                          //     .submission!
-                                          //     .plugins![0]
-                                          //     .fileareas![0]
-                                          //     .files![0]
-                                          //     .fileurl!);
-                                          // await launch(tarea
-                                          //     .lastattempt!
-                                          //     .submission!
-                                          //     .plugins![0]
-                                          //     .fileareas![0]
-                                          //     .files![0]
-                                          //     .fileurl!);
+                                          const storage =
+                                              FlutterSecureStorage();
+                                          final token =
+                                              await storage.read(key: 'token');
+                                          final url = tarea
+                                              .feedback
+                                              ?.plugins?[2]
+                                              .fileareas?[0]
+                                              .files?[index]
+                                              .fileurl;
+                                          // print('$url?token=$token');
+                                          await launch('$url?token=$token');
                                         },
                                       ),
                                     );
@@ -389,145 +619,11 @@ class _EstadoEntrega extends StatelessWidget {
                     ),
                   ],
                 ),
-              ]),
+              ],
             ),
           ),
-          Card(
-            elevation: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(children: [
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'Comentario',
-                    style: TextStyle(fontSize: 22, color: AppTheme.primary),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const Divider(),
-                Row(children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.3,
-                    height: MediaQuery.of(context).size.height * 0.05,
-                    child: const Padding(
-                      padding: EdgeInsets.only(top: 2.0, left: 2.0),
-                      child: Text('Calificacion: ',
-                          style: TextStyle(color: AppTheme.primary)),
-                    ),
-                  ),
-                  const SizedBox(width: 5),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.6,
-                    height: MediaQuery.of(context).size.height * 0.05,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(''),
-                    ),
-                  ),
-                ]),
-                const Divider(),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      child: const Padding(
-                        padding: EdgeInsets.only(top: 2.0, left: 2.0),
-                        child: Text('Calificado sobre: ',
-                            style: TextStyle(color: AppTheme.primary)),
-                      ),
-                    ),
-                    const SizedBox(width: 5),
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        height: MediaQuery.of(context).size.height * 0.05,
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(''),
-                        )),
-                  ],
-                ),
-                const Divider(),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      child: const Padding(
-                        padding: EdgeInsets.only(top: 8.0, left: 2.0),
-                        child: Text('Calificado por: ',
-                            style: TextStyle(color: AppTheme.primary)),
-                      ),
-                    ),
-                    const SizedBox(width: 5),
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        height: MediaQuery.of(context).size.height * 0.05,
-                        child: const Padding(
-                          padding: EdgeInsets.only(left: 8.0, right: 8.0),
-                          child: Text(''),
-                        )),
-                  ],
-                ),
-                const Divider(),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      child: const Padding(
-                        padding: EdgeInsets.only(top: 2.0, left: 2.0),
-                        child: Text('Comentarios de retroalimentación: ',
-                            style: TextStyle(color: AppTheme.primary)),
-                      ),
-                    ),
-                    const SizedBox(width: 5),
-                    // SizedBox(
-                    //     width: MediaQuery.of(context).size.width * 0.6,
-                    //     height: MediaQuery.of(context).size.height * 0.10,
-                    //     child: Padding(
-                    //         padding: const EdgeInsets.all(8.0),
-                    //         child: SingleChildScrollView(
-                    //           child: Html(
-                    //             data: html,
-                    //             style: {
-                    //               'body': Style(
-                    //                   fontSize: const FontSize(14),
-                    //                   //justificar todo el texto
-                    //                   textAlign: TextAlign.justify),
-                    //             },
-                    //           ),
-                    //         ))),
-                  ],
-                ),
-                const Divider(),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      child: const Padding(
-                        padding: EdgeInsets.only(top: 2.0, left: 2.0),
-                        child: Text('Archivos de retroalimentación: ',
-                            style: TextStyle(color: AppTheme.primary)),
-                      ),
-                    ),
-                    const SizedBox(width: 5),
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        height: MediaQuery.of(context).size.height * 0.05,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(''),
-                        )),
-                  ],
-                ),
-              ]),
-            ),
-          )
-        ],
-      ),
+        ),
+      ]),
     );
   }
 }

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
-import '../models/DebateResponse.dart';
+import '../models/foro/DebateResponse.dart';
 
 class DebateService extends ChangeNotifier {
   final String _baseUrl =

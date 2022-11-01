@@ -9,7 +9,7 @@ import 'dart:convert';
 class TareaCalificacionResponse {
   TareaCalificacionResponse({
     this.lastattempt,
-    feedback,
+    this.feedback,
     this.warnings,
   });
 
@@ -35,7 +35,7 @@ class TareaCalificacionResponse {
 
   Map<String, dynamic> toJson() => {
         "lastattempt": lastattempt!.toJson(),
-        "feedback": feedback!.toJson(),
+        "feedback": feedback?.toJson(),
         "warnings": List<dynamic>.from(warnings!.map((x) => x)),
       };
 }
@@ -49,7 +49,7 @@ class Feedback {
   });
 
   Grade? grade;
-  String? gradefordisplay;
+  dynamic gradefordisplay;
   int? gradeddate;
   List<Plugin>? plugins;
 
@@ -62,7 +62,7 @@ class Feedback {
       );
 
   Map<String, dynamic> toJson() => {
-        "grade": grade!.toJson(),
+        "grade": grade?.toJson(),
         "gradefordisplay": gradefordisplay,
         "gradeddate": gradeddate,
         "plugins": List<dynamic>.from(plugins!.map((x) => x.toJson())),
