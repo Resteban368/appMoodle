@@ -33,12 +33,11 @@ class _HeaderIcon extends StatelessWidget {
     return SafeArea(
       child: Container(
         width: double.infinity,
-        height: 200,
-        margin: const EdgeInsets.only(top: 20),
-        child: const Icon(
-          Icons.person_pin,
-          size: 100,
-          color: Colors.white,
+        height: 100,
+        margin: const EdgeInsets.only(top: 50),
+        child: //imagen de asset
+            Image.asset(
+          'images/appicon.png',
         ),
       ),
     );

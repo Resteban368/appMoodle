@@ -76,7 +76,7 @@ class _NotificacionesScreenState extends State<NotificacionesScreen> {
                           size: 100, color: AppTheme.primary),
                       Text(
                         'No hay notificaciones',
-                        style: TextStyle(fontSize: 20, color: Colors.black38),
+                        style: TextStyle(fontSize: 20),
                       ),
                     ],
                   ),
