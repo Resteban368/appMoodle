@@ -79,15 +79,10 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<String?> updateUser(int id, String email, String phone1) async {
-    var headers = {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    };
-
+    var headers = {'Content-Type': 'application/json'};
     var request = http.Request(
-        'PUT', Uri.parse('http://api-moodle.com.devel/public/api/user/$id'));
-    request.bodyFields = {
-      'json': '{"email":"$email","phone1":"$phone1"}',
-    };
+        'PUT', Uri.parse('http://172.16.23.187:3000/api/user/user/3'));
+    request.body = json.encode({"email": email, "phone1": phone1});
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();

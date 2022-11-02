@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:campus_virtual/screens/screens.dart';
 import 'package:campus_virtual/theme/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../../providers/providers.dart';
@@ -24,389 +25,413 @@ class _AccountScreenState extends State<AccountScreen> {
   final ImagePicker _picker = ImagePicker();
   bool colorEye = true;
   bool isChecked = false;
+
+  late int userid2 = 0;
+  @override
+  void initState() {
+    super.initState();
+    funcion();
+  }
+
+  Future<int> funcion() async {
+    const storage = FlutterSecureStorage();
+    final id = await storage.read(key: 'id');
+    final userid = int.parse(id!);
+    userid2 = userid;
+    setState(() {});
+    return userid;
+  }
+
   @override
   Widget build(BuildContext context) {
     final userInfoProvider2 =
         Provider.of<UserInfoProvider>(context, listen: false);
-    final userInfoProvider = Provider.of<UserProvider>(context, listen: false);
 
     final size = MediaQuery.of(context).size;
     final authService = Provider.of<AuthService>(context, listen: false);
 
+    final userInfoProvider = Provider.of<UserProvider>(context, listen: false);
     late bool habilitarForm = userInfoProvider.habilitarForm;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Perfil'),
-        backgroundColor: AppTheme.primary,
-        //para cerrar sesion
-        actions: [
-          PopupMenuButton(
-            icon: const Icon(Icons.more_vert, color: Colors.white),
-            itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-              PopupMenuItem(
-                value: 1,
-                child: Row(
-                  children: const [
-                    Icon(Icons.logout, color: AppTheme.primary),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text('Cerrar sesión'),
-                  ],
-                ),
-              ),
-              PopupMenuItem(
-                value: 2,
-                child: Row(
-                  children: const [
-                    Icon(Icons.settings, color: AppTheme.primary),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text('Configuración'),
-                  ],
-                ),
-              ),
-              PopupMenuItem(
-                value: 3,
-                child: Row(
-                  children: const [
-                    Icon(Icons.assessment, color: AppTheme.primary),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text('Calificaciones'),
-                  ],
-                ),
-              ),
-            ],
-            onSelected: (value) {
-              if (value == 1) {
-                authService.logout();
-                //navegar a la pantalla de login
-                Navigator.pushReplacementNamed(context, 'inicio');
-              } else if (value == 2) {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ConfiguracionScreen()));
-              } else if (value == 3) {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const CalificacionesScreen()));
-              }
-            },
-          )
-        ],
-      ),
-      //todo container donde esta todo
-      body: Container(
-        width: double.infinity,
-        height: size.height * 0.8,
-        padding: const EdgeInsets.only(left: 25, top: 20, right: 25),
-        child: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
-          child: ListView(
-            children: [
-              Center(
-                child: Stack(
-                  children: [
-                    Container(
-                      width: 130,
-                      height: 130,
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 4, color: Colors.white),
-                        boxShadow: [
-                          BoxShadow(
-                              spreadRadius: 2,
-                              blurRadius: 10,
-                              color: Colors.black.withOpacity(0.1)),
-                        ],
-                        shape: BoxShape.circle,
+    return RefreshIndicator(
+      onRefresh: () async {
+        await userInfoProvider.getData(userid2);
+        // await userInfoProvider2.geInfoUser(userid2);
+        setState(() {});
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Perfil'),
+          backgroundColor: AppTheme.primary,
+          //para cerrar sesion
+          actions: [
+            PopupMenuButton(
+              icon: const Icon(Icons.more_vert, color: Colors.white),
+              itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                PopupMenuItem(
+                  value: 1,
+                  child: Row(
+                    children: const [
+                      Icon(Icons.logout, color: AppTheme.primary),
+                      SizedBox(
+                        width: 10,
                       ),
-                      child: CircleAvatar(
-                        radius: 60,
-                        backgroundColor: Colors.white,
-                        child: ClipOval(
-                          child: SizedBox(
-                            width: 120,
-                            height: 120,
-                            child: (_imageFile != null)
-                                ? Image.file(
-                                    File(_imageFile!.path),
-                                    fit: BoxFit.fill,
-                                  )
-                                : Image.network(
-                                    userInfoProvider2
-                                                .userInfo.profileimageurl !=
-                                            null
-                                        ? userInfoProvider2
-                                            .userInfo.profileimageurl!
-                                        : 'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png',
-                                    // imgeDefault,
-                                    fit: BoxFit.fill,
-                                  ),
+                      Text('Cerrar sesión'),
+                    ],
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 2,
+                  child: Row(
+                    children: const [
+                      Icon(Icons.settings, color: AppTheme.primary),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text('Configuración'),
+                    ],
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 3,
+                  child: Row(
+                    children: const [
+                      Icon(Icons.assessment, color: AppTheme.primary),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text('Calificaciones'),
+                    ],
+                  ),
+                ),
+              ],
+              onSelected: (value) {
+                if (value == 1) {
+                  authService.logout();
+                  //navegar a la pantalla de login
+                  Navigator.pushReplacementNamed(context, 'inicio');
+                } else if (value == 2) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ConfiguracionScreen()));
+                } else if (value == 3) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CalificacionesScreen()));
+                }
+              },
+            )
+          ],
+        ),
+        //todo container donde esta todo
+        body: Container(
+          width: double.infinity,
+          height: size.height * 0.8,
+          padding: const EdgeInsets.only(left: 25, top: 20, right: 25),
+          child: GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: ListView(
+              children: [
+                Center(
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: 130,
+                        height: 130,
+                        decoration: BoxDecoration(
+                          border: Border.all(width: 4, color: Colors.white),
+                          boxShadow: [
+                            BoxShadow(
+                                spreadRadius: 2,
+                                blurRadius: 10,
+                                color: Colors.black.withOpacity(0.1)),
+                          ],
+                          shape: BoxShape.circle,
+                        ),
+                        child: CircleAvatar(
+                          radius: 60,
+                          backgroundColor: Colors.white,
+                          child: ClipOval(
+                            child: SizedBox(
+                              width: 120,
+                              height: 120,
+                              child: (_imageFile != null)
+                                  ? Image.file(
+                                      File(_imageFile!.path),
+                                      fit: BoxFit.fill,
+                                    )
+                                  : Image.network(
+                                      userInfoProvider2
+                                                  .userInfo.profileimageurl !=
+                                              null
+                                          ? userInfoProvider2
+                                              .userInfo.profileimageurl!
+                                          : 'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png',
+                                      // imgeDefault,
+                                      fit: BoxFit.fill,
+                                    ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        height: 45,
-                        width: 45,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(width: 4, color: Colors.white),
-                            color: AppTheme.primary),
-                        child: IconButton(
-                            onPressed: () {
-                              showModalBottomSheet(
-                                  context: context,
-                                  builder: (context) => BottomSheetImage());
-                            },
-                            icon: const Icon(
-                              Icons.edit,
-                              color: Colors.white,
-                              size: 20,
-                            )),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Container(
+                          height: 45,
+                          width: 45,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(width: 4, color: Colors.white),
+                              color: AppTheme.primary),
+                          child: IconButton(
+                              onPressed: () {
+                                showModalBottomSheet(
+                                    context: context,
+                                    builder: (context) => BottomSheetImage());
+                              },
+                              icon: const Icon(
+                                Icons.edit,
+                                color: Colors.white,
+                                size: 20,
+                              )),
+                        ),
                       ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 30),
+                BuildTextFiled(
+                  labelText: "Nombre",
+                  placeholder: "",
+                  controller: userInfoProvider.controllerFirstname,
+                  isRead: false,
+                ),
+                BuildTextFiled(
+                  labelText: "Apellidos",
+                  placeholder: '',
+                  controller: userInfoProvider.controllerLastname,
+                  isRead: false,
+                ),
+                BuildTextFiled(
+                  labelText: "Correo Institucional",
+                  placeholder: '',
+                  controller: userInfoProvider.controllerEmail,
+                  isRead: false,
+                ),
+                BuildTextFiled(
+                  labelText: "Correo Personal",
+                  placeholder: '',
+                  controller: userInfoProvider.controllerEmail,
+                  isRead: habilitarForm,
+                ),
+                BuildTextFiled(
+                  labelText: "Departamento",
+                  placeholder: '',
+                  controller: userInfoProvider.controllerDepartment,
+                  isRead: habilitarForm,
+                ),
+                BuildTextFiled(
+                  labelText: "Ciudad",
+                  placeholder: '',
+                  controller: userInfoProvider.controllerCity,
+                  isRead: habilitarForm,
+                ),
+                BuildTextFiled(
+                  labelText: "Direccion",
+                  placeholder: '',
+                  controller: userInfoProvider.controllerAddress,
+                  isRead: habilitarForm,
+                ),
+                BuildTextFiled(
+                  labelText: "Cuenta de Skype",
+                  placeholder: '',
+                  controller: userInfoProvider.controllerEmail,
+                  isRead: habilitarForm,
+                ),
+                BuildTextFiled(
+                  labelText: "Cuenta de Facebook",
+                  placeholder: '',
+                  controller: userInfoProvider.controllerEmail,
+                  isRead: habilitarForm,
+                ),
+                BuildTextFiled(
+                  labelText: "Cuenta de Twitter",
+                  placeholder: '',
+                  controller: userInfoProvider.controllerEmail,
+                  isRead: habilitarForm,
+                ),
+                BuildTextFiled(
+                  labelText: "Cuenta de Youtube",
+                  placeholder: '',
+                  controller: userInfoProvider.controllerYahoo,
+                  isRead: habilitarForm,
+                ),
+                BuildTextFiled(
+                  labelText: "Cuenta de Instagram",
+                  placeholder: '',
+                  controller: userInfoProvider.controllerEmail,
+                  isRead: habilitarForm,
+                ),
+                BuildTextFiled(
+                  labelText: "Telfono",
+                  placeholder: "",
+                  controller: userInfoProvider.controllerPhone1,
+                  isRead: habilitarForm,
+                ),
+                const SizedBox(height: 5),
+                const Text('EN CASO DE EMERGENCIA CONTACTO',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.primary,
+                    ),
+                    textAlign: TextAlign.center),
+                const SizedBox(height: 30),
+                BuildTextFiled(
+                  labelText: "Nombre Completo",
+                  placeholder: "",
+                  controller: userInfoProvider.controllerFirstname,
+                  isRead: habilitarForm,
+                ),
+                BuildTextFiled(
+                  labelText: "Telfono Celular",
+                  placeholder: '',
+                  controller: userInfoProvider.controllerPhone2,
+                  isRead: habilitarForm,
+                ),
+                const SizedBox(height: 5),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Text(
+                        'ACEPTAR TERMINOS Y CONDICIONES',
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: AppTheme.primary),
+                      ),
+                    ),
+                    Checkbox(
+                      checkColor: Colors.white,
+                      fillColor: MaterialStateProperty.resolveWith((states) =>
+                          states.contains(MaterialState.selected)
+                              ? AppTheme.primary
+                              : Colors.grey),
+                      value: isChecked,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          isChecked = value!;
+                        });
+                      },
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(height: 30),
-              BuildTextFiled(
-                labelText: "Nombre",
-                placeholder: "",
-                controller: userInfoProvider.controllerFirstname,
-                isRead: false,
-              ),
-              BuildTextFiled(
-                labelText: "Apellidos",
-                placeholder: '',
-                controller: userInfoProvider.controllerLastname,
-                isRead: false,
-              ),
-              BuildTextFiled(
-                labelText: "Correo Institucional",
-                placeholder: '',
-                controller: userInfoProvider.controllerEmail,
-                isRead: false,
-              ),
-              BuildTextFiled(
-                labelText: "Correo Personal",
-                placeholder: '',
-                controller: userInfoProvider.controllerEmail,
-                isRead: habilitarForm,
-              ),
-              BuildTextFiled(
-                labelText: "Departamento",
-                placeholder: '',
-                controller: userInfoProvider.controllerDepartment,
-                isRead: habilitarForm,
-              ),
-              BuildTextFiled(
-                labelText: "Ciudad",
-                placeholder: '',
-                controller: userInfoProvider.controllerCity,
-                isRead: habilitarForm,
-              ),
-              BuildTextFiled(
-                labelText: "Direccion",
-                placeholder: '',
-                controller: userInfoProvider.controllerAddress,
-                isRead: habilitarForm,
-              ),
-              BuildTextFiled(
-                labelText: "Cuenta de Skype",
-                placeholder: '',
-                controller: userInfoProvider.controllerEmail,
-                isRead: habilitarForm,
-              ),
-              BuildTextFiled(
-                labelText: "Cuenta de Facebook",
-                placeholder: '',
-                controller: userInfoProvider.controllerEmail,
-                isRead: habilitarForm,
-              ),
-              BuildTextFiled(
-                labelText: "Cuenta de Twitter",
-                placeholder: '',
-                controller: userInfoProvider.controllerEmail,
-                isRead: habilitarForm,
-              ),
-              BuildTextFiled(
-                labelText: "Cuenta de Youtube",
-                placeholder: '',
-                controller: userInfoProvider.controllerYahoo,
-                isRead: habilitarForm,
-              ),
-              BuildTextFiled(
-                labelText: "Cuenta de Instagram",
-                placeholder: '',
-                controller: userInfoProvider.controllerEmail,
-                isRead: habilitarForm,
-              ),
-              BuildTextFiled(
-                labelText: "Telfono",
-                placeholder: "",
-                controller: userInfoProvider.controllerPhone1,
-                isRead: habilitarForm,
-              ),
-              const SizedBox(height: 5),
-              const Text('EN CASO DE EMERGENCIA CONTACTO',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: AppTheme.primary,
-                  ),
-                  textAlign: TextAlign.center),
-              const SizedBox(height: 30),
-              BuildTextFiled(
-                labelText: "Nombre Completo",
-                placeholder: "",
-                controller: userInfoProvider.controllerFirstname,
-                isRead: habilitarForm,
-              ),
-              BuildTextFiled(
-                labelText: "Telfono Celular",
-                placeholder: '',
-                controller: userInfoProvider.controllerPhone2,
-                isRead: habilitarForm,
-              ),
-              const SizedBox(height: 5),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Text(
-                      'ACEPTAR TERMINOS Y CONDICIONES',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: AppTheme.primary),
+                const Text(
+                    "El diligenciamiento de mi información personal será requerida para explorar el campus virtual. La información suministrada se encuentra amparada mediante la Ley de Protección de Datos Personales (L. 1581 de Octubre 17 de 2012)",
+                    style: TextStyle(
+                      fontSize: 12,
                     ),
-                  ),
-                  Checkbox(
-                    checkColor: Colors.white,
-                    fillColor: MaterialStateProperty.resolveWith((states) =>
-                        states.contains(MaterialState.selected)
-                            ? AppTheme.primary
-                            : Colors.grey),
-                    value: isChecked,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        isChecked = value!;
-                      });
-                    },
-                  ),
-                ],
-              ),
-              const Text(
-                  "El diligenciamiento de mi información personal será requerida para explorar el campus virtual. La información suministrada se encuentra amparada mediante la Ley de Protección de Datos Personales (L. 1581 de Octubre 17 de 2012)",
-                  style: TextStyle(
-                    fontSize: 12,
-                  ),
-                  textAlign: TextAlign.justify),
-              const SizedBox(height: 50),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  OutlinedButton(
-                      onPressed: isChecked == false
-                          ? () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  backgroundColor:
-                                      Color.fromARGB(255, 235, 99, 90),
-                                  content: Text(
-                                      'Debe aceptar los terminos y condiciones'),
-                                ),
-                              );
-                            }
-                          : () async {
-                              final siteInfo = Provider.of<InfoSiteService>(
-                                  context,
-                                  listen: false);
-                              final peticion =
-                                  await userInfoProvider.updateUser(
-                                      siteInfo.infoSite.userid!,
-                                      userInfoProvider.controllerEmail.text,
-                                      userInfoProvider.controllerPhone1.text);
-                              if (peticion == '') {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 32, 99, 35),
-                                    content: Text(
-                                        'Se actualizo la información correctamente'),
-                                  ),
-                                );
-                              } else {
+                    textAlign: TextAlign.justify),
+                const SizedBox(height: 50),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    OutlinedButton(
+                        onPressed: isChecked == false
+                            ? () {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     backgroundColor:
                                         Color.fromARGB(255, 235, 99, 90),
                                     content: Text(
-                                        'No se pudo actualizar la información'),
+                                        'Debe aceptar los terminos y condiciones'),
                                   ),
                                 );
                               }
-                            },
-                      // ignore: sort_child_properties_last
-                      child: const Text(
-                        "Guardar",
-                        style: TextStyle(
-                          fontSize: 15,
-                          letterSpacing: 2,
-                          color: AppTheme.primary,
-                        ),
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 30),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                      )),
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          userInfoProvider.habilitarFormulario();
-                        });
-                      },
-                      // ignore: sort_child_properties_last
-                      child: const Text(
-                        "Editar ",
-                        style: TextStyle(
+                            : () async {
+                                final peticion =
+                                    await userInfoProvider.updateUser(
+                                        userid2,
+                                        userInfoProvider.controllerEmail.text,
+                                        userInfoProvider.controllerPhone1.text);
+                                if (peticion == '') {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      backgroundColor:
+                                          Color.fromARGB(255, 32, 99, 35),
+                                      content: Text(
+                                          'Se actualizo la información correctamente'),
+                                    ),
+                                  );
+                                  setState(() {
+                                    userInfoProvider.habilitarFormulario();
+                                  });
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      backgroundColor:
+                                          Color.fromARGB(255, 235, 99, 90),
+                                      content: Text(
+                                          'No se pudo actualizar la información'),
+                                    ),
+                                  );
+                                }
+                              },
+                        // ignore: sort_child_properties_last
+                        child: const Text(
+                          "Guardar",
+                          style: TextStyle(
                             fontSize: 15,
                             letterSpacing: 2,
-                            color: Colors.white),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        primary: AppTheme.primary,
-                        padding: const EdgeInsets.symmetric(horizontal: 30),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                      ))
-                ],
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                "En este formato hay campos obligatorios",
-                style: TextStyle(
-                  fontSize: 12,
+                            color: AppTheme.primary,
+                          ),
+                        ),
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                        )),
+                    const SizedBox(width: 10),
+                    ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            userInfoProvider.habilitarFormulario();
+                          });
+                        },
+                        // ignore: sort_child_properties_last
+                        child: const Text(
+                          "Editar ",
+                          style: TextStyle(
+                              fontSize: 15,
+                              letterSpacing: 2,
+                              color: Colors.white),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: AppTheme.primary,
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                        ))
+                  ],
                 ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 50),
-            ],
+                const SizedBox(height: 20),
+                const Text(
+                  "En este formato hay campos obligatorios",
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 50),
+              ],
+            ),
           ),
         ),
       ),
