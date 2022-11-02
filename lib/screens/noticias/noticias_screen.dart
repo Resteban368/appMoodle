@@ -4,6 +4,8 @@ import 'package:animated_floating_buttons/widgets/animated_floating_action_butto
 import 'package:campus_virtual/utils/warning_widget_change_notifier.dart';
 import 'package:campus_virtual/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:social_media_flutter/widgets/icons.dart';
+import 'package:social_media_flutter/widgets/text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../theme/app_bar_theme.dart';
@@ -86,18 +88,18 @@ class NoticiasScreen extends StatelessWidget {
         ),
       ),
 
-      //boton flotante con varias opciones
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterTop,
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: AnimatedFloatingActionButton(
-            fabButtons: <Widget>[float1(), float2()],
-            key: key,
-            colorStartAnimation: AppTheme.primary,
-            colorEndAnimation: Colors.grey,
-            animatedIconData: AnimatedIcons.menu_close //To principal button
-            ),
-      ),
+      // //boton flotante con varias opciones
+      // floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterTop,
+      // floatingActionButton: Padding(
+      //   padding: const EdgeInsets.all(8.0),
+      //   child: AnimatedFloatingActionButton(
+      //       fabButtons: <Widget>[float1(), float2()],
+      //       key: key,
+      //       colorStartAnimation: AppTheme.primary,
+      //       colorEndAnimation: Colors.grey,
+      //       animatedIconData: AnimatedIcons.menu_close //To principal button
+      //       ),
+      // ),
     );
   }
 }
@@ -158,15 +160,19 @@ class _OfertaAcademica extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        IconButton(
-                          onPressed: () async {
+                        const SizedBox(height: 10),
+                        GestureDetector(
+                          child: Image.asset(
+                            'images/Guia_didactica.png',
+                            width: 40,
+                            height: 40,
+                          ),
+                          onTap: () async {
                             await launch(
                                 'https://distancia.uniamazonia.edu.co/distancia/login/index.php/');
                           },
-                          icon: const Icon(Icons.book),
-                          color: AppTheme.primary,
-                          iconSize: 30,
                         ),
+                        const SizedBox(height: 2),
                         const Text("Guías Didácticas - Docentes",
                             style: TextStyle(
                                 fontSize: 12, color: AppTheme.primary)),
@@ -190,14 +196,16 @@ class _OfertaAcademica extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        IconButton(
-                          onPressed: () async {
+                        GestureDetector(
+                          child: Image.asset(
+                            'images/actividad-fisica.png',
+                            width: 50,
+                            height: 50,
+                          ),
+                          onTap: () async {
                             await launch(
                                 'https://distancia.uniamazonia.edu.co/distancia/');
                           },
-                          icon: const Icon(Icons.health_and_safety_outlined),
-                          color: AppTheme.primary,
-                          iconSize: 30,
                         ),
                         const Text("Bienestar Universitario",
                             style: TextStyle(
@@ -225,14 +233,17 @@ class _OfertaAcademica extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        IconButton(
-                          onPressed: () async {
+                        const SizedBox(height: 5),
+                        GestureDetector(
+                          child: Image.asset(
+                            'images/Recursos_digitales.png',
+                            width: 50,
+                            height: 50,
+                          ),
+                          onTap: () async {
                             await launch(
                                 'https://distancia.uniamazonia.edu.co/rrm/#/');
                           },
-                          icon: const Icon(Icons.insert_drive_file_outlined),
-                          color: AppTheme.primary,
-                          iconSize: 30,
                         ),
                         const Text("Recursos Educativos Digitales",
                             style: TextStyle(
@@ -257,14 +268,17 @@ class _OfertaAcademica extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        IconButton(
-                          onPressed: () async {
+                        const SizedBox(height: 5),
+                        GestureDetector(
+                          child: Image.asset(
+                            'images/calendario_.png',
+                            width: 50,
+                            height: 50,
+                          ),
+                          onTap: () async {
                             await launch(
                                 'https://distancia.uniamazonia.edu.co/distancia/login/index.php');
                           },
-                          icon: const Icon(Icons.calendar_month),
-                          color: AppTheme.primary,
-                          iconSize: 30,
                         ),
                         const Text("Induccion Virtual",
                             style: TextStyle(
@@ -351,71 +365,140 @@ class _Informacion extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Row(
+      child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.28,
-              height: 80,
-              child: Column(children: [
-                IconButton(
-                  onPressed: () async {
-                    await launch(
-                        'https://www.google.com/maps/place/Florencia,+Caquet%C3%A1/@1.618869,-75.603842,14z/data=!3m1!4b1!4m5!3m4!1s0x8e244e1a71ba142f:0x408dc3d21376d444!8m2!3d1.6153858!4d-75.6042364');
-                  },
-                  icon: const Icon(Icons.location_on_outlined,
-                      color: AppTheme.primary),
-                  color: AppTheme.primary,
-                  iconSize: 30,
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.28,
+                  height: 80,
+                  child: Column(children: [
+                    IconButton(
+                      onPressed: () async {
+                        await launch(
+                            'https://www.google.com/maps/place/Florencia,+Caquet%C3%A1/@1.618869,-75.603842,14z/data=!3m1!4b1!4m5!3m4!1s0x8e244e1a71ba142f:0x408dc3d21376d444!8m2!3d1.6153858!4d-75.6042364');
+                      },
+                      icon: const Icon(Icons.location_on_outlined,
+                          color: AppTheme.primary),
+                      color: AppTheme.primary,
+                      iconSize: 30,
+                    ),
+                    const Text(
+                      'Florencia, Caquetá',
+                      style: TextStyle(fontSize: 12),
+                    )
+                  ]),
                 ),
-                const Text(
-                  'Florencia, Caquetá',
-                  style: TextStyle(fontSize: 12),
-                )
-              ]),
+              ),
+              const SizedBox(width: 10),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.35,
+                height: 80,
+                child: Column(children: [
+                  IconButton(
+                    onPressed: () async {
+                      await launch('mailto:edistancia@uniamazonia.edu.co');
+                    },
+                    icon: const Icon(Icons.email, color: AppTheme.primary),
+                    color: AppTheme.primary,
+                    iconSize: 30,
+                  ),
+                  const Text(
+                    'edistancia@uniamazonia.edu.co',
+                    style: TextStyle(fontSize: 12),
+                    textAlign: TextAlign.center,
+                  ),
+                ]),
+              ),
+              const SizedBox(width: 10),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.28,
+                height: 80,
+                child: Column(children: [
+                  IconButton(
+                    onPressed: () async {
+                      await launch('tel:+57 3214687286');
+                    },
+                    icon: const Icon(Icons.phone, color: AppTheme.primary),
+                    color: AppTheme.primary,
+                    iconSize: 30,
+                  ),
+                  const Text(
+                    '+57 3214687286',
+                    style: TextStyle(fontSize: 12),
+                    textAlign: TextAlign.center,
+                  ),
+                ]),
+              ),
+            ],
+          ),
+          const Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Text(
+              'Visitanos por Redes Sociales',
+              style: TextStyle(
+                  fontSize: 20,
+                  color: AppTheme.primary,
+                  fontWeight: FontWeight.bold),
             ),
           ),
-          const SizedBox(width: 10),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.35,
-            height: 80,
-            child: Column(children: [
-              IconButton(
-                onPressed: () async {
-                  await launch('mailto:edistancia@uniamazonia.edu.co');
+          //row de redes sociales
+          const SizedBox(width: 20),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                child: SocialWidget(
+                  placeholderText: '',
+                  iconData: SocialIconsFlutter.facebook_box,
+                  link: '',
+                  iconColor: Colors.blue,
+                ),
+                onTap: () async {
+                  await launch('');
                 },
-                icon: const Icon(Icons.email, color: AppTheme.primary),
-                color: AppTheme.primary,
-                iconSize: 30,
               ),
-              const Text(
-                'edistancia@uniamazonia.edu.co',
-                style: TextStyle(fontSize: 12),
-                textAlign: TextAlign.center,
-              ),
-            ]),
-          ),
-          const SizedBox(width: 10),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.28,
-            height: 80,
-            child: Column(children: [
-              IconButton(
-                onPressed: () async {
-                  await launch('tel:+57 3214687286');
+              GestureDetector(
+                child: SocialWidget(
+                  placeholderText: '',
+                  iconData: SocialIconsFlutter.instagram,
+                  iconColor: Colors.pink,
+                  link: '',
+                ),
+                onTap: () async {
+                  await launch('');
                 },
-                icon: const Icon(Icons.phone, color: AppTheme.primary),
-                color: AppTheme.primary,
-                iconSize: 30,
               ),
-              const Text(
-                '+57 3214687286',
-                style: TextStyle(fontSize: 12),
-                textAlign: TextAlign.center,
+              GestureDetector(
+                child: SocialWidget(
+                  placeholderText: '',
+                  iconData: //icono de tiktok
+                      Icons.tiktok,
+                  link: '',
+                  iconColor: Colors.black,
+                ),
+                onTap: () async {
+                  await launch('');
+                },
               ),
-            ]),
-          ),
+              GestureDetector(
+                child: SocialWidget(
+                  placeholderText: '',
+                  iconData: //icono de tiktok
+                      Icons.whatsapp,
+                  link: '',
+                  iconColor: //color del icono de tiktok
+                      Colors.green,
+                ),
+                onTap: () async {
+                  await launch('');
+                },
+              ),
+            ],
+          )
         ],
       ),
     );

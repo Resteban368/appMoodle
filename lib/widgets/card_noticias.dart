@@ -7,7 +7,6 @@ import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../services/sevices.dart';
-import '../theme/theme.dart';
 
 class CardNoticias extends StatelessWidget {
   const CardNoticias({Key? key}) : super(key: key);
@@ -46,10 +45,9 @@ class CardNoticias extends StatelessWidget {
                             margin: const EdgeInsets.symmetric(horizontal: 10),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                color: Colors.white,
                                 boxShadow: const [
                                   BoxShadow(
-                                      color: Colors.black26,
+                                      color: Color.fromARGB(19, 0, 0, 0),
                                       offset: Offset(0, 5),
                                       blurRadius: 5)
                                 ]),

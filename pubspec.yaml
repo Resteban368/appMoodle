@@ -53,6 +53,8 @@ dependencies:
   flutter_cached_pdfview: ^0.4.1
   shimmer: ^2.0.0
   animated_floating_buttons: ^0.0.2
+  social_media_flutter: ^0.0.2
+  pdf: ^3.8.4
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -91,6 +93,10 @@ flutter:
     - images/Encuentros.png
     - images/guias.png
     - images/appicon.png
+    - images/calendario_.png
+    - images/Recursos_digitales.png
+    - images/Guia_didactica.png
+    - images/actividad-fisica.png
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
