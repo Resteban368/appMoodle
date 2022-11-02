@@ -14,8 +14,8 @@ class BannerService with ChangeNotifier {
   }
 
   Future<List<Result>?> getBanner() async {
+    const url = 'http://172.16.23.187:3000/api/banner/all';
     try {
-      const url = 'http://172.16.23.187:3000/api/banner/all';
       // print(Uri.parse(url));
       // print(url);
       final response = await http.get(Uri.parse(url));
@@ -30,7 +30,7 @@ class BannerService with ChangeNotifier {
         return banner;
       }
     } catch (e) {
-      print(e);
+      print('error en el servicio de banner: $e');
     }
     notifyListeners();
     return null;

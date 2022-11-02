@@ -22,7 +22,6 @@ class CursoService extends ChangeNotifier {
         '$_baseUrl${_url}wsfunction=$_wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&userid=$userid';
     try {
       final resp = await http.get(Uri.parse(url));
-      print(url);
       if (resp.statusCode < 400) {
         // print('status code: ${resp.statusCode}');
 
@@ -31,12 +30,19 @@ class CursoService extends ChangeNotifier {
         for (Map<String, dynamic>? element in mapaRespBody) {
           // responseCursosData.add(final curso =  ResponseCursos.fromJson(element));
           final curso = ResponseCursos.fromJson(element!);
-          curso.category2 = await getCategoryById(curso.id!);
+          print('curso id:${curso.id}');
+
+          //mandamos a llamar el metodo para obtener la categoria
+          // final categoria = await getCategoryById(curso.id!);
+          // print('categoria: ${categoria}');
+          // print('categoria: ${categoria!.name}');
+          // curso.category2 = categoria!.name as Category2?;
+
           responseCursosData.add(curso);
 
           // print(categoria);
         }
-        print(responseCursosData[0].category2);
+        // print(responseCursosData[0].category2?.name);
         notifyListeners();
         return responseCursosData;
       }
@@ -46,17 +52,9 @@ class CursoService extends ChangeNotifier {
     return null;
   }
 
-// final urcso = ResponseCursos.fromJson(element);
-// curso.categoria = //obtener aquí categoría
-
-// responseCursosData.add(curso);
-
   Future<Category2?> getCategoryById(int id) async {
-    print('getCtaegoryById');
-
+    final url = 'http://172.16.23.187:3000/api/course/Category/$id';
     try {
-      final url = 'http://172.16.23.187:3000/api/course/Category/$id';
-
       final response = await http.get(Uri.parse(url));
 
       if (response.statusCode < 400) {
@@ -66,7 +64,7 @@ class CursoService extends ChangeNotifier {
           category.add(Category2.fromMap(element));
         }
         notifyListeners();
-        print(category);
+        print('category: ${category[0].name}');
         return category[0];
       }
     } catch (e) {

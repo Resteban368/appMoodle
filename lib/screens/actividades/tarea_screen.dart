@@ -1,5 +1,6 @@
-// ignore_for_file: must_be_immutable, unused_element, unrelated_type_equality_checks, deprecated_member_use
+// ignore_for_file: must_be_immutable, unused_element, unrelated_type_equality_checks, deprecated_member_use, prefer_const_constructors
 
+import 'package:campus_virtual/screens/actividades/url_screen.dart';
 import 'package:campus_virtual/services/tarea_service.dart';
 import 'package:campus_virtual/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -98,7 +99,7 @@ class _ContainerBannerState extends State<_ContainerBanner> {
     final tareaService = Provider.of<TareaService>(context, listen: false);
     return SizedBox(
         width: double.infinity,
-        height: MediaQuery.of(context).size.height * 0.2,
+        height: MediaQuery.of(context).size.height * 0.23,
         child: FutureBuilder(
           future: tareaService.getFechasTare(widget.userid, widget.idTarea),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -180,13 +181,46 @@ class _ContainerBannerState extends State<_ContainerBanner> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.6,
                         height: MediaQuery.of(context).size.height * 0.05,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                        child: const Padding(
+                          padding: EdgeInsets.only(left: 8.0, right: 8.0),
                           child: Text('tiempo'),
                         ),
                       ),
                     ],
                   ),
+                  Container(
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height * 0.046,
+                    color: AppTheme.primary,
+                    child: FutureBuilder(
+                        future: tareaService.getDispacherid(widget.idTarea),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else {
+                            final tarea = snapshot.data;
+                            return MaterialButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => PDFViewerFromUrl(
+                                              url: tarea[0].src,
+                                            )));
+                              },
+                              child: const Text(
+                                'Evidencia de aprendizaje',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            );
+                          }
+                        }),
+                    //boton material
+                  )
                 ]),
               );
             }

@@ -68,22 +68,22 @@ class PDFViewerFromUrl extends StatelessWidget {
   }
 }
 
-class PDFViewerCachedFromUrl extends StatelessWidget {
-  const PDFViewerCachedFromUrl({Key? key, required this.url}) : super(key: key);
+// class PDFViewerCachedFromUrl extends StatelessWidget {
+//   const PDFViewerCachedFromUrl({Key? key, required this.url}) : super(key: key);
 
-  final String url;
+//   final String url;
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Cached PDF From Url'),
-      ),
-      body: const PDF().cachedFromUrl(
-        url,
-        placeholder: (double progress) => Center(child: Text('$progress %')),
-        errorWidget: (dynamic error) => Center(child: Text(error.toString())),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Cached PDF From Url'),
+//       ),
+//       body: const PDF().cachedFromUrl(
+//         url,
+//         placeholder: (double progress) => Center(child: Text('$progress %')),
+//         errorWidget: (dynamic error) => Center(child: Text(error.toString())),
+//       ),
+//     );
+//   }
+// }

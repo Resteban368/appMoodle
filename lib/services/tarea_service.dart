@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/tarea/disparcher.dart';
+
 class TareaService extends ChangeNotifier {
   final String _baseUrl =
       'https://plataformavirtual.uniamazonia.edu.co/DistanciaVirtual';
@@ -51,6 +53,29 @@ class TareaService extends ChangeNotifier {
       }
     } catch (e, s) {
       print('error en la response tarea fecha service: $e + $s');
+    }
+    notifyListeners();
+    return null;
+  }
+
+//get dispacher
+
+  Future<List<Disparcher>?> getDispacherid(int idTarea) async {
+    final url = 'http://172.16.23.187:3000/api/disparcher/tarea/$idTarea';
+    try {
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode < 400) {
+        List<Disparcher> banner = [];
+        Map<String, dynamic> mapaRespBody = json.decode(response.body);
+        for (var element in mapaRespBody['results']) {
+          banner.add(Disparcher.fromMap(element));
+        }
+        notifyListeners();
+        return banner;
+      }
+    } catch (e) {
+      print('error en el servicio dispacher: $e');
     }
     notifyListeners();
     return null;
