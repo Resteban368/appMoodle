@@ -17,21 +17,16 @@ class CursoService extends ChangeNotifier {
   Future<List<ResponseCursos>?> getInfoCurso(int userid) async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: 'token');
-
     final url =
         '$_baseUrl${_url}wsfunction=$_wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&userid=$userid';
     try {
       final resp = await http.get(Uri.parse(url));
       if (resp.statusCode < 400) {
-        // print('status code: ${resp.statusCode}');
-
         List<ResponseCursos> responseCursosData = [];
         List<dynamic> mapaRespBody = json.decode(resp.body);
         for (Map<String, dynamic>? element in mapaRespBody) {
           // responseCursosData.add(final curso =  ResponseCursos.fromJson(element));
           final curso = ResponseCursos.fromJson(element!);
-          print('curso id:${curso.id}');
-
           //mandamos a llamar el metodo para obtener la categoria
           // final categoria = await getCategoryById(curso.id!);
           // print('categoria: ${categoria}');

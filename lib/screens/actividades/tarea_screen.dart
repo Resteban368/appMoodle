@@ -205,12 +205,16 @@ class _ContainerBannerState extends State<_ContainerBanner> {
                             final tarea = snapshot.data;
                             return MaterialButton(
                               onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => PDFViewerFromUrl(
-                                              url: tarea[0].src,
-                                            )));
+                                if (tarea.length == 0) {
+                                } else {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              PDFViewerFromUrl(
+                                                url: tarea[0].src,
+                                              )));
+                                }
                               },
                               child: const Text(
                                 'Evidencia de aprendizaje',
@@ -563,96 +567,143 @@ class _EstadoEntrega extends StatelessWidget {
                   ],
                 ),
                 const Divider(),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      child: const Padding(
-                        padding: EdgeInsets.only(top: 2.0, left: 2.0),
-                        child: Text('Archivos de retroalimentación: ',
-                            style: TextStyle(color: AppTheme.primary)),
+                (tarea.lastattempt!.graded == 'false')
+                    ? const SizedBox()
+                    : Row(
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.3,
+                            height: MediaQuery.of(context).size.height * 0.05,
+                            child: const Padding(
+                              padding: EdgeInsets.only(top: 2.0, left: 2.0),
+                              child: Text('Archivos de retroalimentación: ',
+                                  style: TextStyle(color: AppTheme.primary)),
+                            ),
+                          ),
+                          const SizedBox(width: 5),
+                          SingleChildScrollView(
+                            child: Container(
+                                color: Colors.grey[200],
+                                width: MediaQuery.of(context).size.width * 0.6,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.11,
+                                child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ListView.builder(
+                                        itemCount:
+                                            (tarea.feedback?.plugins?.length ==
+                                                    1)
+                                                ? tarea.feedback!.plugins![0]
+                                                    .fileareas![0].files!.length
+                                                : tarea
+                                                        .feedback
+                                                        ?.plugins?[2]
+                                                        .fileareas?[0]
+                                                        .files
+                                                        ?.length ??
+                                                    0,
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return Card(
+                                            elevation: 2,
+                                            child: GestureDetector(
+                                              child: ListTile(
+                                                trailing: Column(
+                                                  children: const [
+                                                    SizedBox(height: 15),
+                                                    Icon(
+                                                      Icons.download,
+                                                      color: AppTheme.primary,
+                                                    ),
+                                                  ],
+                                                ),
+                                                leading: Column(
+                                                  children: const [
+                                                    SizedBox(height: 15),
+                                                    Icon(
+                                                      Icons.insert_drive_file,
+                                                      color: AppTheme.primary,
+                                                      size: 20,
+                                                    ),
+                                                  ],
+                                                ),
+                                                title: (tarea.feedback?.plugins
+                                                            ?.length ==
+                                                        1)
+                                                    ? Text(tarea
+                                                        .feedback!
+                                                        .plugins![0]
+                                                        .fileareas![0]
+                                                        .files![index]
+                                                        .filename!)
+                                                    : Text(
+                                                        tarea
+                                                                .feedback
+                                                                ?.plugins?[2]
+                                                                .fileareas?[0]
+                                                                .files?[index]
+                                                                .filename ??
+                                                            '',
+                                                        style: const TextStyle(
+                                                            fontSize: 12),
+                                                      ),
+                                                subtitle: (tarea.feedback
+                                                            ?.plugins?.length ==
+                                                        1)
+                                                    ? Text(getFecha(tarea
+                                                            .feedback!
+                                                            .plugins![0]
+                                                            .fileareas![0]
+                                                            .files![index]
+                                                            .timemodified ??
+                                                        0))
+                                                    : Text(
+                                                        getFecha(tarea
+                                                                .feedback
+                                                                ?.plugins?[2]
+                                                                .fileareas?[0]
+                                                                .files?[index]
+                                                                .timemodified ??
+                                                            0),
+                                                        style: const TextStyle(
+                                                            fontSize: 11)),
+                                              ),
+                                              onTap: () async {
+                                                const storage =
+                                                    FlutterSecureStorage();
+                                                final token = await storage
+                                                    .read(key: 'token');
+
+                                                if (tarea.feedback?.plugins
+                                                        ?.length ==
+                                                    1) {
+                                                  final url = tarea
+                                                          .feedback
+                                                          ?.plugins?[0]
+                                                          .fileareas?[0]
+                                                          .files?[index]
+                                                          .fileurl ??
+                                                      '';
+                                                  await launch(
+                                                      '$url?token=$token');
+                                                } else {
+                                                  final url = tarea
+                                                          .feedback
+                                                          ?.plugins?[2]
+                                                          .fileareas?[0]
+                                                          .files?[index]
+                                                          .fileurl ??
+                                                      '';
+                                                  await launch(
+                                                      '$url?token=$token');
+                                                }
+                                              },
+                                            ),
+                                          );
+                                        }))),
+                          ),
+                        ],
                       ),
-                    ),
-                    const SizedBox(width: 5),
-                    SingleChildScrollView(
-                      child: Container(
-                          color: Colors.grey[200],
-                          width: MediaQuery.of(context).size.width * 0.6,
-                          height: MediaQuery.of(context).size.height * 0.11,
-                          child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ListView.builder(
-                                  itemCount: tarea.feedback?.plugins?[2]
-                                          .fileareas?[0].files?.length ??
-                                      0,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return Card(
-                                      elevation: 2,
-                                      child: GestureDetector(
-                                        child: ListTile(
-                                          trailing: Column(
-                                            children: const [
-                                              SizedBox(height: 15),
-                                              Icon(
-                                                Icons.download,
-                                                color: AppTheme.primary,
-                                              ),
-                                            ],
-                                          ),
-                                          leading: Column(
-                                            children: const [
-                                              SizedBox(height: 15),
-                                              Icon(
-                                                Icons.insert_drive_file,
-                                                color: AppTheme.primary,
-                                                size: 20,
-                                              ),
-                                            ],
-                                          ),
-                                          title: Text(
-                                            tarea
-                                                    .feedback
-                                                    ?.plugins?[2]
-                                                    .fileareas?[0]
-                                                    .files?[index]
-                                                    .filename ??
-                                                '',
-                                            style:
-                                                const TextStyle(fontSize: 12),
-                                          ),
-                                          subtitle: Text(
-                                              getFecha(tarea
-                                                      .feedback
-                                                      ?.plugins?[2]
-                                                      .fileareas?[0]
-                                                      .files?[index]
-                                                      .timemodified ??
-                                                  0),
-                                              style: const TextStyle(
-                                                  fontSize: 11)),
-                                        ),
-                                        onTap: () async {
-                                          const storage =
-                                              FlutterSecureStorage();
-                                          final token =
-                                              await storage.read(key: 'token');
-                                          final url = tarea
-                                              .feedback
-                                              ?.plugins?[2]
-                                              .fileareas?[0]
-                                              .files?[index]
-                                              .fileurl;
-                                          // print('$url?token=$token');
-                                          await launch('$url?token=$token');
-                                        },
-                                      ),
-                                    );
-                                  }))),
-                    ),
-                  ],
-                ),
               ],
             ),
           ),
