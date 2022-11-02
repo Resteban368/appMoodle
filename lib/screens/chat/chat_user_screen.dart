@@ -32,6 +32,17 @@ class _ChatUserScreenState extends State<ChatUserScreen>
     final chatService = Provider.of<ChatListService>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Ver(widget.chatList.id!,
+                              widget.chatList.members![0].id!)));
+                },
+                icon: const Icon(Icons.picture_as_pdf))
+          ],
           elevation: 1,
           centerTitle: true,
           backgroundColor: AppTheme.primary,
@@ -39,31 +50,22 @@ class _ChatUserScreenState extends State<ChatUserScreen>
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 const SizedBox(height: 5),
-                // Hero(
-                //   tag: widget.chatList.id!,
-                //   child: ClipRRect(
-                //       borderRadius: BorderRadius.circular(50),
-                //       child: FadeInImage(
-                //         placeholder: const AssetImage('images/userDefault.png'),
-                //         image: NetworkImage(
-                //             widget.chatList.members![0].profileimageurl!),
-                //         width: 30,
-                //         height: 30,
-                //         fit: BoxFit.cover,
-                //       )),
-                // ),
-                // const SizedBox(width: 10),
-                // Text(widget.chatList.members![0].fullname!,
-                //     style: const TextStyle(fontSize: 12, color: Colors.white)),
-                IconButton(
-                    onPressed: () {
-//enviar a la vista de Ver
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) => Ver()));
-                    },
-                    icon: const Icon(Icons.more_vert)),
+                Hero(
+                  tag: widget.chatList.id!,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(50),
+                      child: FadeInImage(
+                        placeholder: const AssetImage('images/userDefault.png'),
+                        image: NetworkImage(
+                            widget.chatList.members![0].profileimageurl!),
+                        width: 30,
+                        height: 30,
+                        fit: BoxFit.cover,
+                      )),
+                ),
+                const SizedBox(width: 10),
+                Text(widget.chatList.members![0].fullname!,
+                    style: const TextStyle(fontSize: 12, color: Colors.white)),
               ])),
       body: Column(
         children: [

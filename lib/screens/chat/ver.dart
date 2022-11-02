@@ -9,7 +9,10 @@ import 'package:path_provider/path_provider.dart';
 import 'export_chat.dart';
 
 class Ver extends StatefulWidget {
-  const Ver({Key? key}) : super(key: key);
+  int userid;
+  int conversationid;
+
+  Ver(this.conversationid, this.userid, {Key? key}) : super(key: key);
   @override
   State<Ver> createState() => _VerState();
 }
@@ -41,7 +44,8 @@ class _VerState extends State<Ver> {
   }
 
   void getPdf() async {
-    Uint8List uint8list = await generateDocument(3, 6);
+    Uint8List uint8list =
+        await generateDocument(widget.userid, widget.conversationid);
     Directory output = await getTemporaryDirectory();
     file = File(output.path + "/example.pdf");
     setState(() {
