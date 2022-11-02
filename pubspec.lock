@@ -294,7 +294,7 @@ packages:
     source: hosted
     version: "0.5.0"
   flutter_pdfview:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_pdfview
       url: "https://pub.dartlang.org"

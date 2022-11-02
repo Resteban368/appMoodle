@@ -55,6 +55,7 @@ dependencies:
   animated_floating_buttons: ^0.0.2
   social_media_flutter: ^0.0.2
   pdf: ^3.8.4
+  flutter_pdfview: ^1.2.5
 
 dev_dependencies:
   flutter_lints: ^2.0.0

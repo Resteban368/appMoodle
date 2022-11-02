@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:campus_virtual/screens/chat/ver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
@@ -38,22 +39,31 @@ class _ChatUserScreenState extends State<ChatUserScreen>
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 const SizedBox(height: 5),
-                Hero(
-                  tag: widget.chatList.id!,
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: FadeInImage(
-                        placeholder: const AssetImage('images/userDefault.png'),
-                        image: NetworkImage(
-                            widget.chatList.members![0].profileimageurl!),
-                        width: 30,
-                        height: 30,
-                        fit: BoxFit.cover,
-                      )),
-                ),
-                const SizedBox(width: 10),
-                Text(widget.chatList.members![0].fullname!,
-                    style: const TextStyle(fontSize: 12, color: Colors.white)),
+                // Hero(
+                //   tag: widget.chatList.id!,
+                //   child: ClipRRect(
+                //       borderRadius: BorderRadius.circular(50),
+                //       child: FadeInImage(
+                //         placeholder: const AssetImage('images/userDefault.png'),
+                //         image: NetworkImage(
+                //             widget.chatList.members![0].profileimageurl!),
+                //         width: 30,
+                //         height: 30,
+                //         fit: BoxFit.cover,
+                //       )),
+                // ),
+                // const SizedBox(width: 10),
+                // Text(widget.chatList.members![0].fullname!,
+                //     style: const TextStyle(fontSize: 12, color: Colors.white)),
+                IconButton(
+                    onPressed: () {
+//enviar a la vista de Ver
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => Ver()));
+                    },
+                    icon: const Icon(Icons.more_vert)),
               ])),
       body: Column(
         children: [
