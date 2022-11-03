@@ -330,15 +330,21 @@ class _ContenedorListChatState extends State<_ContenedorListChat> {
                               child: FadeInImage(
                                 placeholder:
                                     const AssetImage('images/userDefault.png'),
-                                image: NetworkImage(
-                                    chatList[i].members[0].profileimageurl),
+                                image: (chatList[i].imageurl == null)
+                                    ? NetworkImage(
+                                        chatList[i].members[0].profileimageurl)
+                                    : NetworkImage(chatList[i].imageurl),
                                 width: 60,
                                 height: 60,
                                 fit: BoxFit.cover,
                               )),
                         ),
-                        title: Text(chatList[i].members[0].fullname!,
-                            style: const TextStyle(color: AppTheme.primary)),
+                        title: (chatList[i].name.isEmpty)
+                            ? Text(chatList[i].members[0].fullname!,
+                                style: const TextStyle(color: AppTheme.primary))
+                            : Text(chatList[i].name!,
+                                style:
+                                    const TextStyle(color: AppTheme.primary)),
                         subtitle: Column(
                           children: [
                             if (chatList[i].messages.length > 0)

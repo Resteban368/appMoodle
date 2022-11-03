@@ -380,7 +380,8 @@ class _DetalleNotasCursoScreenState extends State<DetalleNotasCursoScreen> {
                                 ),
                               ),
                             ],
-                            rows: notasItems[0].gradeitems.map<DataRow>((item) {
+                            rows:
+                                notasItems?[0].gradeitems.map<DataRow>((item) {
                               return DataRow(
                                 selected: true,
                                 cells: <DataCell>[

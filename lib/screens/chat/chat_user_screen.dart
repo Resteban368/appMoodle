@@ -4,6 +4,7 @@ import 'package:campus_virtual/screens/chat/ver-pdf-a-exportar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/models.dart';
@@ -47,6 +48,7 @@ class _ChatUserScreenState extends State<ChatUserScreen>
   Widget build(BuildContext context) {
     final chatService = Provider.of<ChatListService>(context, listen: false);
     print('chatList: ${widget.chatList.id}');
+    final nombre = widget.chatList.name;
     return Scaffold(
       appBar: AppBar(
           actions: [
@@ -63,27 +65,35 @@ class _ChatUserScreenState extends State<ChatUserScreen>
           elevation: 1,
           centerTitle: true,
           backgroundColor: AppTheme.primary,
-          title: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const SizedBox(height: 5),
-                Hero(
-                  tag: widget.chatList.id!,
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: FadeInImage(
-                        placeholder: const AssetImage('images/userDefault.png'),
-                        image: NetworkImage(
-                            widget.chatList.members![0].profileimageurl!),
-                        width: 30,
-                        height: 30,
-                        fit: BoxFit.cover,
-                      )),
-                ),
-                const SizedBox(width: 10),
-                Text(widget.chatList.members![0].fullname!,
-                    style: const TextStyle(fontSize: 12, color: Colors.white)),
-              ])),
+          title: Column(mainAxisAlignment: MainAxisAlignment.center, children: <
+              Widget>[
+            const SizedBox(height: 5),
+            Hero(
+              tag: widget.chatList.id!,
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: FadeInImage(
+                    placeholder: const AssetImage('images/userDefault.png'),
+                    image: NetworkImage(
+                        widget.chatList.members![0].profileimageurl!),
+                    width: 30,
+                    height: 30,
+                    fit: BoxFit.cover,
+                  )),
+            ),
+            const SizedBox(width: 10),
+            Column(
+              children: [
+                if (nombre.toString().isEmpty)
+                  Text(widget.chatList.members![0].fullname!,
+                      style: const TextStyle(fontSize: 12, color: Colors.white))
+                else
+                  Text(widget.chatList.name!,
+                      style:
+                          const TextStyle(fontSize: 12, color: Colors.white)),
+              ],
+            )
+          ])),
       body: Column(
         children: [
           Flexible(
@@ -91,15 +101,16 @@ class _ChatUserScreenState extends State<ChatUserScreen>
                   future: chatService.getMessages(widget.chatList.id!, userid2),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
+                      return Center(
+                        child: Lottie.network(
+                            'https://assets2.lottiefiles.com/packages/lf20_poqmycwy.json'),
                       );
                     } else {
                       final mensajes = snapshot.data;
                       //agregamos la lista de mensajes con snapshot.data
                       return ListView.builder(
                         physics: const BouncingScrollPhysics(),
-                        itemCount: mensajes.messages.length,
+                        itemCount: mensajes?.messages.length ?? 0,
                         itemBuilder: (_, int i) {
                           // _messages.insert(0, mensajes.messages[i]!);
 
@@ -108,8 +119,7 @@ class _ChatUserScreenState extends State<ChatUserScreen>
                             child: Column(
                               children: [
                                 const SizedBox(height: 10),
-                                if (mensajes.messages[i].useridfrom ==
-                                    mensajes.members![0].id)
+                                if (mensajes.messages[i].useridfrom != userid2)
                                   Container(
                                     width:
                                         MediaQuery.of(context).size.width * 0.9,
@@ -131,11 +141,26 @@ class _ChatUserScreenState extends State<ChatUserScreen>
                                                 mensajes.members[0]
                                                     .profileimageurl!),
                                           ),
-                                          title: Text(
-                                            mensajes.members[0].fullname!,
-                                            style: const TextStyle(
-                                                fontSize: 10,
-                                                color: AppTheme.primary),
+                                          title: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              for (var item = 0;
+                                                  item <
+                                                      mensajes.members.length;
+                                                  item++)
+                                                if (mensajes.members[item].id ==
+                                                    mensajes
+                                                        .messages[i].useridfrom)
+                                                  Text(
+                                                    mensajes.members[item]
+                                                        .fullname!,
+                                                    style: const TextStyle(
+                                                        fontSize: 10,
+                                                        color:
+                                                            AppTheme.primary),
+                                                  ),
+                                            ],
                                           ),
                                           subtitle: Html(
                                             data: mensajes.messages[i].text!,

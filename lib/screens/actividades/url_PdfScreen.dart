@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
+import 'package:lottie/lottie.dart';
 
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -61,7 +62,11 @@ class PDFViewerFromUrl extends StatelessWidget {
     return Scaffold(
       body: const PDF().fromUrl(
         url,
-        placeholder: (double progress) => Center(child: Text('$progress %')),
+        // placeholder: (double progress) => Center(child: Text('$progress %')),
+        placeholder: (double progress) => Center(
+          child: Lottie.network(
+              'https://assets2.lottiefiles.com/packages/lf20_poqmycwy.json'),
+        ),
         errorWidget: (dynamic error) => Center(child: Text(error.toString())),
       ),
     );
