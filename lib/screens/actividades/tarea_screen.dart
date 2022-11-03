@@ -1,6 +1,6 @@
 // ignore_for_file: must_be_immutable, unused_element, unrelated_type_equality_checks, deprecated_member_use, prefer_const_constructors
 
-import 'package:campus_virtual/screens/actividades/url_screen.dart';
+import 'package:campus_virtual/screens/actividades/url_PdfScreen.dart';
 import 'package:campus_virtual/services/tarea_service.dart';
 import 'package:campus_virtual/utils/utils.dart';
 import 'package:flutter/material.dart';
