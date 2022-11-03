@@ -10,6 +10,7 @@ class InicioService extends ChangeNotifier {
   InicioService() {
     readUserId();
     readUserName();
+    readFullName();
   }
 
   Future<String> readUserId() async {
@@ -33,5 +34,17 @@ class InicioService extends ChangeNotifier {
     names = {'username': userName};
     print('Leyendo el Username: $userName');
     return names['username'];
+  }
+
+  //funcion para leer el nombre del usuario
+  Future<String> readFullName() async {
+    Map<String, dynamic> names;
+    final fullName = await storage.read(key: 'fullname') ?? '';
+    if (fullName == '') {
+      return '';
+    }
+    names = {'fullname': fullName};
+    print('Leyendo el Fullname: $fullName');
+    return names['fullname'];
   }
 }

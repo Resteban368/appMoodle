@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   connectivity_plus_windows
   flutter_secure_storage_windows
+  printing
   url_launcher_windows
 )
 

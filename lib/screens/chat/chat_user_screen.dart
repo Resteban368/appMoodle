@@ -1,8 +1,9 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:campus_virtual/screens/chat/ver.dart';
+import 'package:campus_virtual/screens/chat/ver-pdf-a-exportar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/models.dart';
@@ -13,7 +14,6 @@ import '../../utils/utils.dart';
 class ChatUserScreen extends StatefulWidget {
   Conversation chatList;
   ChatUserScreen(this.chatList, {Key? key}) : super(key: key);
-
   @override
   State<ChatUserScreen> createState() => _ChatUserScreenState();
 }
@@ -24,12 +24,29 @@ class _ChatUserScreenState extends State<ChatUserScreen>
   final _focusNode = FocusNode();
   bool _estaEscribiendo = false;
 
-//arreglo de mensajes
-  // List<ChatMessage> _messages = [];
-  // Conversation chatList;
+  late int userid2 = 0;
+  late String fullname2 = '';
+  @override
+  void initState() {
+    super.initState();
+    funcion();
+  }
+
+  Future<int> funcion() async {
+    const storage = FlutterSecureStorage();
+    final id = await storage.read(key: 'id');
+    final fullname = await storage.read(key: 'fullname');
+    final userid = int.parse(id!);
+    fullname2 = fullname!;
+    userid2 = userid;
+    setState(() {});
+    return userid;
+  }
+
   @override
   Widget build(BuildContext context) {
     final chatService = Provider.of<ChatListService>(context, listen: false);
+    print('chatList: ${widget.chatList.id}');
     return Scaffold(
       appBar: AppBar(
           actions: [
@@ -38,8 +55,8 @@ class _ChatUserScreenState extends State<ChatUserScreen>
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Ver(widget.chatList.id!,
-                              widget.chatList.members![0].id!)));
+                          builder: (context) =>
+                              Ver(widget.chatList.id!, userid2, fullname2)));
                 },
                 icon: const Icon(Icons.picture_as_pdf))
           ],
@@ -71,7 +88,7 @@ class _ChatUserScreenState extends State<ChatUserScreen>
         children: [
           Flexible(
               child: FutureBuilder(
-                  future: chatService.getMessages(6, 3),
+                  future: chatService.getMessages(widget.chatList.id!, userid2),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(

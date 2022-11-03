@@ -41,6 +41,9 @@ class InfoSiteService extends ChangeNotifier {
         //guardamos el nombre el storage scure
         await storage.write(key: 'username', value: decodeData.username!);
 
+        //guardamos el fullname el storage scure
+        await storage.write(key: 'fullname', value: decodeData.fullname!);
+
         notifyListeners();
       }
     } catch (e) {

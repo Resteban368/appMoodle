@@ -42,7 +42,7 @@ class NoticiasScreen extends StatelessWidget {
             children: const [
               WarningWidgetChangeNotifier(),
               SizedBox(height: 10),
-              CardNoticias(),
+              // CardNoticias(),
               SizedBox(height: 20),
               Text(
                 'OFERTA ACADÉMICA',

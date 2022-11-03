@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, deprecated_member_use, must_be_immutable, curly_braces_in_flow_control_structures, prefer_interpolation_to_compose_strings
 
 import 'package:animate_do/animate_do.dart';
-import 'package:campus_virtual/screens/actividades/url_screen.dart';
+import 'package:campus_virtual/screens/actividades/url_PdfScreen.dart';
 import 'package:campus_virtual/services/sevices.dart';
 import 'package:campus_virtual/widgets/icon.dart';
 import 'package:flutter/material.dart';

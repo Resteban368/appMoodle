@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,14 +10,17 @@ import 'export_chat.dart';
 class Ver extends StatefulWidget {
   int userid;
   int conversationid;
+  String fullname;
 
-  Ver(this.conversationid, this.userid, {Key? key}) : super(key: key);
+  Ver(this.conversationid, this.userid, this.fullname, {Key? key})
+      : super(key: key);
   @override
   State<Ver> createState() => _VerState();
 }
 
 class _VerState extends State<Ver> {
   File? file;
+  Uint8List archivoPdf = Uint8List(0);
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +46,13 @@ class _VerState extends State<Ver> {
   }
 
   void getPdf() async {
-    Uint8List uint8list =
-        await generateDocument(widget.userid, widget.conversationid);
+    Uint8List uint8list = await generateDocument(
+        widget.userid, widget.conversationid, widget.fullname);
     Directory output = await getTemporaryDirectory();
     file = File(output.path + "/example.pdf");
     setState(() {
       file?.writeAsBytes(uint8list);
-      print(file?.path);
+      print('direccionnnnn: ${file?.path}');
     });
   }
 
