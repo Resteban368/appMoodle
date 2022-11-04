@@ -97,35 +97,58 @@ class _CardContactosState extends State<CardContactos> {
                     itemBuilder: (BuildContext context, int index) {
                       return Padding(
                         padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: SizedBox(
-                          width: 100,
-                          child: Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {},
-                                child: ClipRRect(
-                                  //color del borde de la imagen
-                                  borderRadius: BorderRadius.circular(50),
-                                  child: FadeInImage(
-                                    placeholder: const AssetImage(
-                                        'images/userDefault.png'),
-                                    image: NetworkImage(
-                                        contacto[index].profileimageurl),
-                                    width: 60,
-                                    height: 60,
-                                    fit: BoxFit.cover,
+                        child: Stack(children: [
+                          SizedBox(
+                            width: 100,
+                            child: Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {},
+                                  child: ClipRRect(
+                                    //color del borde de la imagen
+                                    borderRadius: BorderRadius.circular(50),
+                                    child: FadeInImage(
+                                      placeholder: const AssetImage(
+                                          'images/userDefault.png'),
+                                      image: NetworkImage(
+                                          contacto[index].profileimageurl),
+                                      width: 60,
+                                      height: 60,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Text(
-                                contacto[index].fullname,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(fontSize: 12),
-                              ),
-                            ],
+                                Text(
+                                  contacto[index].fullname,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
+                          Positioned(
+                            top: 0,
+                            right: 22,
+                            child: (contacto[index].isonline == false)
+                                ? Container(
+                                    width: 12,
+                                    height: 12,
+                                    decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                  )
+                                : Container(
+                                    width: 12,
+                                    height: 12,
+                                    decoration: BoxDecoration(
+                                      color: Colors.green,
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                  ),
+                          ),
+                        ]),
                       );
                     },
                   );

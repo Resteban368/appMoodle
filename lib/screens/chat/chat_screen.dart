@@ -321,76 +321,124 @@ class _ContenedorListChatState extends State<_ContenedorListChat> {
                 itemCount: chatList.length,
                 itemBuilder: (BuildContext context, int i) {
                   return ElasticInDown(
-                    child: Card(
-                      child: ListTile(
-                        leading: Hero(
-                          tag: chatList[i].id,
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(50),
-                              child: FadeInImage(
-                                placeholder:
-                                    const AssetImage('images/userDefault.png'),
-                                image: (chatList[i].imageurl == null)
-                                    ? NetworkImage(
-                                        chatList[i].members[0].profileimageurl)
-                                    : NetworkImage(chatList[i].imageurl),
-                                width: 60,
-                                height: 60,
-                                fit: BoxFit.cover,
-                              )),
-                        ),
-                        title: (chatList[i].name.isEmpty)
-                            ? Text(chatList[i].members[0].fullname!,
-                                style: const TextStyle(color: AppTheme.primary))
-                            : Text(chatList[i].name!,
-                                style:
-                                    const TextStyle(color: AppTheme.primary)),
-                        subtitle: Column(
-                          children: [
-                            if (chatList[i].messages.length > 0)
-                              Html(
-                                data: chatList[i].messages[0].text!,
-                                style: {
-                                  "html": Style(
-                                    fontSize: const FontSize(14.0),
-                                  ),
-                                },
-                              )
-                            else
-                              const Text(''),
-                          ],
-                        ),
-                        trailing: Column(
-                          children: [
-                            const SizedBox(
-                              height: 20,
+                    child: Stack(children: [
+                      Card(
+                        child: Stack(children: [
+                          ListTile(
+                            leading: Hero(
+                              tag: chatList[i].id,
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: FadeInImage(
+                                    placeholder: const AssetImage(
+                                        'images/userDefault.png'),
+                                    image: (chatList[i].imageurl == null)
+                                        ? NetworkImage(chatList[i]
+                                            .members[0]
+                                            .profileimageurl)
+                                        : NetworkImage(chatList[i].imageurl),
+                                    width: 60,
+                                    height: 60,
+                                    fit: BoxFit.cover,
+                                  )),
                             ),
-                            if (chatList[i].messages.length > 0)
-                              Column(
-                                children: [
-                                  Text(
-                                      getFecha(
-                                          chatList[i].messages[0].timecreated),
-                                      style: const TextStyle(fontSize: 9)),
-                                  Text(
-                                      getHora(
-                                          chatList[i].messages[0].timecreated),
-                                      style: const TextStyle()),
-                                ],
-                              )
-                            else
-                              const Text(''),
-                          ],
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      ChatUserScreen(chatList[i])));
-                        },
+                            title: (chatList[i].name.isEmpty)
+                                ? Text(chatList[i].members[0].fullname!,
+                                    style: const TextStyle(
+                                        color: AppTheme.primary))
+                                : Text(chatList[i].name!,
+                                    style: const TextStyle(
+                                        color: AppTheme.primary)),
+                            subtitle: Column(
+                              children: [
+                                if (chatList[i].messages.length > 0)
+                                  Html(
+                                    data: chatList[i].messages[0].text!,
+                                    style: {
+                                      "html": Style(
+                                        fontSize: const FontSize(14.0),
+                                      ),
+                                    },
+                                  )
+                                else
+                                  const Text(''),
+                              ],
+                            ),
+                            trailing: Column(
+                              children: [
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                if (chatList[i].messages.length > 0)
+                                  Column(
+                                    children: [
+                                      Text(
+                                          getFecha(chatList[i]
+                                              .messages[0]
+                                              .timecreated),
+                                          style: const TextStyle(fontSize: 9)),
+                                      Text(
+                                          getHora(chatList[i]
+                                              .messages[0]
+                                              .timecreated),
+                                          style: const TextStyle(fontSize: 10)),
+                                    ],
+                                  )
+                                else
+                                  const Text(''),
+                              ],
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          ChatUserScreen(chatList[i])));
+                            },
+                          ),
+                          Positioned(
+                            top: 5,
+                            right: 5,
+                            child: (chatList.length > 0)
+                                ? (chatList[i].isread == false)
+                                    ? Container(
+                                        width: 12,
+                                        height: 12,
+                                        decoration: BoxDecoration(
+                                          color: AppTheme.primary,
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                        ),
+                                      )
+                                    : const Text('')
+                                : const Text(''),
+                          ),
+                        ]),
                       ),
-                    ),
+                      Positioned(
+                        top: 10,
+                        right: MediaQuery.of(context).size.width * 0.82,
+                        child: (chatList[i].messages.length > 0)
+                            ? (chatList[i].members[0].isonline == true)
+                                ? Container(
+                                    width: 12,
+                                    height: 12,
+                                    decoration: BoxDecoration(
+                                      color: Colors.green,
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                  )
+                                : Container(
+                                    width: 12,
+                                    height: 12,
+                                    decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                  )
+                            : const Text(''),
+                      ),
+                    ]),
                   );
                 },
               );
