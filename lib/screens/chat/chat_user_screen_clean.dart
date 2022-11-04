@@ -306,7 +306,7 @@ class ChatNuevo extends StatelessWidget {
           elevation: 1,
           centerTitle: true,
           backgroundColor: AppTheme.primary,
-          title: Text('chat')),
+          title: const Text('chat')),
       body: Container(
         child: const Text('Chat nuevo'),
       ),
