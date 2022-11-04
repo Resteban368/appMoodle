@@ -14,6 +14,8 @@ class ContactosService extends ChangeNotifier {
   final String _url = '/webservice/rest/server.php?';
   final String _moodlewsrestformat = 'json';
 
+  //lista de contactos
+
   Future<List<ResponseContacto>?> getContactos(int userid) async {
     const String _wsfunction = 'core_message_get_user_contacts';
     const storage = FlutterSecureStorage();

@@ -2,6 +2,8 @@
 //
 //     final tareaFechas = tareaFechasFromMap(jsonString);
 
+// ignore_for_file: file_names
+
 import 'dart:convert';
 
 class TareaFechas {

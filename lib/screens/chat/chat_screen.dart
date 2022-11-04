@@ -69,7 +69,7 @@ class ChatScreen extends StatelessWidget {
             const SizedBox(height: 15),
             const CardContactos(),
             const SizedBox(height: 10),
-            const _ContenedorBotones(),
+            // const _ContenedorBotones(),
             const SizedBox(height: 10),
             const _ContenedorListChat(),
           ],
@@ -332,11 +332,19 @@ class _ContenedorListChatState extends State<_ContenedorListChat> {
                                   child: FadeInImage(
                                     placeholder: const AssetImage(
                                         'images/userDefault.png'),
-                                    image: (chatList[i].imageurl == null)
-                                        ? NetworkImage(chatList[i]
+                                    image:
+
+                                        // (chatList[i].imageurl == null ||
+                                        //         chatList[i].imageurl.isEmpty)
+
+                                        //     ?
+                                        NetworkImage(chatList[i]
                                             .members[0]
                                             .profileimageurl)
-                                        : NetworkImage(chatList[i].imageurl),
+                                    // : NetworkImage(
+                                    //     '${chatList[i].imageurl}'),
+
+                                    ,
                                     width: 60,
                                     height: 60,
                                     fit: BoxFit.cover,
