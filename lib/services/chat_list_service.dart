@@ -92,26 +92,21 @@ class ChatListService extends ChangeNotifier {
     return null;
   }
 
-// // Todo: exportar mensajes a un pdf
-//   Future<ChatResponse?> exportPdf(int conversationid, int userid) async {
-//     const String wsfunction = 'core_message_get_conversation';
-//     const storage = FlutterSecureStorage();
-//     final token = await storage.read(key: 'token');
-//     final url2 =
-//         '$_baseUrl${_url}wsfunction=$wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&conversationid=$conversationid&userid=$userid&includecontactrequests=1&includeprivacyinfo=1';
-//     try {
-//       final response = await http.get(Uri.parse(url2));
-//       if (response.statusCode < 400) {
-//         final ChatResponse decodeData = ChatResponse.fromJson(response.body);
-//         messages = decodeData;
-//         print(messages.messages?[0].text);
-//         notifyListeners();
-//         return messages;
-//       }
-//     } catch (e) {
-//       print('error en el export chat-service: $e');
-//     }
-//     notifyListeners();
-//     return null;
-//   }
+//leer todos los mensjes de una conversacion
+  Future<void> conversacionLeida(int userid, int conversationid) async {
+    String wsfunction = 'core_message_mark_all_conversation_messages_as_read';
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: 'token');
+    final url =
+        '$_baseUrl${_url}wsfunction=$wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&userid=$userid&conversationid=$conversationid';
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode < 400) {
+        notifyListeners();
+      }
+    } catch (e, s) {
+      print('error en el service de info site: $e');
+      print(s);
+    }
+  }
 }

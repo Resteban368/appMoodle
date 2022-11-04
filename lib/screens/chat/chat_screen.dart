@@ -388,7 +388,10 @@ class _ContenedorListChatState extends State<_ContenedorListChat> {
                                   const Text(''),
                               ],
                             ),
-                            onTap: () {
+                            onTap: () async {
+                              await chatService.conversacionLeida(
+                                  userid2, chatList[i].id);
+
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
