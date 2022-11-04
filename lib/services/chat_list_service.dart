@@ -92,6 +92,45 @@ class ChatListService extends ChangeNotifier {
     return null;
   }
 
+//funcion para enviar un mensajes instantaneo
+  Future<List<ChatNew>?> addNewMessage(
+      int touserid, String text, int clientmsgid) async {
+    const String wsfunction = 'core_message_send_instant_messages';
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: 'token');
+
+    var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
+    var request = http.Request(
+        'POST',
+        Uri.parse(
+            '$_baseUrl${_url}wsfunction=$wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token'));
+
+    request.bodyFields = {
+      'messages[0][touserid]': touserid.toString(),
+      'messages[0][text]': text,
+      'messages[0][textformat]': '1',
+      'messages[0][clientmsgid]': clientmsgid.toString()
+    };
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode < 400) {
+      final chat = await response.stream.bytesToString();
+      List<dynamic> mapaRespBody = json.decode(chat);
+      List<ChatNew> chatNew = [];
+      for (var element in mapaRespBody) {
+        chatNew.add(ChatNew.fromMap(element));
+      }
+      notifyListeners();
+      return chatNew;
+    } else {
+      print(response.reasonPhrase);
+    }
+
+    return null;
+  }
+
 //leer todos los mensjes de una conversacion
   Future<void> conversacionLeida(int userid, int conversationid) async {
     String wsfunction = 'core_message_mark_all_conversation_messages_as_read';

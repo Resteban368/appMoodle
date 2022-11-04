@@ -1,3 +1,5 @@
+export 'package:campus_virtual/models/chatNew.dart';
+
 export 'package:campus_virtual/models/tarea/TareaInfoFechas.dart';
 
 export 'package:campus_virtual/models/notas/notasCursoEstudiante.dart';

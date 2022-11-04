@@ -27,6 +27,8 @@ class _ChatUserScreenState extends State<ChatUserScreen>
 
   late int userid2 = 0;
   late String fullname2 = '';
+
+  late int conversacionId = 0;
   @override
   void initState() {
     super.initState();
@@ -40,6 +42,7 @@ class _ChatUserScreenState extends State<ChatUserScreen>
     final userid = int.parse(id!);
     fullname2 = fullname!;
     userid2 = userid;
+    conversacionId = widget.chatList.id!;
     setState(() {});
     return userid;
   }
@@ -287,7 +290,7 @@ class _ChatUserScreenState extends State<ChatUserScreen>
   _handleSubmit(String texto) async {
     if (texto.isEmpty) return;
     final chatService = Provider.of<ChatListService>(context, listen: false);
-    await chatService.addMessage(6, _textController.text);
+    await chatService.addMessage(conversacionId, _textController.text);
     _textController.clear();
     _focusNode.requestFocus();
     setState(() {

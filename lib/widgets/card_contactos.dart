@@ -136,9 +136,10 @@ class _CardContactosState extends State<CardContactos> {
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          ChatNuevo()));
+                                                  builder: (BuildContext
+                                                          context) =>
+                                                      ChatUserScreen2(
+                                                          contacto[index])));
                                         }
                                       }
                                     }
