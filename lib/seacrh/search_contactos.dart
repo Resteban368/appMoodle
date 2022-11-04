@@ -2,6 +2,7 @@
 
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 
 import '../services/sevices.dart';
@@ -128,10 +129,12 @@ class ContactosDeBusqueda extends SearchDelegate {
                             ),
                             onPressed: () async {
                               //cerrar el delete
-                              final peticion =
-                                  await contactosService.addSolicitud(
-                                      siteInfo.infoSite.userid!,
-                                      contactos[index].id);
+                              const storage = FlutterSecureStorage();
+                              final id = await storage.read(key: 'id');
+                              final userid = int.parse(id!);
+
+                              final peticion = await contactosService
+                                  .addSolicitud(userid, contactos[index].id);
                               if (peticion == '') {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(

@@ -1,8 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../screens/chat/chat_user_screen.dart';
+import '../screens/chat/chat_user_screen_clean.dart';
 import '../seacrh/search_contactos.dart';
 import '../services/sevices.dart';
 import '../theme/theme.dart';
@@ -57,7 +61,10 @@ class _CardContactosState extends State<CardContactos> {
                   child: loaderCardList(),
                 );
               } else {
-                if (contacto.length == null || contacto.length == 0) {
+                //guardamos todos los contactos en una lista
+                // final contactos = contacto['contactos'];
+
+                if (contacto!.length == null || contacto!.length == 0) {
                   return Center(
                     child: SizedBox(
                         width: double.infinity,
@@ -95,37 +102,95 @@ class _CardContactosState extends State<CardContactos> {
                     scrollDirection: Axis.horizontal,
                     itemCount: contacto!.length,
                     itemBuilder: (BuildContext context, int index) {
+                      //guardamos todos los contactos en una lista
+
                       return Padding(
                         padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: SizedBox(
-                          width: 100,
-                          child: Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {},
-                                child: ClipRRect(
-                                  //color del borde de la imagen
-                                  borderRadius: BorderRadius.circular(50),
-                                  child: FadeInImage(
-                                    placeholder: const AssetImage(
-                                        'images/userDefault.png'),
-                                    image: NetworkImage(
-                                        contacto[index].profileimageurl),
-                                    width: 60,
-                                    height: 60,
-                                    fit: BoxFit.cover,
+                        child: Stack(children: [
+                          SizedBox(
+                            width: 100,
+                            child: Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+//todo: verificar nuevo proceso para optimizar
+                                    final chatService =
+                                        Provider.of<ChatListService>(context,
+                                            listen: false);
+                                    final chat =
+                                        await chatService.getChatList(userid2);
+                                    for (var i = 0; i < chat!.length; i++) {
+                                      if (contacto[index].id ==
+                                          chat[i].members![0].id) {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (BuildContext
+                                                        context) =>
+                                                    ChatUserScreen(chat[i])));
+                                        //terminar el for
+                                        break;
+                                      } else {
+                                        //terminar el for
+                                        if (i == chat.length - 1) {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          ChatNuevo()));
+                                        }
+                                      }
+                                    }
+                                  },
+
+                                  // print('chat length');
+                                  // print(chat!.length);
+                                  child: ClipRRect(
+                                    //color del borde de la imagen
+                                    borderRadius: BorderRadius.circular(50),
+                                    child: FadeInImage(
+                                      placeholder: const AssetImage(
+                                          'images/userDefault.png'),
+                                      image: NetworkImage(
+                                          contacto[index].profileimageurl),
+                                      width: 60,
+                                      height: 60,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Text(
-                                contacto[index].fullname,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(fontSize: 12),
-                              ),
-                            ],
+                                Text(
+                                  contacto[index].fullname,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
+                          Positioned(
+                            top: 0,
+                            right: 22,
+                            child: (contacto[index].isonline == false)
+                                ? Container(
+                                    width: 12,
+                                    height: 12,
+                                    decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                  )
+                                : Container(
+                                    width: 12,
+                                    height: 12,
+                                    decoration: BoxDecoration(
+                                      color: Colors.green,
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                  ),
+                          ),
+                        ]),
                       );
                     },
                   );

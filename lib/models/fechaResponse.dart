@@ -2,6 +2,8 @@
 //
 //     final fecahResponse = fecahResponseFromMap(jsonString);
 
+// ignore_for_file: file_names
+
 import 'dart:convert';
 
 class FecahResponse {
