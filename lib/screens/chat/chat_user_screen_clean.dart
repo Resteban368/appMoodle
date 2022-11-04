@@ -48,7 +48,7 @@
 //     final chatService = Provider.of<ChatListService>(context, listen: false);
 //     return Scaffold(
 //       appBar: AppBar(
-         
+
 //           elevation: 1,
 //           centerTitle: true,
 //           backgroundColor: AppTheme.primary,
@@ -291,3 +291,25 @@
 //     });
 //   }
 // }
+
+import 'package:flutter/material.dart';
+
+import '../../theme/app_bar_theme.dart';
+
+class ChatNuevo extends StatelessWidget {
+  const ChatNuevo({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+          elevation: 1,
+          centerTitle: true,
+          backgroundColor: AppTheme.primary,
+          title: Text('chat')),
+      body: Container(
+        child: const Text('Chat nuevo'),
+      ),
+    );
+  }
+}

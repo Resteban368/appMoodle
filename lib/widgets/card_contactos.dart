@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../screens/chat/chat_user_screen.dart';
+import '../screens/chat/chat_user_screen_clean.dart';
 import '../seacrh/search_contactos.dart';
 import '../services/sevices.dart';
 import '../theme/theme.dart';
@@ -131,6 +132,14 @@ class _CardContactosState extends State<CardContactos> {
                                         break;
                                       } else {
                                         //terminar el for
+                                        if (i == chat.length - 1) {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          ChatNuevo()));
+                                        }
                                       }
                                     }
                                   },
