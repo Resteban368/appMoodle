@@ -307,9 +307,7 @@ class ChatNuevo extends StatelessWidget {
           centerTitle: true,
           backgroundColor: AppTheme.primary,
           title: const Text('chat')),
-      body: Container(
-        child: const Text('Chat nuevo'),
-      ),
+      body: const Text('Chat nuevo'),
     );
   }
 }
