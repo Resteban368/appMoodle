@@ -1,9 +1,12 @@
 import 'dart:io';
 
+import 'package:campus_virtual/theme/app_bar_theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
+import 'package:printing/printing.dart';
 
 import 'export_chat.dart';
 
@@ -27,6 +30,7 @@ class _VerState extends State<Ver> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Reporte de chat'),
+        backgroundColor: AppTheme.primary,
       ),
       body: Center(
           child: file != null

@@ -49,34 +49,75 @@ Future<Uint8List> generateDocument(
       },
       build: (pw.Context context) => <pw.Widget>[
             pw.Header(
-                level: 0,
+                level: 2,
                 child: pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                     children: <pw.Widget>[
                       pw.Text('Reporte de conversación', textScaleFactor: 2),
                       pw.PdfLogo()
                     ])),
-            pw.Paragraph(text: 'Fecha: ${DateTime.now()}'),
-            pw.Paragraph(text: 'Número de mensajes: $numero'),
-            pw.Paragraph(text: 'Nombre del usuario: $fullname'),
-            pw.Paragraph(text: 'Id del usuario: $userid'),
-            pw.Paragraph(
-                text:
-                    'Nombre usuario destinatario: ${messages.members?[0].fullname}'),
-            pw.Paragraph(
-                text:
-                    'id del usuario destinatario: ${messages.members?[0].id}'),
+            //tabla con los datos del usuario
+            pw.Table.fromTextArray(context: context, data: <List<String>>[
+              <String>[
+                'Nombre dl Usuario',
+                'Fecha del Reporte',
+                'Cantidad de mensajes',
+                'Id del Usuario'
+              ],
+              <String>[
+                fullname,
+                '${DateTime.now()}',
+                '$numero',
+                '$userid',
+              ],
+            ]),
+
+            //tabla con los datos de los participantes
+            pw.Table.fromTextArray(context: context, data: <List<String>>[
+              <String>[
+                'Nombre de los Usuarios',
+                'Id ',
+              ],
+              for (var i = 0; i < messages.members!.length; i++)
+                <String>[
+                  '${messages.members?[i].fullname}',
+                  '${messages.members?[i].id}',
+                ],
+            ]),
+
             pw.Paragraph(text: ''),
-            pw.Paragraph(text: ''),
-            pw.Paragraph(text: 'Mensajes:'),
-            for (var i = 0; i < numero; i++)
-              pw.Paragraph(
-                  text:
-                      'User id: ${messages.messages?[i].useridfrom} -  ${messages.messages?[i].text} - ${getData(messages.messages![i].timecreated!)}'),
+            pw.Paragraph(text: 'Mensajes'),
+
+            //TABLA CON LOS MENSAJES CON TAMANIO ESPECIFICO
+            pw.Table.fromTextArray(
+                context: context,
+                data: <List<String>>[
+                  <String>[
+                    'id del Usuario',
+                    'Mensaje',
+                    'Fecha',
+                  ],
+                  for (var i = 0; i < messages.messages!.length; i++)
+                    <String>[
+                      '${messages.messages?[i].useridfrom}',
+                      '${messages.messages?[i].text}',
+                      (getData(messages.messages![i].timecreated!)),
+                    ],
+                ],
+                cellAlignment: pw.Alignment.centerLeft,
+                headerDecoration: const pw.BoxDecoration(
+                    color: PdfColors.grey200,
+                    borderRadius: pw.BorderRadius.all(pw.Radius.circular(2))),
+                //tamaño de las columnas
+                columnWidths: const <int, pw.TableColumnWidth>{
+                  0: pw.FlexColumnWidth(1),
+                  1: pw.FlexColumnWidth(5),
+                  2: pw.FlexColumnWidth(2),
+                }),
             pw.Paragraph(text: 'Fin del reporte'),
           ]));
 
-//imprimir el pdf
+// //imprimir el pdf
   await Printing.layoutPdf(
       onLayout: (PdfPageFormat format) async => doc.save());
 
