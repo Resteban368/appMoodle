@@ -252,15 +252,6 @@ class _ChatUserScreenState extends State<ChatUserScreen>
             child: TextField(
               controller: _textController,
               onSubmitted: _handleSubmit,
-              // onChanged: (String texto) {
-              //   setState(() {
-              //     if (_textController.text.trim().isNotEmpty) {
-              //       _estaEscribiendo = true;
-              //     } else {
-              //       _estaEscribiendo = false;
-              //     }
-              //   });
-              // },
               decoration:
                   const InputDecoration.collapsed(hintText: 'Enviar mensaje'),
               focusNode: _focusNode,
