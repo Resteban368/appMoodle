@@ -285,6 +285,7 @@ class _ContenedorListChat extends StatefulWidget {
 
 class _ContenedorListChatState extends State<_ContenedorListChat> {
   late int userid2 = 0;
+  late int click = 0;
   @override
   void initState() {
     super.initState();
@@ -322,109 +323,127 @@ class _ContenedorListChatState extends State<_ContenedorListChat> {
                 itemBuilder: (BuildContext context, int i) {
                   return ElasticInDown(
                     child: Stack(children: [
-                      Card(
-                        child: Stack(children: [
-                          ListTile(
-                            leading: Hero(
-                              tag: chatList[i].id,
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(50),
-                                  child: FadeInImage(
-                                    placeholder: const AssetImage(
-                                        'images/userDefault.png'),
-                                    image:
+                      GestureDetector(
+                        //que al precionsar solo una vez se abra el chat y si se preciona dos veces que no haga nada
+                        onTap: () async {
+                          click++;
+                          if (click == 1) {
+                            Future.delayed(const Duration(milliseconds: 200),
+                                () async {
+                              if (click == 1) {
+                                await chatService.conversacionLeida(
+                                    userid2, chatList[i].id);
 
-                                        // (chatList[i].imageurl == null ||
-                                        //         chatList[i].imageurl.isEmpty)
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            ChatUserScreen(chatList[i])));
+                              } else {
+                                click = 0;
+                              }
+                            });
+                          } else {
+                            click = 0;
+                          }
+                        },
 
-                                        //     ?
-                                        NetworkImage(chatList[i]
-                                            .members[0]
-                                            .profileimageurl)
-                                    // : NetworkImage(
-                                    //     '${chatList[i].imageurl}'),
+                        child: Card(
+                          child: Stack(children: [
+                            ListTile(
+                              leading: Hero(
+                                tag: chatList[i].id,
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(50),
+                                    child: FadeInImage(
+                                      placeholder: const AssetImage(
+                                          'images/userDefault.png'),
+                                      image:
 
-                                    ,
-                                    width: 60,
-                                    height: 60,
-                                    fit: BoxFit.cover,
-                                  )),
-                            ),
-                            title: (chatList[i].name.isEmpty)
-                                ? Text(chatList[i].members[0].fullname!,
-                                    style: const TextStyle(
-                                        color: AppTheme.primary))
-                                : Text(chatList[i].name!,
-                                    style: const TextStyle(
-                                        color: AppTheme.primary)),
-                            subtitle: Column(
-                              children: [
-                                if (chatList[i].messages.length > 0)
-                                  Html(
-                                    data: chatList[i].messages[0].text!,
-                                    style: {
-                                      "html": Style(
-                                        fontSize: const FontSize(14.0),
-                                      ),
-                                    },
-                                  )
-                                else
-                                  const Text(''),
-                              ],
-                            ),
-                            trailing: Column(
-                              children: [
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                if (chatList[i].messages.length > 0)
-                                  Column(
-                                    children: [
-                                      Text(
-                                          getFecha(chatList[i]
-                                              .messages[0]
-                                              .timecreated),
-                                          style: const TextStyle(fontSize: 9)),
-                                      Text(
-                                          getHora(chatList[i]
-                                              .messages[0]
-                                              .timecreated),
-                                          style: const TextStyle(fontSize: 10)),
-                                    ],
-                                  )
-                                else
-                                  const Text(''),
-                              ],
-                            ),
-                            onTap: () async {
-                              await chatService.conversacionLeida(
-                                  userid2, chatList[i].id);
+                                          // (chatList[i].imageurl == null ||
+                                          //         chatList[i].imageurl.isEmpty)
 
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          ChatUserScreen(chatList[i])));
-                            },
-                          ),
-                          Positioned(
-                            top: 5,
-                            right: 5,
-                            child: (chatList.length > 0)
-                                ? (chatList[i].isread == false)
-                                    ? Container(
-                                        width: 12,
-                                        height: 12,
-                                        decoration: BoxDecoration(
-                                          color: AppTheme.primary,
-                                          borderRadius:
-                                              BorderRadius.circular(50),
+                                          //     ?
+                                          NetworkImage(chatList[i]
+                                              .members[0]
+                                              .profileimageurl)
+                                      // : NetworkImage(
+                                      //     '${chatList[i].imageurl}'),
+
+                                      ,
+                                      width: 60,
+                                      height: 60,
+                                      fit: BoxFit.cover,
+                                    )),
+                              ),
+                              title: (chatList[i].name.isEmpty)
+                                  ? Text(chatList[i].members[0].fullname!,
+                                      style: const TextStyle(
+                                          color: AppTheme.primary))
+                                  : Text(chatList[i].name!,
+                                      style: const TextStyle(
+                                          color: AppTheme.primary)),
+                              subtitle: Column(
+                                children: [
+                                  if (chatList[i].messages.length > 0)
+                                    Html(
+                                      data: chatList[i].messages[0].text!,
+                                      style: {
+                                        "html": Style(
+                                          fontSize: const FontSize(14.0),
                                         ),
-                                      )
-                                    : const Text('')
-                                : const Text(''),
-                          ),
-                        ]),
+                                      },
+                                    )
+                                  else
+                                    const Text(''),
+                                ],
+                              ),
+                              trailing: Column(
+                                children: [
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  if (chatList[i].messages.length > 0)
+                                    Column(
+                                      children: [
+                                        Text(
+                                            getFecha(chatList[i]
+                                                .messages[0]
+                                                .timecreated),
+                                            style:
+                                                const TextStyle(fontSize: 9)),
+                                        Text(
+                                            getHora(chatList[i]
+                                                .messages[0]
+                                                .timecreated),
+                                            style:
+                                                const TextStyle(fontSize: 10)),
+                                      ],
+                                    )
+                                  else
+                                    const Text(''),
+                                ],
+                              ),
+                            ),
+                            Positioned(
+                              top: 5,
+                              right: 5,
+                              child: (chatList.length > 0)
+                                  ? (chatList[i].isread == false)
+                                      ? Container(
+                                          width: 12,
+                                          height: 12,
+                                          decoration: BoxDecoration(
+                                            color: AppTheme.primary,
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                          ),
+                                        )
+                                      : const Text('')
+                                  : const Text(''),
+                            ),
+                          ]),
+                        ),
                       ),
                       Positioned(
                         top: 10,

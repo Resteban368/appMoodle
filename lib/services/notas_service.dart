@@ -51,7 +51,7 @@ class NotasService extends ChangeNotifier {
         List<Usergrade> notasItems = [];
         Map<String, dynamic> mapaRespBody = json.decode(response.body);
         for (var element in mapaRespBody['usergrades']) {
-          notasItems.add(Usergrade.fromMap(element));
+          notasItems.add(Usergrade?.fromMap(element));
         }
         notifyListeners();
         return notasItems;

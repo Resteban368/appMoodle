@@ -20,6 +20,7 @@ class CardContactos extends StatefulWidget {
 
 class _CardContactosState extends State<CardContactos> {
   late int userid2 = 0;
+  late int click = 0;
   @override
   void initState() {
     super.initState();
@@ -102,8 +103,6 @@ class _CardContactosState extends State<CardContactos> {
                     scrollDirection: Axis.horizontal,
                     itemCount: contacto!.length,
                     itemBuilder: (BuildContext context, int index) {
-                      //guardamos todos los contactos en una lista
-
                       return Padding(
                         padding: const EdgeInsets.only(left: 10, right: 10),
                         child: Stack(children: [
@@ -113,35 +112,37 @@ class _CardContactosState extends State<CardContactos> {
                               children: [
                                 GestureDetector(
                                   onTap: () async {
-//todo: verificar nuevo proceso para optimizar
-                                    final chatService =
-                                        Provider.of<ChatListService>(context,
-                                            listen: false);
-                                    final chat =
-                                        await chatService.getChatList(userid2);
-                                    for (var i = 0; i < chat!.length; i++) {
-                                      if (contacto[index].id ==
-                                          chat[i].members![0].id) {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (BuildContext
-                                                        context) =>
-                                                    ChatUserScreen(chat[i])));
-                                        //terminar el for
-                                        break;
-                                      } else {
-                                        //terminar el for
-                                        if (i == chat.length - 1) {
+                                    click++;
+                                    if (click == 1) {
+                                      final chatService =
+                                          Provider.of<ChatListService>(context,
+                                              listen: false);
+                                      final chat = await chatService
+                                          .getChatList(userid2);
+                                      for (var i = 0; i < chat!.length; i++) {
+                                        if (contacto[index].id ==
+                                            chat[i].members![0].id) {
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (BuildContext
                                                           context) =>
-                                                      ChatUserScreen2(
-                                                          contacto[index])));
+                                                      ChatUserScreen(chat[i])));
+                                          break;
+                                        } else {
+                                          if (i == chat.length - 1) {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        ChatUserScreen2(
+                                                            contacto[index])));
+                                          }
                                         }
                                       }
+                                    } else {
+                                      click = 0;
                                     }
                                   },
 

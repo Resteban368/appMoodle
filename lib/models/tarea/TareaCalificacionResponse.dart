@@ -25,7 +25,9 @@ class TareaCalificacionResponse {
 
   factory TareaCalificacionResponse.fromJson(Map<String, dynamic> json) =>
       TareaCalificacionResponse(
-        lastattempt: Lastattempt.fromJson(json["lastattempt"]),
+        lastattempt: json["lastattempt"] == null
+            ? null
+            : Lastattempt?.fromJson(json["lastattempt"]),
         //verificar si el feedback es null o no
         feedback: json["feedback"] == null
             ? null
@@ -270,7 +272,9 @@ class Lastattempt {
   List<dynamic>? usergroups;
 
   factory Lastattempt.fromJson(Map<String, dynamic> json) => Lastattempt(
-        submission: Submission.fromJson(json["submission"]),
+        submission: json["submission"] == null
+            ? null
+            : Submission?.fromJson(json["submission"]),
         submissiongroupmemberswhoneedtosubmit: List<dynamic>.from(
             json["submissiongroupmemberswhoneedtosubmit"].map((x) => x)),
         submissionsenabled: json["submissionsenabled"],

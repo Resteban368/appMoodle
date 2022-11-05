@@ -169,16 +169,16 @@ class _OfertaAcademica extends StatelessWidget {
                           ),
                           onTap: () async {
                             await launch(
-                                'https://distancia.uniamazonia.edu.co/distancia/login/index.php/');
+                                'https://plataformavirtual.uniamazonia.edu.co/DistanciaVirtual/Recursos/PreguntasFrecuentes/');
                           },
                         ),
                         const SizedBox(height: 2),
-                        const Text("Guías Didácticas - Docentes",
+                        const Text("Preguntas Frecuentes",
                             style: TextStyle(
                                 fontSize: 12, color: AppTheme.primary)),
                         const SizedBox(height: 5),
                         const Text(
-                          "Envío de Guías Didácticas.",
+                          "Banco de Preguntas frecuentes..",
                           style: TextStyle(fontSize: 9),
                           textAlign: TextAlign.center,
                         ),
@@ -196,23 +196,24 @@ class _OfertaAcademica extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
+                        const SizedBox(height: 5),
                         GestureDetector(
                           child: Image.asset(
                             'images/actividad-fisica.png',
-                            width: 50,
-                            height: 50,
+                            width: 45,
+                            height: 45,
                           ),
                           onTap: () async {
                             await launch(
-                                'https://distancia.uniamazonia.edu.co/distancia/');
+                                'https://plataformavirtual.uniamazonia.edu.co/DistanciaVirtual/Recursos/distancia/podcast.html');
                           },
                         ),
-                        const Text("Bienestar Universitario",
+                        const Text("Podcast",
                             style: TextStyle(
                                 fontSize: 12, color: AppTheme.primary)),
                         const SizedBox(height: 5),
                         const Text(
-                          "Acceda a servicios médicos, lúdicos y recreativos que el campus virtual le ofrece.",
+                          "Contenidos radiofónicos de las diferenestes unidades temáticas",
                           style: TextStyle(fontSize: 9),
                           textAlign: TextAlign.center,
                         ),
@@ -268,7 +269,6 @@ class _OfertaAcademica extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        const SizedBox(height: 5),
                         GestureDetector(
                           child: Image.asset(
                             'images/calendario_.png',
@@ -280,12 +280,12 @@ class _OfertaAcademica extends StatelessWidget {
                                 'https://distancia.uniamazonia.edu.co/distancia/login/index.php');
                           },
                         ),
-                        const Text("Induccion Virtual",
+                        const Text("Videos Tutoriales",
                             style: TextStyle(
                                 fontSize: 12, color: AppTheme.primary)),
-                        const SizedBox(height: 5),
+                        const SizedBox(height: 2),
                         const Text(
-                          "Aprende cómo se estudia a distancia.",
+                          "Visualice y practique algunos de los procesos más importantes del campus virtual.",
                           style: TextStyle(fontSize: 9),
                           textAlign: TextAlign.center,
                         ),
@@ -375,16 +375,18 @@ class _Informacion extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * 0.28,
                   height: 80,
                   child: Column(children: [
-                    IconButton(
-                      onPressed: () async {
+                    GestureDetector(
+                      onTap: () async {
                         await launch(
-                            'https://www.google.com/maps/place/Florencia,+Caquet%C3%A1/@1.618869,-75.603842,14z/data=!3m1!4b1!4m5!3m4!1s0x8e244e1a71ba142f:0x408dc3d21376d444!8m2!3d1.6153858!4d-75.6042364');
+                            'https://www.google.com/maps/place/Universidad+de+la+Amazonia+sede+principal/@1.6201021,-75.6042633,21z/data=!4m5!3m4!1s0x8e244e2307a3b2af:0x2eb9e14897cad6c7!8m2!3d1.620127!4d-75.6042556');
                       },
-                      icon: const Icon(Icons.location_on_outlined,
-                          color: AppTheme.primary),
-                      color: AppTheme.primary,
-                      iconSize: 30,
+                      child: Image.asset(
+                        'images/mapa.png',
+                        width: 35,
+                        height: 35,
+                      ),
                     ),
+                    const SizedBox(height: 5),
                     const Text(
                       'Florencia, Caquetá',
                       style: TextStyle(fontSize: 12),
@@ -397,14 +399,17 @@ class _Informacion extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.35,
                 height: 80,
                 child: Column(children: [
-                  IconButton(
-                    onPressed: () async {
+                  GestureDetector(
+                    onTap: () async {
                       await launch('mailto:edistancia@uniamazonia.edu.co');
                     },
-                    icon: const Icon(Icons.email, color: AppTheme.primary),
-                    color: AppTheme.primary,
-                    iconSize: 30,
+                    child: Image.asset(
+                      'images/gmail1.png',
+                      width: 35,
+                      height: 35,
+                    ),
                   ),
+                  const SizedBox(height: 5),
                   const Text(
                     'edistancia@uniamazonia.edu.co',
                     style: TextStyle(fontSize: 12),
@@ -417,14 +422,17 @@ class _Informacion extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.28,
                 height: 80,
                 child: Column(children: [
-                  IconButton(
-                    onPressed: () async {
-                      await launch('tel:+57 3214687286');
+                  GestureDetector(
+                    onTap: () async {
+                      // await launch('tel:+57 3214687286');
                     },
-                    icon: const Icon(Icons.phone, color: AppTheme.primary),
-                    color: AppTheme.primary,
-                    iconSize: 30,
+                    child: Image.asset(
+                      'images/llamada.png',
+                      width: 35,
+                      height: 35,
+                    ),
                   ),
+                  const SizedBox(height: 5),
                   const Text(
                     '+57 3214687286',
                     style: TextStyle(fontSize: 12),
@@ -437,7 +445,7 @@ class _Informacion extends StatelessWidget {
           const Padding(
             padding: EdgeInsets.all(20.0),
             child: Text(
-              'Visitanos por Redes Sociales',
+              'Visítanos por Redes Sociales',
               style: TextStyle(
                   fontSize: 20,
                   color: AppTheme.primary,
@@ -451,50 +459,46 @@ class _Informacion extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                child: SocialWidget(
-                  placeholderText: '',
-                  iconData: SocialIconsFlutter.facebook_box,
-                  link: '',
-                  iconColor: Colors.blue,
+                child: Image.asset(
+                  'images/facebook.png',
+                  width: 35,
+                  height: 35,
                 ),
                 onTap: () async {
-                  await launch('');
+                  await launch('https://www.facebook.com/edistancia2022');
                 },
               ),
+              const SizedBox(width: 10),
               GestureDetector(
-                child: SocialWidget(
-                  placeholderText: '',
-                  iconData: SocialIconsFlutter.instagram,
-                  iconColor: Colors.pink,
-                  link: '',
+                child: Image.asset(
+                  'images/instagram.png',
+                  width: 35,
+                  height: 35,
                 ),
                 onTap: () async {
-                  await launch('');
+                  await launch('https://www.instagram.com/udlaedistancia/');
                 },
               ),
+              const SizedBox(width: 10),
               GestureDetector(
-                child: SocialWidget(
-                  placeholderText: '',
-                  iconData: //icono de tiktok
-                      Icons.tiktok,
-                  link: '',
-                  iconColor: Colors.black,
+                child: Image.asset(
+                  'images/tiktok.png',
+                  width: 35,
+                  height: 35,
                 ),
                 onTap: () async {
-                  await launch('');
+                  await launch('https://www.tiktok.com/@direccionvirtuald2');
                 },
               ),
+              const SizedBox(width: 10),
               GestureDetector(
-                child: SocialWidget(
-                  placeholderText: '',
-                  iconData: //icono de tiktok
-                      Icons.whatsapp,
-                  link: '',
-                  iconColor: //color del icono de tiktok
-                      Colors.green,
+                child: Image.asset(
+                  'images/whatsapp.png',
+                  width: 35,
+                  height: 35,
                 ),
                 onTap: () async {
-                  await launch('');
+                  await launch('https://www.tiktok.com/@direccionvirtuald2');
                 },
               ),
             ],

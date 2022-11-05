@@ -6,7 +6,6 @@ import 'package:campus_virtual/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -199,7 +198,10 @@ class _ContainerBannerState extends State<_ContainerBanner> {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             return const Center(
-                              child: CircularProgressIndicator(),
+                              child: Text(
+                                'Cargando...',
+                                style: TextStyle(color: Colors.white),
+                              ),
                             );
                           } else {
                             final tarea = snapshot.data;
@@ -309,10 +311,10 @@ class _EstadoEntrega extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            if (tarea.lastattempt!.submission!.status ==
+                            if (tarea.lastattempt!.submission?.status ==
                                 'submitted')
                               const Text('Enviado para calificar')
-                            else if (tarea.lastattempt!.submission!.status ==
+                            else if (tarea.lastattempt!.submission?.status ==
                                 'draft')
                               const Text('Borrador (no enviado)')
                             else

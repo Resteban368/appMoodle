@@ -62,8 +62,10 @@ class Usergrade {
         userfullname: json["userfullname"],
         useridnumber: json["useridnumber"],
         maxdepth: json["maxdepth"],
-        gradeitems: List<Gradeitem>.from(
-            json["gradeitems"].map((x) => Gradeitem.fromMap(x))),
+        gradeitems: json["gradeitems"] == null
+            ? null
+            : List<Gradeitem>.from(
+                json["gradeitems"].map((x) => Gradeitem.fromMap(x))),
       );
 
   Map<String, dynamic> toMap() => {
@@ -123,7 +125,7 @@ class Gradeitem {
   dynamic scaleid;
   bool? locked;
   int? cmid;
-  int? weightraw;
+  String? weightraw;
   String? weightformatted;
   String? status;
   double? graderaw;

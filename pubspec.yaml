@@ -100,6 +100,13 @@ flutter:
     - images/Recursos_digitales.png
     - images/Guia_didactica.png
     - images/actividad-fisica.png
+    - images/gmail1.png
+    - images/llamada.png
+    - images/mapa.png
+    - images/tiktok.png
+    - images/whatsapp.png
+    - images/facebook.png
+    - images/instagram.png
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

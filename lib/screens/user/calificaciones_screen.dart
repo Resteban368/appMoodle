@@ -314,7 +314,9 @@ class _DetalleNotasCursoScreenState extends State<DetalleNotasCursoScreen> {
                       height: MediaQuery.of(context).size.height * 0.8,
                       child: loaderCardListNotas());
                 } else {
+                  print('idcurso ${widget.idCurso}');
                   final notasItems = snapshot.data;
+                  print('notasItems ${notasItems}');
                   return Column(
                     children: [
                       const SizedBox(
@@ -380,7 +382,8 @@ class _DetalleNotasCursoScreenState extends State<DetalleNotasCursoScreen> {
                                 ),
                               ),
                             ],
-                            rows: notasItems[0].gradeitems.map<DataRow>((item) {
+                            rows:
+                                notasItems?[0].gradeitems.map<DataRow>((item) {
                               return DataRow(
                                 selected: true,
                                 cells: <DataCell>[
