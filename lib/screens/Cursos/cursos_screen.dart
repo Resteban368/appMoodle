@@ -37,10 +37,6 @@ class _CursosScreenState extends State<CursosScreen> {
   @override
   Widget build(BuildContext context) {
     final cursoInfo = Provider.of<CursoService>(context, listen: false);
-    final category = Provider.of<CategoryService>(context, listen: false);
-    // final providerGeneral = Provider.of<GeneralService>(context, listen: false);
-    // final token = providerGeneral.tokencillo.toString();
-    //mandamos a llamar el token para usarlo en esta clase
     return Scaffold(
         appBar: AppBar(
           title: const Text('Cursos'),
@@ -89,76 +85,54 @@ class _CursosScreenState extends State<CursosScreen> {
                     // reverse: true,
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int i) {
-                      // final urlImg =
-                      //     snapshot.data![i].overviewfiles![0].fileurl +
-                      //         '?token=$token';
-                      // print(urlImg);
-                      // final urlImg = 'https://via.placeholder.com/350x150';
-                      final curso = snapshot.data.length;
                       return ElasticInDown(
-                        child:
-                            //creamos una card para poner los cursos
-                            Column(
+                        child: Column(
                           children: [
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 10),
                               child: Container(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.4,
+                                    MediaQuery.of(context).size.height * 0.1,
                                 decoration: BoxDecoration(
                                   border: Border.all(color: AppTheme.primary),
                                   borderRadius: BorderRadius.circular(10),
                                   //sombra
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.black.withOpacity(0.1),
+                                      color: Colors.black.withOpacity(0.05),
                                       blurRadius: 10,
-                                      spreadRadius: 5,
+                                      spreadRadius: 0,
                                     ),
                                   ],
                                 ),
                                 child: Column(
                                   children: [
                                     ListTile(
-                                        leading: const Icon(
-                                          Icons.book,
-                                          color: AppTheme.primary,
-                                          size: 40,
-                                        ),
-                                        title: Text(snapshot.data[i].fullname,
-                                            style:
-                                                const TextStyle(fontSize: 20)),
-                                        subtitle: Text('')),
-                                    Container(
+                                      leading: const Icon(
+                                        Icons.book,
                                         color: AppTheme.primary,
-                                        width: double.infinity,
-                                        height: 183,
-                                        child: Image.asset(
-                                          'images/course-default.png',
-                                          fit: BoxFit.fill,
-                                        )),
-                                    ButtonBar(
-                                      children: [
-                                        Center(
-                                          child: MaterialButton(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (BuildContext
-                                                              context) =>
-                                                          MateriasScreen(
-                                                              snapshot
-                                                                  .data[i])));
-                                            },
-                                            // ignore: sort_child_properties_last
-                                            child: const Text('Ver más'),
-                                            color: AppTheme.primary,
-                                            textColor: Colors.white,
-                                          ),
+                                        size: 40,
+                                      ),
+                                      title: Text(snapshot.data[i].fullname,
+                                          style: const TextStyle(fontSize: 18)),
+                                      subtitle: Text(snapshot.data[i].name,
+                                          style: const TextStyle(fontSize: 15)),
+                                      trailing: IconButton(
+                                        icon: const Icon(
+                                          Icons.arrow_forward_ios,
+                                          color: AppTheme.primary,
                                         ),
-                                      ],
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (BuildContext
+                                                          context) =>
+                                                      MateriasScreen(
+                                                          snapshot.data[i])));
+                                        },
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -188,7 +162,7 @@ class _CursosScreenState extends State<CursosScreen> {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child: Container(
-                height: MediaQuery.of(context).size.height * 0.4,
+                height: MediaQuery.of(context).size.height * 0.1,
                 decoration: BoxDecoration(
                   border: Border.all(color: AppTheme.primary),
                   borderRadius: BorderRadius.circular(10),
@@ -215,14 +189,14 @@ class _CursosScreenState extends State<CursosScreen> {
                         color: Colors.grey,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        color: Colors.grey,
-                        width: double.infinity,
-                        height: 200,
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child: Container(
+                    //     color: Colors.grey,
+                    //     width: double.infinity,
+                    //     height: 200,
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

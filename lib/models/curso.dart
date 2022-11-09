@@ -1,241 +1,221 @@
 // To parse this JSON data, do
 //
-//     final responseCursos = responseCursosFromJson(jsonString);
+//     final responseCursos = responseCursosFromMap(jsonString);
 
 import 'dart:convert';
 
-List<ResponseCursos> responseCursosFromJson(String str) =>
-    List<ResponseCursos>.from(
-        json.decode(str).map((x) => ResponseCursos.fromJson(x)));
-
-String responseCursosToJson(List<ResponseCursos> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
 class ResponseCursos {
   ResponseCursos({
+    this.ok,
+    this.results,
+  });
+
+  bool? ok;
+  List<ResultCursos>? results;
+
+  factory ResponseCursos.fromJson(String str) =>
+      ResponseCursos.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory ResponseCursos.fromMap(Map<String, dynamic> json) => ResponseCursos(
+        ok: json["ok"],
+        results: List<ResultCursos>.from(
+            json["results"].map((x) => ResultCursos.fromMap(x))),
+      );
+
+  Map<String, dynamic> toMap() => {
+        "ok": ok,
+        "results": List<dynamic>.from(results!.map((x) => x.toMap())),
+      };
+}
+
+class ResultCursos {
+  ResultCursos({
     this.id,
-    this.shortname,
+    this.category,
+    this.sortorder,
     this.fullname,
-    this.displayname,
-    this.enrolledusercount,
+    this.shortname,
     this.idnumber,
-    this.visible,
     this.summary,
     this.summaryformat,
     this.format,
     this.showgrades,
-    this.lang,
-    this.enablecompletion,
-    this.completionhascriteria,
-    this.completionusertracked,
-    this.category,
-    this.category2,
-    this.progress,
-    this.completed,
+    this.newsitems,
     this.startdate,
     this.enddate,
+    this.relativedatesmode,
     this.marker,
-    this.lastaccess,
-    this.isfavourite,
-    this.hidden,
-    this.overviewfiles,
+    this.maxbytes,
+    this.legacyfiles,
+    this.showreports,
+    this.visible,
+    this.visibleold,
+    this.downloadcontent,
+    this.groupmode,
+    this.groupmodeforce,
+    this.defaultgroupingid,
+    this.lang,
+    this.calendartype,
+    this.theme,
+    this.timecreated,
+    this.timemodified,
+    this.requested,
+    this.enablecompletion,
+    this.completionnotify,
+    this.cacherev,
+    this.originalcourseid,
     this.showactivitydates,
     this.showcompletionconditions,
+    this.name,
+    this.description,
+    this.descriptionformat,
+    this.parent,
+    this.coursecount,
+    this.depth,
+    this.path,
   });
 
   int? id;
-  String? shortname;
+  int? category;
+  int? sortorder;
   String? fullname;
-  String? displayname;
-  int? enrolledusercount;
+  String? shortname;
   String? idnumber;
-  int? visible;
   String? summary;
   int? summaryformat;
   String? format;
-  bool? showgrades;
-  String? lang;
-  bool? enablecompletion;
-  bool? completionhascriteria;
-  bool? completionusertracked;
-  int? category;
-  Category2? category2;
-  dynamic progress;
-  bool? completed;
+  int? showgrades;
+  int? newsitems;
   int? startdate;
   int? enddate;
+  int? relativedatesmode;
   int? marker;
-  dynamic lastaccess;
-  bool? isfavourite;
-  bool? hidden;
-  List<Overviewfile>? overviewfiles;
-  bool? showactivitydates;
-  bool? showcompletionconditions;
+  int? maxbytes;
+  int? legacyfiles;
+  int? showreports;
+  int? visible;
+  int? visibleold;
+  dynamic downloadcontent;
+  int? groupmode;
+  int? groupmodeforce;
+  int? defaultgroupingid;
+  String? lang;
+  String? calendartype;
+  dynamic theme;
+  int? timecreated;
+  int? timemodified;
+  int? requested;
+  int? enablecompletion;
+  int? completionnotify;
+  int? cacherev;
+  int? originalcourseid;
+  int? showactivitydates;
+  int? showcompletionconditions;
+  String? name;
+  String? description;
+  int? descriptionformat;
+  int? parent;
+  int? coursecount;
+  int? depth;
+  String? path;
 
-  factory ResponseCursos.fromJson(Map<String, dynamic> json) => ResponseCursos(
+  factory ResultCursos.fromJson(String str) =>
+      ResultCursos.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory ResultCursos.fromMap(Map<String, dynamic> json) => ResultCursos(
         id: json["id"],
-        shortname: json["shortname"],
+        category: json["category"],
+        sortorder: json["sortorder"],
         fullname: json["fullname"],
-        displayname: json["displayname"],
-        enrolledusercount: json["enrolledusercount"],
+        shortname: json["shortname"],
         idnumber: json["idnumber"],
-        visible: json["visible"],
         summary: json["summary"],
         summaryformat: json["summaryformat"],
         format: json["format"],
         showgrades: json["showgrades"],
-        lang: json["lang"],
-        enablecompletion: json["enablecompletion"],
-        completionhascriteria: json["completionhascriteria"],
-        completionusertracked: json["completionusertracked"],
-        category: json["category"],
-        // category2: Category2?.fromMap(json["category2"]),
-        progress: json["progress"],
-        completed: json["completed"],
+        newsitems: json["newsitems"],
         startdate: json["startdate"],
         enddate: json["enddate"],
+        relativedatesmode: json["relativedatesmode"],
         marker: json["marker"],
-        lastaccess: json["lastaccess"],
-        isfavourite: json["isfavourite"],
-        hidden: json["hidden"],
-        overviewfiles: List<Overviewfile>.from(
-            json["overviewfiles"].map((x) => Overviewfile.fromJson(x))),
+        maxbytes: json["maxbytes"],
+        legacyfiles: json["legacyfiles"],
+        showreports: json["showreports"],
+        visible: json["visible"],
+        visibleold: json["visibleold"],
+        downloadcontent: json["downloadcontent"],
+        groupmode: json["groupmode"],
+        groupmodeforce: json["groupmodeforce"],
+        defaultgroupingid: json["defaultgroupingid"],
+        lang: json["lang"],
+        calendartype: json["calendartype"],
+        theme: json["theme"],
+        timecreated: json["timecreated"],
+        timemodified: json["timemodified"],
+        requested: json["requested"],
+        enablecompletion: json["enablecompletion"],
+        completionnotify: json["completionnotify"],
+        cacherev: json["cacherev"],
+        originalcourseid:
+            json["originalcourseid"] == null ? null : json["originalcourseid"],
         showactivitydates: json["showactivitydates"],
         showcompletionconditions: json["showcompletionconditions"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "shortname": shortname,
-        "fullname": fullname,
-        "displayname": displayname,
-        "enrolledusercount": enrolledusercount,
-        "idnumber": idnumber,
-        "visible": visible,
-        "summary": summary,
-        "summaryformat": summaryformat,
-        "format": format,
-        "showgrades": showgrades,
-        "lang": lang,
-        "enablecompletion": enablecompletion,
-        "completionhascriteria": completionhascriteria,
-        "completionusertracked": completionusertracked,
-        "category": category,
-        "category2": category2!.toMap(),
-        "progress": progress,
-        "completed": completed,
-        "startdate": startdate,
-        "enddate": enddate,
-        "marker": marker,
-        "lastaccess": lastaccess,
-        "isfavourite": isfavourite,
-        "hidden": hidden,
-        "overviewfiles":
-            List<dynamic>.from(overviewfiles!.map((x) => x.toJson())),
-        "showactivitydates": showactivitydates,
-        "showcompletionconditions": showcompletionconditions,
-      };
-}
-
-class Overviewfile {
-  Overviewfile({
-    this.filename,
-    this.filepath,
-    this.filesize,
-    this.fileurl,
-    this.timemodified,
-    this.mimetype,
-  });
-  String? filename;
-  String? filepath;
-  int? filesize;
-  String? fileurl;
-  int? timemodified;
-  String? mimetype;
-
-  factory Overviewfile.fromJson(Map<String, dynamic> json) => Overviewfile(
-        filename: json["filename"],
-        filepath: json["filepath"],
-        filesize: json["filesize"],
-        fileurl: json["fileurl"],
-        timemodified: json["timemodified"],
-        mimetype: json["mimetype"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "filename": filename,
-        "filepath": filepath,
-        "filesize": filesize,
-        "fileurl": fileurl,
-        "timemodified": timemodified,
-        "mimetype": mimetype,
-      };
-}
-
-class Category2 {
-  Category2({
-    this.id,
-    this.name,
-    this.idnumber,
-    this.description,
-    this.descriptionformat,
-    this.parent,
-    this.sortorder,
-    this.coursecount,
-    this.visible,
-    this.visibleold,
-    this.timemodified,
-    this.depth,
-    this.path,
-    this.theme,
-  });
-
-  int? id;
-  String? name;
-  String? idnumber;
-  String? description;
-  int? descriptionformat;
-  int? parent;
-  int? sortorder;
-  int? coursecount;
-  int? visible;
-  int? visibleold;
-  int? timemodified;
-  int? depth;
-  String? path;
-  dynamic theme;
-
-  factory Category2.fromMap(Map<String, dynamic> json) => Category2(
-        id: json["id"],
         name: json["name"],
-        idnumber: json["idnumber"],
         description: json["description"],
         descriptionformat: json["descriptionformat"],
         parent: json["parent"],
-        sortorder: json["sortorder"],
         coursecount: json["coursecount"],
-        visible: json["visible"],
-        visibleold: json["visibleold"],
-        timemodified: json["timemodified"],
         depth: json["depth"],
         path: json["path"],
-        theme: json["theme"],
       );
 
   Map<String, dynamic> toMap() => {
         "id": id,
-        "name": name,
+        "category": category,
+        "sortorder": sortorder,
+        "fullname": fullname,
+        "shortname": shortname,
         "idnumber": idnumber,
+        "summary": summary,
+        "summaryformat": summaryformat,
+        "format": format,
+        "showgrades": showgrades,
+        "newsitems": newsitems,
+        "startdate": startdate,
+        "enddate": enddate,
+        "relativedatesmode": relativedatesmode,
+        "marker": marker,
+        "maxbytes": maxbytes,
+        "legacyfiles": legacyfiles,
+        "showreports": showreports,
+        "visible": visible,
+        "visibleold": visibleold,
+        "downloadcontent": downloadcontent,
+        "groupmode": groupmode,
+        "groupmodeforce": groupmodeforce,
+        "defaultgroupingid": defaultgroupingid,
+        "lang": lang,
+        "calendartype": calendartype,
+        "theme": theme,
+        "timecreated": timecreated,
+        "timemodified": timemodified,
+        "requested": requested,
+        "enablecompletion": enablecompletion,
+        "completionnotify": completionnotify,
+        "cacherev": cacherev,
+        "originalcourseid": originalcourseid == null ? null : originalcourseid,
+        "showactivitydates": showactivitydates,
+        "showcompletionconditions": showcompletionconditions,
+        "name": name,
         "description": description,
         "descriptionformat": descriptionformat,
         "parent": parent,
-        "sortorder": sortorder,
         "coursecount": coursecount,
-        "visible": visible,
-        "visibleold": visibleold,
-        "timemodified": timemodified,
         "depth": depth,
         "path": path,
-        "theme": theme,
       };
 }

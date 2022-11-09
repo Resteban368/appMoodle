@@ -15,7 +15,7 @@ import '../screens.dart';
 import 'package:campus_virtual/utils/utils.dart';
 
 class MateriasScreen extends StatelessWidget {
-  ResponseCursos contenido;
+  ResultCursos contenido;
 
   MateriasScreen(this.contenido, {Key? key}) : super(key: key);
 
@@ -96,7 +96,7 @@ class _Temas extends StatelessWidget {
   }) : super(key: key);
 
   final CursoContenidoService cursoIContenido;
-  final ResponseCursos contenido;
+  final ResultCursos contenido;
 
 // arrglo de  7 iconos
 

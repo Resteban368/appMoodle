@@ -450,7 +450,7 @@ class NotasDocenteScreen extends StatelessWidget {
     final notasService = Provider.of<NotasService>(context, listen: false);
     return Scaffold(
         appBar: AppBar(
-          title: Text(course.fullname.toString()),
+          title: Text(course.results![0].fullname.toString()),
           backgroundColor: AppTheme.primary,
         ),
         body: SizedBox(
