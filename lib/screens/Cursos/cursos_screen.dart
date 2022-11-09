@@ -108,30 +108,32 @@ class _CursosScreenState extends State<CursosScreen> {
                                 ),
                                 child: Column(
                                   children: [
-                                    ListTile(
-                                      leading: const Icon(
-                                        Icons.book,
-                                        color: AppTheme.primary,
-                                        size: 40,
-                                      ),
-                                      title: Text(snapshot.data[i].fullname,
-                                          style: const TextStyle(fontSize: 18)),
-                                      subtitle: Text(snapshot.data[i].name,
-                                          style: const TextStyle(fontSize: 15)),
-                                      trailing: IconButton(
-                                        icon: const Icon(
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        MateriasScreen(
+                                                            snapshot.data[i])));
+                                      },
+                                      child: ListTile(
+                                        leading: const Icon(
+                                          Icons.book,
+                                          color: AppTheme.primary,
+                                          size: 40,
+                                        ),
+                                        title: Text(snapshot.data[i].fullname,
+                                            style:
+                                                const TextStyle(fontSize: 18)),
+                                        subtitle: Text(snapshot.data[i].name,
+                                            style:
+                                                const TextStyle(fontSize: 15)),
+                                        trailing: const Icon(
                                           Icons.arrow_forward_ios,
                                           color: AppTheme.primary,
                                         ),
-                                        onPressed: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (BuildContext
-                                                          context) =>
-                                                      MateriasScreen(
-                                                          snapshot.data[i])));
-                                        },
                                       ),
                                     ),
                                   ],

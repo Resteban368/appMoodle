@@ -1,7 +1,6 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:campus_virtual/models/models.dart';
-import 'package:campus_virtual/screens/chat/ver-pdf-a-exportar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';

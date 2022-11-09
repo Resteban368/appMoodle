@@ -1,6 +1,7 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, deprecated_member_use, must_be_immutable, curly_braces_in_flow_control_structures, prefer_interpolation_to_compose_strings
+// ignore_for_file: prefer_const_literals_to_create_immutables, deprecated_member_use, must_be_immutable, curly_braces_in_flow_control_structures, prefer_interpolation_to_compose_strings, sort_child_properties_last
 
 import 'package:animate_do/animate_do.dart';
+import 'package:campus_virtual/screens/Cursos/contenidoSemestral.dart';
 import 'package:campus_virtual/screens/actividades/url_PdfScreen.dart';
 import 'package:campus_virtual/services/sevices.dart';
 import 'package:campus_virtual/widgets/icon.dart';
@@ -47,7 +48,7 @@ class MateriasScreen extends StatelessWidget {
         children: [
           SizedBox(
             width: double.infinity,
-            height: MediaQuery.of(context).size.height * 0.35,
+            height: MediaQuery.of(context).size.height * 0.33,
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -59,12 +60,9 @@ class MateriasScreen extends StatelessWidget {
                         'images/course-default.png',
                         fit: BoxFit.fill,
                       )),
-                  const SizedBox(
-                    height: 5,
-                  ),
                   Padding(
-                      padding: const EdgeInsets.only(
-                          top: 5, left: 5, right: 5, bottom: 5),
+                      padding:
+                          const EdgeInsets.only(left: 5, right: 5, bottom: 5),
                       child: Html(
                         data: htmlData,
                         style: {
@@ -78,8 +76,16 @@ class MateriasScreen extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(
-            height: 8,
+          MaterialButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ContenidoSemestral(contenido.id!)));
+            },
+            child: const Text('Contenido Semestral'),
+            color: AppTheme.primary,
+            textColor: Colors.white,
           ),
           _Temas(cursoIContenido: cursoIContenido, contenido: contenido),
         ],
@@ -140,7 +146,7 @@ class _Temas extends StatelessWidget {
     int indice;
     return SizedBox(
       width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.52,
+      height: MediaQuery.of(context).size.height * 0.5,
       child: Padding(
         padding:
             const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
@@ -156,7 +162,7 @@ class _Temas extends StatelessWidget {
                 // reverse: true,
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                itemCount: snapshot.data.length!,
+                itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int i) {
                   indice = int.parse((snapshot.data.length - i).toString());
                   return ElasticInDown(

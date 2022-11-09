@@ -303,7 +303,6 @@ class _ContenedorListChatState extends State<_ContenedorListChat> {
 
   @override
   Widget build(BuildContext context) {
-    // final siteInfo = Provider.of<InfoSiteService>(context, listen: false);
     final chatService = Provider.of<ChatListService>(context, listen: false);
 
     return SizedBox(
@@ -328,21 +327,14 @@ class _ContenedorListChatState extends State<_ContenedorListChat> {
                         onTap: () async {
                           click++;
                           if (click == 1) {
-                            Future.delayed(const Duration(milliseconds: 200),
-                                () async {
-                              if (click == 1) {
-                                await chatService.conversacionLeida(
-                                    userid2, chatList[i].id);
+                            await chatService.conversacionLeida(
+                                userid2, chatList[i].id);
 
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            ChatUserScreen(chatList[i])));
-                              } else {
-                                click = 0;
-                              }
-                            });
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        ChatUserScreen(chatList[i])));
                           } else {
                             click = 0;
                           }

@@ -10,18 +10,18 @@ import '../models/models.dart';
 class CategoryService with ChangeNotifier {
   //construcctor
 
-  Future<List<Category>?> getCategoryById(int id) async {
-    final url = 'http://172.16.23.187:3000/api/course/Category/$id';
+  Future<List<ResultCategory>?> getCategoryById(int id) async {
+    final url = 'http://172.16.23.187:3000/api/category/Category/$id';
     try {
       final response = await http.get(Uri.parse(url));
-
       if (response.statusCode < 400) {
-        List<Category> category = [];
+        List<ResultCategory> category = [];
         Map<String, dynamic> mapaRespBody = json.decode(response.body);
         for (var element in mapaRespBody['results']) {
-          category.add(Category.fromMap(element));
+          category.add(ResultCategory.fromMap(element));
         }
         notifyListeners();
+        print(category[0].description);
         return category;
       }
     } catch (e) {

@@ -1,35 +1,38 @@
 // To parse this JSON data, do
 //
-//     final responseCategories = responseCategoriesFromJson(jsonString);
+//     final responseCategory = responseCategoryFromMap(jsonString);
 
 import 'dart:convert';
 
-ResponseCategories responseCategoriesFromMap(String str) =>
-    ResponseCategories.fromMap(json.decode(str));
-
-String responseCategoriesToMap(ResponseCategories data) =>
-    json.encode(data.toMap());
-
-class ResponseCategories {
-  ResponseCategories({
-    required this.category,
+class ResponseCategory {
+  ResponseCategory({
+    this.ok,
+    this.results,
   });
 
-  List<Category> category;
+  bool? ok;
+  List<ResultCategory>? results;
 
-  factory ResponseCategories.fromMap(Map<String, dynamic> json) =>
-      ResponseCategories(
-        category: List<Category>.from(
-            json["results"].map((x) => Category.fromMap(x))),
+  factory ResponseCategory.fromJson(String str) =>
+      ResponseCategory.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory ResponseCategory.fromMap(Map<String, dynamic> json) =>
+      ResponseCategory(
+        ok: json["ok"],
+        results: List<ResultCategory>.from(
+            json["results"].map((x) => ResultCategory.fromMap(x))),
       );
 
   Map<String, dynamic> toMap() => {
-        "results": List<dynamic>.from(category.map((x) => x.toMap())),
+        "ok": ok,
+        "results": List<dynamic>.from(results!.map((x) => x.toMap())),
       };
 }
 
-class Category {
-  Category({
+class ResultCategory {
+  ResultCategory({
     this.id,
     this.name,
     this.idnumber,
@@ -61,7 +64,12 @@ class Category {
   String? path;
   dynamic theme;
 
-  factory Category.fromMap(Map<String, dynamic> json) => Category(
+  factory ResultCategory.fromJson(String str) =>
+      ResultCategory.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory ResultCategory.fromMap(Map<String, dynamic> json) => ResultCategory(
         id: json["id"],
         name: json["name"],
         idnumber: json["idnumber"],
