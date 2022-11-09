@@ -8,11 +8,11 @@ import 'dart:convert';
 
 class NotasItemCurso {
   NotasItemCurso({
-    this.usergrades,
+    required this.usergrades,
     this.warnings,
   });
 
-  List<Usergrade>? usergrades;
+  List<Usergrade> usergrades;
   List<dynamic>? warnings;
 
   factory NotasItemCurso.fromJson(String str) =>
@@ -93,7 +93,7 @@ class Gradeitem {
     this.scaleid,
     this.locked,
     this.cmid,
-    this.weightraw,
+    // this.weightraw,
     this.weightformatted,
     this.status,
     this.graderaw,
@@ -125,10 +125,10 @@ class Gradeitem {
   dynamic scaleid;
   bool? locked;
   int? cmid;
-  String? weightraw;
+  // num? weightraw;
   String? weightformatted;
   String? status;
-  double? graderaw;
+  num? graderaw;
   int? gradedatesubmitted;
   int? gradedategraded;
   bool? gradehiddenbydate;
@@ -161,7 +161,7 @@ class Gradeitem {
         scaleid: json["scaleid"],
         locked: json["locked"],
         cmid: json["cmid"],
-        weightraw: json["weightraw"],
+        // weightraw: json["weightraw"] as double?,
         weightformatted: json["weightformatted"],
         status: json["status"],
         graderaw: json["graderaw"],
@@ -194,7 +194,7 @@ class Gradeitem {
         "scaleid": scaleid,
         "locked": locked,
         "cmid": cmid,
-        "weightraw": weightraw,
+        // "weightraw": weightraw,
         "weightformatted": weightformatted,
         "status": status,
         "graderaw": graderaw,

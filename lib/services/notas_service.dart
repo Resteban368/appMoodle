@@ -54,6 +54,8 @@ class NotasService extends ChangeNotifier {
           notasItems.add(Usergrade?.fromMap(element));
         }
         notifyListeners();
+        print('notas items desde el service');
+        print(notasItems[0].gradeitems!.length.toString());
         return notasItems;
       }
     } catch (e, s) {

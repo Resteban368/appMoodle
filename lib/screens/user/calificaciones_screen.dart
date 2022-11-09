@@ -316,7 +316,7 @@ class _DetalleNotasCursoScreenState extends State<DetalleNotasCursoScreen> {
                 } else {
                   print('idcurso ${widget.idCurso}');
                   final notasItems = snapshot.data;
-                  print('notasItems ${notasItems}');
+                  // print('notasItems ${notasItems[0].userid}');
                   return Column(
                     children: [
                       const SizedBox(
@@ -382,8 +382,7 @@ class _DetalleNotasCursoScreenState extends State<DetalleNotasCursoScreen> {
                                 ),
                               ),
                             ],
-                            rows:
-                                notasItems?[0].gradeitems.map<DataRow>((item) {
+                            rows: notasItems[0].gradeitems.map<DataRow>((item) {
                               return DataRow(
                                 selected: true,
                                 cells: <DataCell>[
@@ -435,6 +434,7 @@ class _DetalleNotasCursoScreenState extends State<DetalleNotasCursoScreen> {
                       ),
                     ],
                   );
+                  // return Text('hola');
                 }
               }),
         ));
