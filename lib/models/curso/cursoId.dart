@@ -1,9 +1,3 @@
-// To parse this JSON data, do
-//
-//     final welcome = welcomeFromJson(jsonString);
-
-// ignore_for_file: file_names
-
 import 'dart:convert';
 
 List<ResponseDataCursoForId> welcomeFromJson(String str) =>

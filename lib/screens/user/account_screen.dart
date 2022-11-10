@@ -170,7 +170,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                               null
                                           ? userInfoProvider2
                                               .userInfo.profileimageurl!
-                                          : 'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png',
+                                          : 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1024px-Default_pfp.svg.png',
                                       // imgeDefault,
                                       fit: BoxFit.fill,
                                     ),
