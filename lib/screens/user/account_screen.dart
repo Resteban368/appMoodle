@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../../providers/providers.dart';
 import '../../services/sevices.dart';
+import '../../services/socket_service.dart';
 import '../../theme/app_bar_theme.dart';
 import 'calificaciones_screen.dart';
 
@@ -108,6 +109,10 @@ class _AccountScreenState extends State<AccountScreen> {
               onSelected: (value) {
                 if (value == 1) {
                   authService.logout();
+                  //cerramos sesion en el socket
+                  final sockets =
+                      Provider.of<SocketService>(context, listen: false);
+                  sockets.disconnect();
                   //navegar a la pantalla de login
                   Navigator.pushReplacementNamed(context, 'inicio');
                 } else if (value == 2) {

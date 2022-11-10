@@ -34,7 +34,7 @@ class _HeaderIcon extends StatelessWidget {
       child: Container(
         width: double.infinity,
         height: 100,
-        margin: const EdgeInsets.only(top: 50),
+        margin: const EdgeInsets.only(top: 30),
         child: //imagen de asset
             Image.asset(
           'images/appicon.png',
