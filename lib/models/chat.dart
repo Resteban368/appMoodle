@@ -51,8 +51,8 @@ class ChatResponse {
         isfavourite: json["isfavourite"],
         isread: json["isread"],
         unreadcount: json["unreadcount"],
-        members:
-            List<Member>.from(json["members"].map((x) => Member.fromMap(x))),
+        members: List<Member>.from(
+            json["members"]?.map((x) => Member.fromMap(x)).toList() ?? []),
         messages:
             List<Message>.from(json["messages"].map((x) => Message.fromMap(x))),
         candeletemessagesforallusers: json["candeletemessagesforallusers"],

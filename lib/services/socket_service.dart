@@ -2,6 +2,7 @@
 
 import 'package:campus_virtual/global/environment.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -16,13 +17,23 @@ class SocketService with ChangeNotifier {
   IO.Socket get socket => _socket;
   Function get emit => _socket.emit;
 
-  void connect() {
+  void connect() async {
+    //obtenermos el token del storage
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: 'token');
+    final id = await storage.read(key: 'id');
+
     print('Conectandooo al socket');
     // Dart client
     _socket = IO.io('http://172.16.23.187:3000', {
       'transports': ['websocket'],
       'autoConnect': true,
       'forceNew': true,
+      'extraHeaders': {
+        'x-token': token,
+        //pasamos el id del usuario
+        'id': id,
+      }
     });
 
     _socket.on('connect', (_) {

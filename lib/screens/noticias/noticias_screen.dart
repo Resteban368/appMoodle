@@ -4,8 +4,6 @@ import 'package:animated_floating_buttons/widgets/animated_floating_action_butto
 import 'package:campus_virtual/utils/warning_widget_change_notifier.dart';
 import 'package:campus_virtual/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:social_media_flutter/widgets/icons.dart';
-import 'package:social_media_flutter/widgets/text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../theme/app_bar_theme.dart';
@@ -283,7 +281,6 @@ class _OfertaAcademica extends StatelessWidget {
                         const Text("Videos Tutoriales",
                             style: TextStyle(
                                 fontSize: 12, color: AppTheme.primary)),
-                        const SizedBox(height: 2),
                         const Text(
                           "Visualice y practique algunos de los procesos más importantes del campus virtual.",
                           style: TextStyle(fontSize: 9),

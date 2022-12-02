@@ -43,26 +43,28 @@ class ChatListService extends ChangeNotifier {
 
   late ChatResponse messages = ChatResponse();
   //peticion para obtener los mensajes de un chat
-  Future<ChatResponse?> getMessages(int conversationid, int userid) async {
+  Stream<ChatResponse?> getMessages(int conversationid, int userid) async* {
     const String wsfunction = 'core_message_get_conversation';
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: 'token');
     final url2 =
         '$_baseUrl${_url}wsfunction=$wsfunction&moodlewsrestformat=$_moodlewsrestformat&wstoken=$token&conversationid=$conversationid&userid=$userid&includecontactrequests=1&includeprivacyinfo=1';
-    try {
-      final response = await http.get(Uri.parse(url2));
-      if (response.statusCode < 400) {
-        final ChatResponse decodeData = ChatResponse.fromJson(response.body);
-        messages = decodeData;
-        print(messages.messages?[0].text);
-        notifyListeners();
-        return messages;
+
+    while (true) {
+      await Future.delayed(Duration(seconds: 5));
+      try {
+        final response = await http.get(Uri.parse(url2));
+        if (response.statusCode < 400) {
+          final ChatResponse decodeData = ChatResponse.fromJson(response.body);
+          messages = decodeData;
+          print('erm: ${messages.messages?[0].text}');
+          notifyListeners();
+          yield messages;
+        }
+      } catch (e, s) {
+        print('error en el chat-service22: $e + $s');
       }
-    } catch (e) {
-      print('error en el chat-service: $e');
     }
-    notifyListeners();
-    return null;
   }
 
 //funcion para enviar un mensajes

@@ -11,6 +11,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../seacrh/search_contactos.dart';
 import '../../services/sevices.dart';
+import '../../services/socket_service.dart';
 import '../screens.dart';
 import '/theme/app_bar_theme.dart';
 import 'package:flutter_html/flutter_html.dart';

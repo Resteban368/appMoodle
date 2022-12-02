@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:async';
+
 import 'package:campus_virtual/screens/chat/ver-pdf-a-exportar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -26,6 +28,7 @@ class _ChatUserScreenState extends State<ChatUserScreen>
   bool _estaEscribiendo = false;
 
   late int userid2 = 0;
+  late int cantidad = 0;
   late String fullname2 = '';
 
   late int conversacionId = 0;
@@ -50,7 +53,6 @@ class _ChatUserScreenState extends State<ChatUserScreen>
   @override
   Widget build(BuildContext context) {
     final chatService = Provider.of<ChatListService>(context, listen: false);
-    print('chatList: ${widget.chatList.id}');
     final nombre = widget.chatList.name;
     return Scaffold(
       appBar: AppBar(
@@ -100,8 +102,8 @@ class _ChatUserScreenState extends State<ChatUserScreen>
       body: Column(
         children: [
           Flexible(
-              child: FutureBuilder(
-                  future: chatService.getMessages(widget.chatList.id!, userid2),
+              child: StreamBuilder(
+                  stream: chatService.getMessages(widget.chatList.id!, userid2),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(
@@ -110,6 +112,7 @@ class _ChatUserScreenState extends State<ChatUserScreen>
                       );
                     } else {
                       final mensajes = snapshot.data;
+
                       //agregamos la lista de mensajes con snapshot.data
                       return ListView.builder(
                         physics: const BouncingScrollPhysics(),
@@ -275,6 +278,7 @@ class _ChatUserScreenState extends State<ChatUserScreen>
                         // _estaEscribiendo
                         //     ?
                         () {
+                      print('enviar');
                       _handleSubmit(_textController.text);
                     }
                     // : null,

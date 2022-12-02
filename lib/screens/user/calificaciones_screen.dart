@@ -426,141 +426,143 @@ class _EstudianteScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final notasService = Provider.of<NotasService>(context, listen: false);
     return Scaffold(
-        body: SizedBox(
-      width: double.infinity,
-      height: double.infinity,
-      child: FutureBuilder(
-          future: notasService.getItemNotas(userid, idCurso),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return SizedBox(
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.8,
-                  child: loaderCardListNotas());
-            } else {
-              final notasItems = snapshot.data;
-              return Column(
-                children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(25),
-                    child: Text(nombreCurso,
-                        style: const TextStyle(
-                            fontSize: 25, color: AppTheme.primary)),
-                  ),
-                  Text(
-                      'Nota Final: ${notasItems[0].gradeitems[10].graderaw.toString()}',
-                      style: const TextStyle(fontSize: 18)),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: DataTable(
-                        decoration: BoxDecoration(
-                            border: Border.all(color: AppTheme.primary)),
-                        columns: const <DataColumn>[
-                          DataColumn(
-                            label: Text(
-                              'Item de Calificación',
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Text(
-                              'Ponderación calculada',
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Text(
-                              'Calificación',
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Text(
-                              'Rango',
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Text(
-                              'Porcentaje',
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Text(
-                              'Retroalimentación',
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Text(
-                              'Aporte total al curso',
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                        ],
-                        rows: notasItems[0].gradeitems.map<DataRow>((item) {
-                          return DataRow(
-                            selected: true,
-                            cells: <DataCell>[
-                              DataCell(
-                                (item.itemname != null)
-                                    ? Text(item.itemname.toString())
-                                    : const Text('Total Curso'),
+        body: SingleChildScrollView(
+      child: SizedBox(
+        width: double.infinity,
+        height: MediaQuery.of(context).size.height * 0.9,
+        child: FutureBuilder(
+            future: notasService.getItemNotas(userid, idCurso),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return SizedBox(
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height * 0.8,
+                    child: loaderCardListNotas());
+              } else {
+                final notasItems = snapshot.data;
+                return Column(
+                  children: [
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(25),
+                      child: Text(nombreCurso,
+                          style: const TextStyle(
+                              fontSize: 25, color: AppTheme.primary)),
+                    ),
+                    Text(
+                        'Nota Final: ${notasItems[0].gradeitems[10].graderaw.toString()}',
+                        style: const TextStyle(fontSize: 18)),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: DataTable(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: AppTheme.primary)),
+                          columns: const <DataColumn>[
+                            DataColumn(
+                              label: Text(
+                                'Item de Calificación',
+                                style: TextStyle(fontStyle: FontStyle.italic),
                               ),
-                              DataCell(
-                                (item.weightformatted != null)
-                                    ? Text(item.weightformatted.toString())
-                                    : const Text('-'),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                'Ponderación calculada',
+                                style: TextStyle(fontStyle: FontStyle.italic),
                               ),
-                              DataCell(
-                                (item.graderaw != null)
-                                    ? Text(item.graderaw.toString())
-                                    : const Text('-'),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                'Calificación',
+                                style: TextStyle(fontStyle: FontStyle.italic),
                               ),
-                              DataCell(Text(
-                                //poner grademin y grademax
-                                '${item.grademin} - ${item.grademax}',
-                              )),
-                              DataCell(
-                                  Text(item.percentageformatted.toString())),
-                              DataCell(
-                                SingleChildScrollView(
-                                  child: SizedBox(
-                                    width: 100,
-                                    height: 100,
-                                    child: Html(
-                                      data: item.feedback.toString(),
-                                      style: {
-                                        'body': Style(
-                                            fontSize: const FontSize(14),
-                                            //justificar todo el texto
-                                            textAlign: TextAlign.justify),
-                                      },
+                            ),
+                            DataColumn(
+                              label: Text(
+                                'Rango',
+                                style: TextStyle(fontStyle: FontStyle.italic),
+                              ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                'Porcentaje',
+                                style: TextStyle(fontStyle: FontStyle.italic),
+                              ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                'Retroalimentación',
+                                style: TextStyle(fontStyle: FontStyle.italic),
+                              ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                'Aporte total al curso',
+                                style: TextStyle(fontStyle: FontStyle.italic),
+                              ),
+                            ),
+                          ],
+                          rows: notasItems[0].gradeitems.map<DataRow>((item) {
+                            return DataRow(
+                              selected: true,
+                              cells: <DataCell>[
+                                DataCell(
+                                  (item.itemname != null)
+                                      ? Text(item.itemname.toString())
+                                      : const Text('Total Curso'),
+                                ),
+                                DataCell(
+                                  (item.weightformatted != null)
+                                      ? Text(item.weightformatted.toString())
+                                      : const Text('-'),
+                                ),
+                                DataCell(
+                                  (item.graderaw != null)
+                                      ? Text(item.graderaw.toString())
+                                      : const Text('-'),
+                                ),
+                                DataCell(Text(
+                                  //poner grademin y grademax
+                                  '${item.grademin} - ${item.grademax}',
+                                )),
+                                DataCell(
+                                    Text(item.percentageformatted.toString())),
+                                DataCell(
+                                  SingleChildScrollView(
+                                    child: SizedBox(
+                                      width: 100,
+                                      height: 100,
+                                      child: Html(
+                                        data: item.feedback.toString(),
+                                        style: {
+                                          'body': Style(
+                                              fontSize: const FontSize(14),
+                                              //justificar todo el texto
+                                              textAlign: TextAlign.justify),
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              DataCell(
-                                  Text(item.percentageformatted.toString())),
-                            ],
-                          );
-                        }).toList(),
+                                DataCell(
+                                    Text(item.percentageformatted.toString())),
+                              ],
+                            );
+                          }).toList(),
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              );
-            }
-          }),
+                  ],
+                );
+              }
+            }),
+      ),
     ));
   }
 }
